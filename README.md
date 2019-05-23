@@ -1,7 +1,5 @@
 # Ignite UI for React - from Infragistics
 
-High-Performance Data Grid and High-Volume Data Charts
-
 [Ignite UI for React](https://www.infragistics.com/products/ignite-ui-react) includes a wide range of easy to use React UI components that have been designed and optimized for high-performance, high-volume data scenarios. It includes a grid, charts, gauges and the Excel library.
 
 You can build amazing experiences with Ignite UI for React.  Ignite UI for React includes the world’s fastest, virtualized real-time, live-data React grid with interactive responsive web design features like built-in column types & templating support, column sorting, filtering, and more.  The high-performance, streaming financial & business charts can render millions of data points in milliseconds with interactive panning & zooming, touch support, callout layers, trend lines and markers with full styling capability.  The included Microsoft Excel library has read / write XLS & XLSX file capability, support for more than 300 Excel formulas and reporting with charting & sparklines.
@@ -19,7 +17,7 @@ Current list of controls include:
 |[Excel Library](https://www.infragistics.com/products/ignite-ui-react/react/components/excel_library.html)|Use the Excel Library to work with spreadsheet data using Microsoft Excel features. Easily transfer data from excel to your application. |igniteui-react-excel igniteui-react-core|
 |[Bullet Graph](https://www.infragistics.com/products/ignite-ui-react/react/components/bulletgraph.html)|Create data presentations using the bullet graph component to display ranges or compare multiple measurements. View our data visualization tools.|igniteui-react-gauges igniteui-react-core|
 |[Linear Gauge](https://www.infragistics.com/products/ignite-ui-react/react/components/lineargauge.html)|Use the linear gauge component to visualize data with a simple and concise view. Learn about the configurable elements, dependencies and code snippets.|igniteui-react-gauges igniteui-react-core|
-|[Radial Gauge](https://www.infragistics.com/products/ignite-ui-react/react/components/piechart.html)|Create a colorful radial gauge to display a number of visual elements, such as needle, tick marks and ranges. View our data visualization tools.|igniteui-react-gauges igniteui-react-core|
+|[Radial Gauge](https://www.infragistics.com/products/ignite-ui-react/react/components/radialgauge.html)|Create a colorful radial gauge to display a number of visual elements, such as needle, tick marks and ranges. View our data visualization tools.|igniteui-react-gauges igniteui-react-core|
 
 
 # Create New App
@@ -72,7 +70,7 @@ Or
 
 This will automatically install packages for $ProductName$, along with all of their dependencies, font imports and styles references to the existing project.
 
-### Importing Modules
+# Importing Modules
 
 First we have to import the required modules of the components we want to use. We will go ahead and do this for the [**Catgeory Chart**](https://www.infragistics.com/products/ignite-ui-react/react/components/categorychart.html) component.
 
@@ -81,7 +79,7 @@ import { IgrCategoryChartModule } from "igniteui-react-charts/ES5/igr-category-c
 IgrCategoryChartMapModule.register();
 ```
 
-### Using Components
+# Using Components
 
 We are now ready to use the `CategoryChart` component in our markup! Let's go ahead and define it:
 
@@ -99,7 +97,7 @@ render() {
 }
 ```
 
-### Running Application
+# Running Application
 
 Finally, we can run our new application by using one of the following commands:
 
