@@ -52,23 +52,23 @@ Lastly, you can build for production or start your application with these comman
 After executing those simple commands, your new project will be built and served. It will automatically open in your default browser and you will be able to use Ignite UI for React components in your project.
 
 # Update Existing App
-What if you want to use $ProductName$ in an existing $PlatformShort$ CLI project (one that you have from before)? We have you covered! All you have to do is execute these commands:
+What if you want to use React in an existing React CLI project (one that you have from before)? We have you covered! All you have to do is execute these commands:
 
-- **npm install --save {ChartsPackageName} {CorePackageName}**
-- **npm install --save {ExcelPackageName} {CorePackageName}**
-- **npm install --save {GaugesPackageName} {CorePackageName}**
-- **npm install --save {GridPackageName} {CorePackageName}**
-- **npm install --save {MapsPackageName} {CorePackageName}**
+  - **npm install --save igniteui-react-charts igniteui-react-core**
+  - **npm install --save igniteui-react-excel igniteui-react-core**
+  - **npm install --save igniteui-react-gauges igniteui-react-core**
+  - **npm install --save igniteui-react-grids igniteui-react-core**
+  - **npm install --save igniteui-react-maps igniteui-react-core**
 
 Or
 
-- **yarn add {ChartsPackageName} {CorePackageName}**
-- **yarn add {ExcelPackageName} {CorePackageName}**
-- **yarn add {GaugesPackageName} {CorePackageName}**
-- **yarn add {GridPackageName} {CorePackageName}**
-- **yarn add {MapsPackageName} {CorePackageName}**
+  - **yarn add igniteui-react-charts igniteui-react-core**
+  - **yarn add igniteui-react-excel igniteui-react-core**
+  - **yarn add igniteui-react-gauges igniteui-react-core**
+  - **yarn add igniteui-react-grids igniteui-react-core**
+  - **yarn add igniteui-react-maps igniteui-react-core**
 
-This will automatically install packages for $ProductName$, along with all of their dependencies, font imports and styles references to the existing project.
+This will automatically install packages for React, along with all of their dependencies, font imports and styles references to the existing project.
 
 # Importing Modules
 
