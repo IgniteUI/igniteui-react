@@ -128,7 +128,7 @@ render() {
              <IgrCategoryChart dataSource={this.state.data}
                    width="700px"
                    height="500px">
-              </IgrCategoryChart>
+             </IgrCategoryChart>
         </div>
     );
 }
