@@ -8,7 +8,7 @@
 
 ## Going down the road
 
-1. IgrDataGrid - Declarative Filtering [#48](https://github.com/IgniteUI/igniteui-react/issues/48)
+1. Data Analysis Tool for IgrDataGrid [#48](https://github.com/IgniteUI/igniteui-react/issues/48)
 
 # Previous Milestone
 
