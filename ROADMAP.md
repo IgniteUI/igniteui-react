@@ -17,12 +17,12 @@
 
 ## Milestone 4, version [18.6](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1860-march-2024) Released Mar 27th, 2024
 
-1.**[DONE]** New Hierarchical Grid component
-2.**[DONE]** New Radial Gauge 
-3.**[DONE]** New Linear Gauge 
-4.**[DONE]** New Bullet Graph Gauge
-5.**[DONE]** New Text Area component
-6.**[DONE]** New Button Group component
+1. **[DONE]** New Hierarchical Grid component
+2. **[DONE]** New Radial Gauge 
+3. **[DONE]** New Linear Gauge 
+4. **[DONE]** New Bullet Graph Gauge
+5. **[DONE]** New Text Area component
+6. **[DONE]** New Button Group component
 
 ## Milestone 3, version [18.5](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1850-january-2024) Released Jan 3rd, 2024
 
