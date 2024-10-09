@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "declaration": true,
+    "jsx": "react-jsx",
+
+    "useDefineForClassFields": false,
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "emitDeclarationOnly": true,
+    // "noEmit": true,
+
+    "types": ["@vitest/browser/providers/playwright"],
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}
