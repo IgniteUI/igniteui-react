@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Ephemeral sources
+src/components/*
+src/dock-manager/*
+
 # Editor directories and files
 !.vscode/*
 .idea

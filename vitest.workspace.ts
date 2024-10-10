@@ -7,11 +7,18 @@ export default defineWorkspace([
       include: ['react/jsx-dev-runtime'],
     },
     test: {
+      deps: {
+        optimizer: {
+          web: {
+            enabled: true,
+          },
+        },
+      },
       browser: {
         enabled: true,
         name: 'chromium',
         provider: 'playwright',
-        headless: true,
+        headless: false,
         viewport: { height: 1000, width: 1000 },
         // https://playwright.dev
         providerOptions: {},

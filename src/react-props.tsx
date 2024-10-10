@@ -381,9 +381,9 @@
 //   });
 // };
 
+//@ts-nocheck
 import { type EventName, type Options, createComponent as _createComponent } from '@lit/react';
 import { html } from 'lit';
-//@ts-nocheck
 import type React from 'react';
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';

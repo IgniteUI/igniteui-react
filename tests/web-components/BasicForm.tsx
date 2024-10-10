@@ -3,8 +3,8 @@ import {
   IgcButtonComponent as Button,
   IgcCheckboxComponent as Checkbox,
   IgcInputComponent as Input,
-} from '../src/components';
-import '../node_modules/igniteui-webcomponents/themes/light/bootstrap.css';
+} from '../../src/components';
+import '../../node_modules/igniteui-webcomponents/themes/light/bootstrap.css';
 
 export default function BasicForm() {
   return (
