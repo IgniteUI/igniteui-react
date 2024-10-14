@@ -16,7 +16,7 @@ const config = {
   path: '../src/components',
   imports: {
     default: 'igniteui-webcomponents',
-    types: 'igniteui-webcomponents/types',
+    types: 'igniteui-webcomponents',
   },
   ignoreEvents: new Set(['igc-step']),
   ignore: new Set([
