@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { type Options, format } from 'prettier';
 import { rimraf } from 'rimraf';
 
@@ -48,7 +49,7 @@ type WebComponentsConfig = typeof config;
 
 async function wrapWebComponents(config: WebComponentsConfig) {
   const buffer: string[] = [];
-  const root = new URL(config.path, import.meta.url).pathname;
+  const root = fileURLToPath(new URL(config.path, import.meta.url));
 
   function createImports(
     { name, events, tagName }: CustomElementWithPath,

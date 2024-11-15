@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { type Options, format } from 'prettier';
 import { rimraf } from 'rimraf';
 import manifest from '../node_modules/igniteui-dockmanager/custom-elements.json';
@@ -33,7 +34,7 @@ for (const { name } of dockManager.events!) {
   }
 }
 
-const root = new URL('../src/dock-manager', import.meta.url).pathname;
+const root = fileURLToPath(new URL('../src/dock-manager', import.meta.url));
 await rimraf(root);
 await mkdir(root, { recursive: true });
 
