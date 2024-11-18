@@ -5,7 +5,7 @@ import {
   IgcSplitPaneOrientation,
 } from 'igniteui-dockmanager';
 import React, { useEffect, useRef } from 'react';
-import DockManager from '../../src/dock-manager';
+import { IgrDockManager } from '../../src/dock-manager';
 
 export default function BasicDockManager() {
   const layout: IgcDockManagerLayout = {
@@ -144,7 +144,7 @@ export default function BasicDockManager() {
   const logEvent = (e: Event) => console.log(e);
 
   return (
-    <DockManager ref={ref} layout={layout} activePaneChanged={logEvent} paneDragStart={logEvent}>
+    <IgrDockManager ref={ref} layout={layout} activePaneChanged={logEvent} paneDragStart={logEvent}>
       <div slot="content1" className="dockManagerContent">
         Content 1
       </div>
@@ -181,6 +181,6 @@ export default function BasicDockManager() {
       <div slot="content12" className="dockManagerContent">
         Content 12
       </div>
-    </DockManager>
+    </IgrDockManager>
   );
 }

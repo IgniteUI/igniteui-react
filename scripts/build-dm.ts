@@ -5,7 +5,7 @@ import { type Options, format } from 'prettier';
 import { rimraf } from 'rimraf';
 import manifest from '../node_modules/igniteui-dockmanager/custom-elements.json';
 import type { Package } from './schema';
-import { parseElementsJSON } from './utils';
+import { parseElementsJSON, toReactName } from './utils';
 
 const prettierConfig: Options = {
   parser: 'babel-ts',
@@ -38,16 +38,17 @@ const root = fileURLToPath(new URL('../src/dock-manager', import.meta.url));
 await rimraf(root);
 await mkdir(root, { recursive: true });
 
+const name = toReactName(dockManager.name);
 buffer.push(`
-const ReactComponent = createComponent({
+export const ${name} = createComponent({
   tagName: '${dockManager.tagName}',
-  displayName: '${dockManager.name}',
+  displayName: '${name}',
   elementClass: Component,
   react: React,
   events: {${events.join(',\n')}}
 });
 
-export default ReactComponent;
+export type ${name} = Component;
 `);
 
 await writeFile(join(root, 'index.ts'), await format(buffer.join('\n'), prettierConfig), 'utf8');

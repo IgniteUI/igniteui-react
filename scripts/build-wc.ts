@@ -118,7 +118,7 @@ async function wrapWebComponents(config: WebComponentsConfig) {
       .map(async (declaration) => {
         const { filePath, importPath } = getPaths(declaration);
 
-        buffer.push(`export { default as ${declaration.name} } from '${importPath}'`);
+        buffer.push(`export * from '${importPath}'`);
         const fileContent = await format(
           createFileContent(declaration, createEvents, createImports, createTemplates, config),
           prettierConfig,

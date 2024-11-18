@@ -29,6 +29,10 @@ export function indent(string: string) {
   return string.replace(/^(.*)/, '* $1');
 }
 
+export function toReactName(string: string) {
+  return string.replace(/^Igc/, 'Igr').replace(/Component$/, '');
+}
+
 /**
  * Parses a custom-elements.json file and returns all custom elements from it
  */
@@ -131,19 +135,20 @@ export function createFileContent<T>(
   templateRenderer: ImportRendererParams<T>,
   config: T,
 ) {
+  const name = toReactName(declaration.name);
   return `
     ${importRenderer(declaration, config)}
 
     ${createJSDoc(declaration)}
-    const ReactComponent = createComponent({
+    export const ${name} = createComponent({
       tagName: '${declaration.tagName}',
-      displayName: '${declaration.name}',
+      displayName: '${name}',
       elementClass: Component,
       react: React,
       ${eventRenderer(declaration, config)}
       ${templateRenderer(declaration, config)}
     });
 
-    export default ReactComponent;
+    export type ${name} = Component;
   `;
 }
