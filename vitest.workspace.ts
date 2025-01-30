@@ -16,12 +16,15 @@ export default defineWorkspace([
       },
       browser: {
         enabled: true,
-        name: 'chromium',
         provider: 'playwright',
         headless: false,
         viewport: { height: 1000, width: 1000 },
-        // https://playwright.dev
-        providerOptions: {},
+        instances: [
+          {
+            browser: 'chromium',
+            // https://vitest.dev/guide/browser/playwright.html#configuring-playwright
+          },
+        ],
       },
     },
   },
