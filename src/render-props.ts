@@ -5,6 +5,7 @@ import {
   type DirectiveParameters,
   directive,
 } from 'lit/async-directive.js';
+import { equal } from './equal.js';
 import { SlotRequest, _removeEvent } from './render-event.js';
 
 type NgState<T> = T & { $implicit: unknown };
@@ -12,14 +13,6 @@ type RendererState<T> = {
   previous: T;
   current: T;
 };
-
-function compare(a: unknown, b: unknown) {
-  if (a instanceof Date && b instanceof Date) {
-    return a.valueOf() === b.valueOf();
-  }
-
-  return a === b;
-}
 
 class RequestRenderer<T> extends AsyncDirective {
   private readonly _key = crypto.randomUUID();
@@ -42,7 +35,7 @@ class RequestRenderer<T> extends AsyncDirective {
   }
 
   private _shouldUpdateNG(data: NgState<T>): boolean {
-    if (compare(data.$implicit, this._state.previous)) {
+    if (equal(data.$implicit, this._state.previous)) {
       return false;
     }
 
@@ -57,7 +50,7 @@ class RequestRenderer<T> extends AsyncDirective {
       return this._shouldUpdateNG(data as NgState<T>);
     }
 
-    if (compare(this._state.previous, data)) {
+    if (equal(this._state.previous, data)) {
       return false;
     }
 
