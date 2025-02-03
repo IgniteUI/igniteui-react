@@ -469,6 +469,22 @@ export const createComponent = <I extends HTMLElement, E extends EventNames = {}
     const outProps: Record<string, unknown> = {};
     const portals: Record<string, (e: E) => unknown> = {};
 
+    const slotRequestHandler = React.useCallback(
+      (event: SlotRequest) => {
+        if (event.data === _removeEvent) {
+          renderers.delete(event.slotName);
+        } else {
+          renderers.set(
+            event.slotName,
+            createPortal(portals[event.name]?.(event.data), event.node, event.slotName),
+          );
+        }
+
+        setRenderers(() => new Map(renderers));
+      },
+      [portals, renderers],
+    );
+
     for (const key of listeners.current.keys()) {
       if (props[key] === undefined) {
         listeners.current.delete(key);
@@ -493,23 +509,10 @@ export const createComponent = <I extends HTMLElement, E extends EventNames = {}
     }
 
     if (listeners.current.size) {
-      outProps.onSlotRequest = (event: SlotRequest) => {
-        if (event.data === _removeEvent) {
-          renderers.delete(event.slotName);
-        } else {
-          renderers.set(
-            event.slotName,
-            createPortal(portals[event.name]?.(event.data), event.node, event.slotName),
-          );
-        }
-
-        setRenderers(() => new Map(renderers));
-      };
-
-      outProps.children = [
-        ...React.Children.toArray(props.children as ReactNode[]),
-        ...renderers.values(),
-      ];
+      Object.assign(outProps, {
+        onSlotRequest: slotRequestHandler,
+        children: [...React.Children.toArray(props.children), ...renderers.values()],
+      });
     }
 
     return React.createElement(component, {
