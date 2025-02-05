@@ -14,19 +14,19 @@
   },
   "dependencies": {
     "@lit/react": "^1.0.7",
-    "igniteui-dockmanager": "^1.15.2",
+    "igniteui-dockmanager": "^1.16.0",
     "igniteui-webcomponents": "5.1.2",
     "lit": "^3.2.1"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@types/node": "^22.10.10",
+    "@types/node": "^22.13.1",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/browser": "^3.0.4",
+    "@vitest/browser": "^3.0.5",
     "lefthook": "^1.10.10",
-    "playwright": "^1.50.0",
+    "playwright": "^1.50.1",
     "prettier": "^3.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -34,7 +34,7 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "vite": "^6.0.11",
-    "vitest": "^3.0.4",
+    "vitest": "^3.0.5",
     "vitest-browser-react": "^0.0.4"
   }
 }
