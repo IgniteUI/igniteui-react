@@ -11,6 +11,7 @@
     "build-dm": "tsx ./scripts/build-dm.ts",
     "build-grids": "tsx ./scripts/build-grids.ts",
     "test:browser": "vitest --workspace=vitest.workspace.ts",
+    "test:ci": "vitest --workspace=vitest.workspace.ts --run",
     "prepare": "lefthook install"
   },
   "dependencies": {

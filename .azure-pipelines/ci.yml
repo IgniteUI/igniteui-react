@@ -1,0 +1,37 @@
+# CI pipeline is triggered by branch policy
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/azure-repos-git?view=azure-devops&tabs=yaml#pr-triggers
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+parameters:
+- name: verbose
+  displayName: 'Get verbose output from steps - where configurable'
+  type: boolean
+  default: false
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    verbose: ${{ parameters.verbose }}
+
+- task: Npm@1
+  displayName: 'Build'
+  inputs:
+    command: custom
+    verbose: ${{ parameters.verbose }}
+    customCommand: 'run build'
+
+- task: Npm@1
+  displayName: 'Test'
+  inputs:
+    command: custom
+    verbose: ${{ parameters.verbose }}
+    customCommand: 'run test:ci'
