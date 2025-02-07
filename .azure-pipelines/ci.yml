@@ -36,7 +36,7 @@ steps:
     verbose: ${{ parameters.verbose }}
     customCommand: 'run lint'
 
-- script: npx playwright install --only-shell
+- script: npx playwright install chromium-headless-shell
   displayName: 'Install Playwright browsers'
 
 - task: Npm@1
