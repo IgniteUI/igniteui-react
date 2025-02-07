@@ -34,5 +34,16 @@ export default defineConfig({
         },
       ],
     },
+    reporters: process.env.CI
+      ? ['default', ['junit', { suiteName: 'React Wrappers tests' }]]
+      : ['default'],
+    outputFile: {
+      junit: './test-report/junit-report.xml',
+    },
+    coverage: {
+      reporter: ['cobertura', 'html'],
+      include: ['src/**'],
+      exclude: ['src/components/**', 'src/grids/**', 'src/dock-manager/**'],
+    },
   },
 });

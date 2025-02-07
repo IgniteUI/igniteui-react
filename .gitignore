@@ -17,6 +17,10 @@ src/components/*
 src/dock-manager/*
 src/grids/*
 
+# Test results
+coverage
+test-report
+
 # Editor directories and files
 !.vscode/*
 .idea

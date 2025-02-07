@@ -11,7 +11,7 @@
     "build-dm": "tsx ./scripts/build-dm.ts",
     "build-grids": "tsx ./scripts/build-grids.ts",
     "test:browser": "vitest",
-    "test:ci": "vitest --run",
+    "test:ci": "vitest --run --coverage",
     "lint": "biome lint --verbose",
     "prepare": "lefthook install"
   },
@@ -29,6 +29,7 @@
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/browser": "^3.0.5",
+    "@vitest/coverage-v8": "^3.0.5",
     "lefthook": "^1.10.10",
     "playwright": "^1.50.1",
     "prettier": "^3.4.2",

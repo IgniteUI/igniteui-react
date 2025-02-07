@@ -47,3 +47,13 @@ steps:
     customCommand: 'run test:ci'
   env:
       CI: 'true'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: JUnit
+    testResultsFiles: 'test-report/junit-report.xml'
+
+- task: PublishCodeCoverageResults@2
+  inputs: 
+    summaryFileLocation: 'coverage/*coverage.xml'
