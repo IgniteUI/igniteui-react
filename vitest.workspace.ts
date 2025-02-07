@@ -1,3 +1,4 @@
+/// <reference types="@vitest/browser/matchers" />
 import { defineWorkspace } from 'vitest/config';
 
 export default defineWorkspace([

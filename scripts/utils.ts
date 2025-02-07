@@ -1,4 +1,6 @@
 import type {
+  ClassField,
+  ClassMember,
   CustomElementDeclaration,
   Declaration,
   Package,
@@ -21,8 +23,15 @@ function isCustomElement(declaration: Declaration): declaration is CustomElement
   return declaration.kind === 'class' && 'tagName' in declaration;
 }
 
+/**
+ * Returns whether the given declaration member is a field
+ */
+export function isField(member: ClassMember): member is ClassField {
+  return member.kind === 'field';
+}
+
 export function hasEvents(events?: PackageEvent[]): events is PackageEvent[] {
-  return events !== undefined && events.length > 1;
+  return !!events?.filter((x) => x.name).length;
 }
 
 export function indent(string: string) {

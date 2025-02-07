@@ -15,6 +15,7 @@ dist-ssr
 # Ephemeral sources
 src/components/*
 src/dock-manager/*
+src/grids/*
 
 # Editor directories and files
 !.vscode/*

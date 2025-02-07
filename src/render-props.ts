@@ -46,7 +46,7 @@ class RequestRenderer<T> extends AsyncDirective {
   private _shouldUpdate(): boolean {
     const data = this._state.current;
 
-    if (Reflect.has(data as NgState<T>, '$implicit')) {
+    if (Reflect.has(data as NgState<T>, 'implicit')) {
       return this._shouldUpdateNG(data as NgState<T>);
     }
 

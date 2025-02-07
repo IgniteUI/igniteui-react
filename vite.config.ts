@@ -9,6 +9,7 @@ export default defineConfig({
     lib: {
       entry: {
         components: './src/components/index.ts',
+        grids: './src/grids/index.ts',
         'dock-manager': './src/dock-manager/index.ts',
         'template-renderer': './src/react-props.tsx',
       },

@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run build-wc && npm run build-dm && tsc && vite build",
+    "build": "npm run build-wc && npm run build-dm && npm run build-grids && tsc && vite build",
     "preview": "vite preview",
     "build-wc": "tsx ./scripts/build-wc.ts",
     "build-dm": "tsx ./scripts/build-dm.ts",
+    "build-grids": "tsx ./scripts/build-grids.ts",
     "test:browser": "vitest --workspace=vitest.workspace.ts",
     "prepare": "lefthook install"
   },
@@ -16,6 +17,7 @@
     "@lit/react": "^1.0.7",
     "igniteui-dockmanager": "^1.16.0",
     "igniteui-webcomponents": "5.1.2",
+    "igniteui-webcomponents-grids": "^5.2.1-beta.0",
     "lit": "^3.2.1"
   },
   "devDependencies": {
