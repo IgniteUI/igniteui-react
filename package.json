@@ -10,8 +10,8 @@
     "build-wc": "tsx ./scripts/build-wc.ts",
     "build-dm": "tsx ./scripts/build-dm.ts",
     "build-grids": "tsx ./scripts/build-grids.ts",
-    "test:browser": "vitest --workspace=vitest.workspace.ts",
-    "test:ci": "vitest --workspace=vitest.workspace.ts --run",
+    "test:browser": "vitest",
+    "test:ci": "vitest --run",
     "lint": "biome lint --verbose",
     "prepare": "lefthook install"
   },
