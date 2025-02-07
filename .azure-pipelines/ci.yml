@@ -29,9 +29,14 @@ steps:
     verbose: ${{ parameters.verbose }}
     customCommand: 'run build'
 
+- script: npx playwright install --only-shell
+  displayName: 'Install Playwright browsers'
+
 - task: Npm@1
   displayName: 'Test'
   inputs:
     command: custom
     verbose: ${{ parameters.verbose }}
     customCommand: 'run test:ci'
+  env:
+      CI: 'true'
