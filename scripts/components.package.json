@@ -1,0 +1,26 @@
+{
+  "name": "igniteui-react",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Ignite UI React.",
+  "homepage": "https://github.com/IgniteUI/igniteui-react-core",
+  "keywords": ["react", "UI Components", "infragistics", "core", "dashboard", "data visualization"],
+  "license": "Infragistics(R) Ultimate license (http://www.infragistics.com/legal/ultimate/license/)",
+  "dependencies": {
+    "@lit/react": "^1.0.7",
+    "igniteui-dockmanager": "^1.16.0",
+    "igniteui-webcomponents": "5.1.2",
+    "lit": "^3.2.1"
+  },
+  "sideEffects": false,
+  "typings": "components/index.d.ts",
+  "main": "components.js",
+  "module": "components.js",
+  "maintainers": [
+    {
+      "name": "igniteui",
+      "email": "igniteui@infragistics.com"
+    }
+  ],
+  "files": ["**/*", "!grids/**/*", "!grids.*"]
+}

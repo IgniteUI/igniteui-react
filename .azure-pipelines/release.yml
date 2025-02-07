@@ -1,0 +1,140 @@
+trigger:
+  tags:
+    include:
+    - '*'
+
+pool:
+  vmImage: ubuntu-latest
+
+parameters:
+- name: publishToNpm
+  displayName: 'Publish to npm registry?'
+  type: boolean
+  default: true
+
+- name: publishToStagingLicensed
+  displayName: 'Publish to Staging/Internal Licensed Feed (ProGet)?'
+  type: boolean
+  default: true
+
+- name: publishToProdLicensed
+  displayName: 'Publish to Production/External Licensed Feed (ProGet)?'
+  type: boolean 
+  default: false
+
+- name: verbose
+  displayName: 'Get verbose output from steps - where configurable'
+  type: boolean
+  default: false
+
+variables:
+  - name: npmPublishTag
+    ${{ if or(contains(variables['Build.SourceBranchName'], 'rc'), contains(variables['Build.SourceBranchName'], 'alpha'),contains(variables['Build.SourceBranchName'], 'beta')) }}:
+        value: 'next'
+    ${{ else }}:
+        value: 'latest'
+
+jobs:
+- job: Trial
+  condition: ${{ parameters.publishToNpm }}
+  steps:
+    # build: TODO: reuse CI yml?
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '20.x'
+      displayName: 'Install Node.js'
+
+    - task: Npm@1
+      displayName: 'npm install'
+      inputs:
+        verbose: ${{ parameters.verbose }}
+
+    - task: Npm@1
+      displayName: 'Build'
+      inputs:
+        command: custom
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'run build'
+
+    - task: Npm@1
+      displayName: 'Lint'
+      inputs:
+        command: custom
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'run lint'
+
+    - script: npx playwright install chromium-headless-shell
+      displayName: 'Install Playwright browsers'
+
+    - task: Npm@1
+      displayName: 'Test'
+      inputs:
+        command: custom
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'run test:ci'
+      env:
+          CI: 'true'
+
+    # TODO: needed?
+    - task: PowerShell@2
+      displayName: 'Ensure empty $(Build.SourcesDirectory)\.npmrc file'
+      inputs:
+        targetType: 'inline'
+        script: 'New-Item -Path . -Name ".npmrc" -ItemType "file" -Force'
+        workingDirectory: '$(Build.SourcesDirectory)'
+
+    - task: npmAuthenticate@0
+      displayName: '[npmjs] npm authenticate'
+      inputs:
+        workingFile: '$(Build.SourcesDirectory)\.npmrc'
+        customEndpoint: 'NPMJS.ORG PUBLIC-NetAdvantage'
+
+    # components trial release:
+    - task: PowerShell@2
+      displayName: 'Copy grids package.json'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path "scripts/components.package.json" -Destination "dist/package.json"
+
+    - task: Npm@1
+      displayName: 'npm version for tag $(Build.SourceBranchName)'
+      continueOnError: false
+      inputs:
+        command: custom
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
+
+    - task: Npm@1
+      displayName: '[npmjs] npm publish'
+      continueOnError: true
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        customCommand: 'publish $(npmPublishTag) --dry-run'
+        verbose: ${{ parameters.verbose }}
+
+    # grids trial release:
+    - task: PowerShell@2
+      displayName: 'Copy grids package.json'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path "scripts/grids.package.json" -Destination "dist/package.json"
+
+    - task: Npm@1
+      displayName: 'npm version for tag $(Build.SourceBranchName)'
+      continueOnError: false
+      inputs:
+        command: custom
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
+
+    - task: Npm@1
+      displayName: '[npmjs] npm publish'
+      continueOnError: true
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        customCommand: 'publish $(npmPublishTag) --dry-run'
+        verbose: ${{ parameters.verbose }}
