@@ -10,7 +10,7 @@ export default defineConfig({
       entry: {
         components: './src/components.ts',
         grids: './src/grids/index.ts',
-        // TODO: disable hash entirely to skip entries?
+        // disable hash:
         'template-renderer': './src/react-props.tsx',
       },
       formats: ['es'],
