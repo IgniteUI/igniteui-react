@@ -18,7 +18,6 @@ export default defineWorkspace([
       browser: {
         enabled: true,
         provider: 'playwright',
-        headless: false,
         viewport: { height: 1000, width: 1000 },
         instances: [
           {
