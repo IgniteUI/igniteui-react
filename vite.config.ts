@@ -8,9 +8,9 @@ export default defineConfig({
     target: 'esnext',
     lib: {
       entry: {
-        components: './src/components/index.ts',
+        components: './src/components.ts',
         grids: './src/grids/index.ts',
-        'dock-manager': './src/dock-manager/index.ts',
+        // TODO: disable hash entirely to skip entries?
         'template-renderer': './src/react-props.tsx',
       },
       formats: ['es'],
