@@ -29,6 +29,13 @@ steps:
     verbose: ${{ parameters.verbose }}
     customCommand: 'run build'
 
+- task: Npm@1
+  displayName: 'Lint'
+  inputs:
+    command: custom
+    verbose: ${{ parameters.verbose }}
+    customCommand: 'run lint'
+
 - script: npx playwright install --only-shell
   displayName: 'Install Playwright browsers'
 

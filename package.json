@@ -12,6 +12,7 @@
     "build-grids": "tsx ./scripts/build-grids.ts",
     "test:browser": "vitest --workspace=vitest.workspace.ts",
     "test:ci": "vitest --workspace=vitest.workspace.ts --run",
+    "lint": "biome lint --verbose",
     "prepare": "lefthook install"
   },
   "dependencies": {
