@@ -111,7 +111,7 @@ jobs:
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
-        customCommand: 'publish $(npmPublishTag) --dry-run'
+        customCommand: 'publish --tag $(npmPublishTag) --dry-run'
         verbose: ${{ parameters.verbose }}
 
     # grids trial release:
@@ -136,5 +136,5 @@ jobs:
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
-        customCommand: 'publish $(npmPublishTag) --dry-run'
+        customCommand: 'publish --tag $(npmPublishTag) --dry-run'
         verbose: ${{ parameters.verbose }}
