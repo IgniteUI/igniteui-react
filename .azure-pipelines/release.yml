@@ -50,8 +50,9 @@ jobs:
       displayName: 'Install Node.js'
 
     - task: Npm@1
-      displayName: 'npm install'
+      displayName: 'npm ci'
       inputs:
+        command: 'ci'
         verbose: ${{ parameters.verbose }}
 
     - task: Npm@1
