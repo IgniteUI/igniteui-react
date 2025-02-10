@@ -34,7 +34,7 @@ variables:
     ${{ else }}:
         value: 'latest'
 
-name: $(BuildDefinitionName)-$(Build.SourceBranchName)_$(Date:yyyy-MM-dd).$(Rev:r)
+name: $(BuildDefinitionName)_$(Build.SourceBranchName)_$(Date:yyyy-MM-dd).$(Rev:r)
 
 jobs:
 - job: Trial
