@@ -13,7 +13,7 @@
     "lit": "^3.2.1"
   },
   "sideEffects": false,
-  "typings": "components/index.d.ts",
+  "typings": "components.d.ts",
   "main": "components.js",
   "module": "components.js",
   "maintainers": [
