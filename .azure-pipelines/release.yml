@@ -58,14 +58,14 @@ jobs:
     - task: Npm@1
       displayName: 'Build'
       inputs:
-        command: custom
+        command: 'custom'
         verbose: ${{ parameters.verbose }}
         customCommand: 'run build'
 
     - task: Npm@1
       displayName: 'Lint'
       inputs:
-        command: custom
+        command: 'custom'
         verbose: ${{ parameters.verbose }}
         customCommand: 'run lint'
 
@@ -75,13 +75,13 @@ jobs:
     - task: Npm@1
       displayName: 'Test'
       inputs:
-        command: custom
+        command: 'custom'
         verbose: ${{ parameters.verbose }}
         customCommand: 'run test:ci'
       env:
           CI: 'true'
 
-    # TODO: needed?
+    # npm registry auth:
     - task: PowerShell@2
       displayName: 'Ensure empty $(Build.SourcesDirectory)/.npmrc file'
       inputs:
@@ -106,7 +106,7 @@ jobs:
       displayName: 'npm version for tag $(Build.SourceBranchName)'
       continueOnError: false
       inputs:
-        command: custom
+        command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
         verbose: ${{ parameters.verbose }}
         customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
@@ -131,7 +131,7 @@ jobs:
       displayName: 'npm version for tag $(Build.SourceBranchName)'
       continueOnError: false
       inputs:
-        command: custom
+        command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
         verbose: ${{ parameters.verbose }}
         customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
