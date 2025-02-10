@@ -77,7 +77,7 @@ jobs:
 
     # TODO: needed?
     - task: PowerShell@2
-      displayName: 'Ensure empty $(Build.SourcesDirectory)\.npmrc file'
+      displayName: 'Ensure empty $(Build.SourcesDirectory)/.npmrc file'
       inputs:
         targetType: 'inline'
         script: 'New-Item -Path . -Name ".npmrc" -ItemType "file" -Force'
@@ -86,7 +86,7 @@ jobs:
     - task: npmAuthenticate@0
       displayName: '[npmjs] npm authenticate'
       inputs:
-        workingFile: '$(Build.SourcesDirectory)\.npmrc'
+        workingFile: '$(Build.SourcesDirectory)/.npmrc'
         customEndpoint: 'NPMJS.ORG PUBLIC-NetAdvantage'
 
     # components trial release:
