@@ -17,6 +17,15 @@
 
     "types": ["@vitest/browser/providers/playwright"],
 
+    "paths": {
+      "@infragistics/igniteui-dockmanager": ["./node_modules/igniteui-dockmanager"],
+      "@infragistics/igniteui-dockmanager/*": ["./node_modules/igniteui-dockmanager/*"],
+      "@infragistics/igniteui-webcomponents-grids": ["./node_modules/igniteui-webcomponents-grids"],
+      "@infragistics/igniteui-webcomponents-grids/*": [
+        "./node_modules/igniteui-webcomponents-grids/*"
+      ]
+    },
+
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
