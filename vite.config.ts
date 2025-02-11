@@ -43,7 +43,7 @@ export default defineConfig({
     coverage: {
       reporter: ['cobertura', 'html'],
       include: ['src/**'],
-      exclude: ['src/components/**', 'src/grids/**', 'src/dock-manager/**'],
+      exclude: ['src/components/**', 'src/grids/**', 'src/dock-manager/**', 'src/vite-env.d.ts'],
     },
   },
 });
