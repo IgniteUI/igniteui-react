@@ -5,7 +5,7 @@ import {
   IgcSplitPaneOrientation,
 } from 'igniteui-dockmanager';
 import React, { useEffect, useRef } from 'react';
-import { IgrDockManager } from '../../src/dock-manager';
+import { IgrDockManager } from '../../src/components';
 
 export default function BasicDockManager() {
   const layout: IgcDockManagerLayout = {

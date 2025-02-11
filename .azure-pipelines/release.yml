@@ -1,0 +1,103 @@
+trigger:
+  tags:
+    include:
+    - '*'
+
+pool:
+  vmImage: ubuntu-latest
+
+parameters:
+- name: publishToNpm
+  displayName: 'Publish to npm registry?'
+  type: boolean
+  default: true
+
+- name: publishToProdLicensed
+  displayName: 'Publish to Production/External Licensed Feed (ProGet)?'
+  type: boolean 
+  default: false
+
+- name: verbose
+  displayName: 'Get verbose output from steps - where configurable'
+  type: boolean
+  default: false
+
+variables:
+  - name: npmPublishTag
+    ${{ if or(contains(variables['Build.SourceBranchName'], 'rc'), contains(variables['Build.SourceBranchName'], 'alpha'),contains(variables['Build.SourceBranchName'], 'beta')) }}:
+        value: 'next'
+    ${{ else }}:
+        value: 'latest'
+
+name: $(BuildDefinitionName)_$(Build.SourceBranchName)_$(Date:yyyy-MM-dd).$(Rev:r)
+
+jobs:
+- job: Trial
+  condition: ${{ parameters.publishToNpm }}
+  steps:
+    # build:
+    - template: setup-build-test-steps.yml
+
+    # npm registry auth:
+    - task: PowerShell@2
+      displayName: 'Ensure empty $(Build.SourcesDirectory)/.npmrc file'
+      inputs:
+        targetType: 'inline'
+        script: 'New-Item -Path . -Name ".npmrc" -ItemType "file" -Force'
+        workingDirectory: '$(Build.SourcesDirectory)'
+
+    - task: npmAuthenticate@0
+      displayName: '[npmjs] npm authenticate'
+      inputs:
+        workingFile: '$(Build.SourcesDirectory)/.npmrc'
+        customEndpoint: 'NPMJS.ORG PUBLIC-NetAdvantage'
+
+    # components trial release:
+    - task: PowerShell@2
+      displayName: 'Copy components package.json'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path "scripts/components.package.json" -Destination "dist/package.json"
+
+    - task: Npm@1
+      displayName: 'npm version for tag $(Build.SourceBranchName)'
+      continueOnError: false
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
+
+    - task: Npm@1
+      displayName: '[npmjs] npm publish'
+      continueOnError: true
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        customCommand: 'publish --tag $(npmPublishTag)'
+        verbose: ${{ parameters.verbose }}
+
+    # grids trial release:
+    - task: PowerShell@2
+      displayName: 'Copy grids package.json'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path "scripts/grids.package.json" -Destination "dist/package.json"
+
+    - task: Npm@1
+      displayName: 'npm version for tag $(Build.SourceBranchName)'
+      continueOnError: false
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
+
+    - task: Npm@1
+      displayName: '[npmjs] npm publish'
+      continueOnError: true
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        customCommand: 'publish --tag $(npmPublishTag)'
+        verbose: ${{ parameters.verbose }}
