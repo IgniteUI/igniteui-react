@@ -13,7 +13,7 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 --- | --- | --- | --- | --- |
 Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
-## [React Grid](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/grids)
+## [React Grid](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/data-grid)
 
 The Ignite UI for React Data Grid is both lightweight and developed to handle high data volumes. The React Grid offers powerful data visualization capabilities and superior performance on any device. With interactive features that users expect. Fast rendering. Unbeatable interactions. And the best possible user experience that you wouldn’t otherwise be able to achieve with so little code on your own.
 
