@@ -20,7 +20,7 @@ parameters:
 - name: verbose
   displayName: 'Get verbose output from steps - where configurable'
   type: boolean
-  default: true
+  default: false
 
 variables:
   - name: npmPublishTag
