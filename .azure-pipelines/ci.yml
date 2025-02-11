@@ -13,6 +13,8 @@ parameters:
 
 steps:
 - template: setup-build-test-steps.yml
+  parameters:
+    verbose: ${{ parameters.verbose }}
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()

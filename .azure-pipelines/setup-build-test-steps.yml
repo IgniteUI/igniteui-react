@@ -1,3 +1,11 @@
+parameters:
+- name: licensed
+  type: boolean
+  default: false
+- name: verbose
+  type: boolean
+  default: false
+
 steps:
 - checkout: 'self'
   clean: true
@@ -21,6 +29,10 @@ steps:
     command: 'custom'
     verbose: ${{ parameters.verbose }}
     customCommand: 'run build'
+  env:
+    ${{ if eq(parameters.licensed, true) }}: # only set if param is true
+      IG_LICENSED_BUILD:  ${{ parameters.licensed }}
+
 
 - task: Npm@1
   displayName: 'Lint'

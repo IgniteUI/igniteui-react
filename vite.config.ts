@@ -16,7 +16,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: [/^react/, /^lit|^@lit/, /^@floating-ui/, /^igniteui/],
+      external: [/^react/, /^lit|^@lit/, /^@floating-ui/, /^igniteui/, /^@infragistics\/igniteui/],
     },
   },
   optimizeDeps: {

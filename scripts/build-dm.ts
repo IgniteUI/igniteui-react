@@ -17,12 +17,12 @@ import {
 import manifest from '../node_modules/igniteui-dockmanager/custom-elements.json';
 import pkg from '../node_modules/igniteui-dockmanager/package.json';
 
+const pkgScope = process.env.IG_LICENSED_BUILD ? '@infragistics/' : '';
 const config = {
   path: '../src/dock-manager',
   imports: {
-    // TODO: @infragistics scope packages? Read/resolve from CEM path?
-    default: 'igniteui-dockmanager',
-    types: 'igniteui-dockmanager',
+    default: `${pkgScope}igniteui-dockmanager`,
+    types: `${pkgScope}igniteui-dockmanager`,
   },
   types: {
     entry: join('node_modules/igniteui-dockmanager', getPackageJsonTypesEntry(pkg)),
