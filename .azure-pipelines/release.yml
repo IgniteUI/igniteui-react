@@ -46,6 +46,15 @@ jobs:
         script: 'New-Item -Path . -Name ".npmrc" -ItemType "file" -Force'
         workingDirectory: '$(Build.SourcesDirectory)'
 
+    - task: Npm@1
+      displayName: '[npmjs] Register in .npmrc'
+      condition: ${{ parameters.publishToNpm }}
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)'
+        customCommand: 'config -L project set registry=https://registry.npmjs.org/'
+        verbose: ${{ parameters.verbose }}
+
     - task: npmAuthenticate@0
       displayName: '[npmjs] npm authenticate'
       inputs:
@@ -74,7 +83,7 @@ jobs:
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
-        customCommand: 'publish --tag $(npmPublishTag)'
+        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
         verbose: ${{ parameters.verbose }}
 
     # grids trial release:
@@ -99,5 +108,5 @@ jobs:
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
-        customCommand: 'publish --tag $(npmPublishTag)'
+        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
         verbose: ${{ parameters.verbose }}
