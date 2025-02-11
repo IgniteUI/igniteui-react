@@ -4,13 +4,13 @@ import { type CustomElementWithPath, wrapWebComponents } from './utils';
 import manifest from '../node_modules/igniteui-webcomponents-grids/custom-elements.json';
 
 const TEMPLATE_TYPE = 'IgcRenderFunction';
+const pkgScope = process.env.IG_LICENSED_BUILD ? '@infragistics/' : '';
 const config = {
   path: '../src/grids',
   imports: {
-    // TODO: @infragistics scope packages? Read/resolve from CEM path?
-    // use direct /grids/index.js until package is updated; CRA/Webpack can't resolve (possibly ESM mode)
-    default: 'igniteui-webcomponents-grids/grids/index.js',
-    types: 'igniteui-webcomponents-grids/grids/index.js',
+    // TODO: use direct /grids/index.js until package is updated; CRA/Webpack can't resolve (possibly ESM mode)
+    default: `${pkgScope}igniteui-webcomponents-grids/grids/index.js`,
+    types: `${pkgScope}igniteui-webcomponents-grids/grids/index.js`,
   },
   types: {
     // `/grids` entry not in package.json & not exported from main.d.ts (which also includes DataGrid)
