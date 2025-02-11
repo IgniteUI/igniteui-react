@@ -145,6 +145,12 @@ export function createFileContent<T>(
   config: T,
 ) {
   const name = toReactName(declaration.name);
+
+  // TODO: Conditional? Not all components had modules exposed, but CEM doesn't have that meta
+  const moduleBackfill = `
+    /** @deprecated Module register is no longer needed and can be removed */
+    export const ${name}Module = Component;`;
+
   return `
     ${importRenderer(declaration, config)}
 
@@ -159,5 +165,6 @@ export function createFileContent<T>(
     });
 
     export type ${name} = Component;
+    ${moduleBackfill}
   `;
 }

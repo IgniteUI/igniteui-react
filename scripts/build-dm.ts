@@ -49,6 +49,9 @@ export const ${name} = createComponent({
 });
 
 export type ${name} = Component;
+
+/** @deprecated Module register is no longer needed and can be removed */
+export const IgrDockManagerModule = { register: () => {} };
 `);
 
 await writeFile(join(root, 'index.ts'), await format(buffer.join('\n'), prettierConfig), 'utf8');
