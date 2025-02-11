@@ -40,48 +40,8 @@ jobs:
 - job: Trial
   condition: ${{ parameters.publishToNpm }}
   steps:
-    # build: TODO: reuse CI yml?
-    - checkout: 'self'
-      clean: true
-      fetchTags: false
-      fetchDepth: 1
-
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '20.x'
-      displayName: 'Install Node.js'
-
-    - task: Npm@1
-      displayName: 'npm ci'
-      inputs:
-        command: 'ci'
-        verbose: ${{ parameters.verbose }}
-
-    - task: Npm@1
-      displayName: 'Build'
-      inputs:
-        command: 'custom'
-        verbose: ${{ parameters.verbose }}
-        customCommand: 'run build'
-
-    - task: Npm@1
-      displayName: 'Lint'
-      inputs:
-        command: 'custom'
-        verbose: ${{ parameters.verbose }}
-        customCommand: 'run lint'
-
-    - script: npx playwright install chromium-headless-shell
-      displayName: 'Install Playwright browsers'
-
-    - task: Npm@1
-      displayName: 'Test'
-      inputs:
-        command: 'custom'
-        verbose: ${{ parameters.verbose }}
-        customCommand: 'run test:ci'
-      env:
-          CI: 'true'
+    # build:
+    - template: setup-build-test-steps.yml
 
     # npm registry auth:
     - task: PowerShell@2
