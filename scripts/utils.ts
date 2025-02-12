@@ -1,3 +1,8 @@
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { type Options, format } from 'prettier';
+import { rimraf } from 'rimraf';
 import type {
   ClassField,
   ClassMember,
@@ -103,10 +108,24 @@ export function createJSDoc({
   return `/**\n${buffer.join('\n')}\n*/`;
 }
 
-export function createEvents({ events, name: component }: CustomElementWithPath) {
+export type WebComponentsConfig = {
+  readonly path: string;
+  readonly imports: {
+    readonly default: string;
+    readonly types: string;
+  };
+  readonly ignoreEvents: Set<string>;
+  readonly ignore: Set<string>;
+  readonly templatesFilter: (prop: ClassField, declaration: CustomElementWithPath) => boolean;
+};
+
+export function createEvents(
+  { events, name: component, tagName }: CustomElementWithPath,
+  config: WebComponentsConfig,
+) {
   const buffer: string[] = [];
 
-  if (hasEvents(events)) {
+  if (hasEvents(events) && !config.ignoreEvents.has(tagName!)) {
     for (const { name } of events) {
       if (name) {
         buffer.push(`${name}: '${name}' as EventName<${component}EventMap['${name}']>`);
@@ -117,16 +136,19 @@ export function createEvents({ events, name: component }: CustomElementWithPath)
   return buffer.length ? `events: {${buffer.join(',\n')}},` : '';
 }
 
-export function createImports({ name, events }: CustomElementWithPath, packageName: string) {
+export function createImports(
+  { name, events, tagName }: CustomElementWithPath,
+  config: WebComponentsConfig,
+) {
   const buffer: string[] = [
     "import * as React from 'react'",
-    `import { ${name} as Component } from '${packageName}'`,
+    `import { ${name} as Component } from '${config.imports.default}'`,
   ];
 
-  hasEvents(events)
+  hasEvents(events) && !config.ignoreEvents.has(tagName!)
     ? buffer.push(
         ...[
-          `import type { ${name}EventMap } from '${packageName}/types'`,
+          `import type { ${name}EventMap } from '${config.imports.types}'`,
           "import { type EventName, createComponent} from '../react-props.js'",
         ],
       )
@@ -167,4 +189,62 @@ export function createFileContent<T>(
     export type ${name} = Component;
     ${moduleBackfill}
   `;
+}
+
+/** Format source with prettier */
+export function formatSource(source: string) {
+  const prettierConfig: Options = {
+    parser: 'babel-ts',
+    singleQuote: true,
+    tabWidth: 2,
+  };
+  return format(source, prettierConfig);
+}
+
+/** Main entry point generating wrapped component files from config */
+export async function wrapWebComponents(manifest: Package, config: WebComponentsConfig) {
+  const buffer: string[] = [];
+  const root = fileURLToPath(new URL(config.path, import.meta.url));
+
+  function createTemplates(declaration: CustomElementWithPath, config: WebComponentsConfig) {
+    const buffer: string[] = [];
+    const templateProps =
+      declaration.members?.filter((x) => isField(x) && config.templatesFilter(x, declaration)) ||
+      [];
+
+    for (const prop of templateProps) {
+      buffer.push(`${prop.name}: '${prop.name}'`);
+    }
+
+    return buffer.length ? `renderProps: {${buffer.join(',\n')}}` : '';
+  }
+
+  function getPaths(declaration: CustomElementWithPath) {
+    const fileName = declaration.tagName?.replace(/^igc-/, '');
+    return {
+      filePath: join(root, `${fileName}.ts`),
+      importPath: `./${fileName}.js`,
+    };
+  }
+
+  await rimraf(root);
+  await mkdir(root, { recursive: true });
+
+  const files = await Promise.all(
+    parseElementsJSON(manifest)
+      .filter((declaration) => !config.ignore.has(declaration.tagName || ''))
+      .map(async (declaration) => {
+        const { filePath, importPath } = getPaths(declaration);
+
+        buffer.push(`export * from '${importPath}'`);
+        const fileContent = await formatSource(
+          createFileContent(declaration, createEvents, createImports, createTemplates, config),
+        );
+
+        return { filePath, fileContent };
+      }),
+  );
+
+  await Promise.all(files.map(async (data) => writeFile(data.filePath, data.fileContent, 'utf8')));
+  await writeFile(join(root, 'index.ts'), await formatSource(buffer.join('\n')), 'utf8');
 }
