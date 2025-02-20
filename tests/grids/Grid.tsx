@@ -45,10 +45,14 @@ export default function Grid() {
     console.log(args);
   }
 
-  // TODO: Igr- & old format poly
+  // TODO: Igr- poly
   // const columnBodyTemplate = (ctx: { dataContext: IgrCellTemplateContext }) => {
   const columnBodyTemplate = (ctx: IgcCellTemplateContext) => {
     return <span>PK: {ctx.cell.value}</span>;
+  };
+
+  const columnBodyTemplateOld = (ctx: { dataContext: IgcCellTemplateContext }) => {
+    return <b>{ctx.dataContext.implicit} Doe</b>;
   };
 
   return (
@@ -69,7 +73,7 @@ export default function Grid() {
           </IgrGridToolbarActions>
         </IgrGridToolbar>
         <IgrColumn field="id" dataType="number" bodyTemplate={columnBodyTemplate}></IgrColumn>
-        <IgrColumn field="name" dataType="string"></IgrColumn>
+        <IgrColumn field="name" dataType="string" bodyTemplate={columnBodyTemplateOld}></IgrColumn>
         <IgrColumn field="age" dataType="number"></IgrColumn>
         <IgrColumn field="email" dataType="string"></IgrColumn>
         <IgrPaginator perPage={5} pagingDone={logEvent}></IgrPaginator>

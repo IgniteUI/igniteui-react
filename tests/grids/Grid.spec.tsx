@@ -10,6 +10,9 @@ test('Default grid sample', async () => {
   // templated cell
   await expect.element(getByRole('gridcell', { name: 'PK: 1' })).toBeVisible();
 
+  // second template
+  await expect.element(getByRole('gridcell', { name: 'Alice Doe' })).toBeVisible();
+
   // conditional element
   await getByRole('button', { name: 'Toggle toolbar advanced filter' }).click();
   await expect.element(getByRole('button', { name: 'Advanced filtering' })).toBeVisible();
