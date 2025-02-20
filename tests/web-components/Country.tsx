@@ -65,7 +65,7 @@ export default function CountryCombo() {
       name="office"
       label="Office location"
       data={Cities}
-      itemTemplate={CountryComboItem as any}
+      itemTemplate={CountryComboItem}
       singleSelect={true}
       valueKey={'id'}
       displayKey={'name'}

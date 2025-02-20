@@ -3,7 +3,6 @@
 import { type EventName, type Options, createComponent as _createComponent } from '@lit/react';
 import { html } from 'lit';
 import type React from 'react';
-import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { type SlotRequest, _removeEvent } from './render-event.js';
 import { requestRenderer } from './render-props.js';
@@ -28,8 +27,7 @@ type EventListeners<R extends EventNames> = {
 type ElementProps<I> = Partial<Omit<I, keyof HTMLElement>>;
 
 // Acceptable props to the React component.
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-type ComponentProps<I, E extends EventNames = {}> = Omit<
+type ComponentProps<I, E extends EventNames> = Omit<
   React.HTMLAttributes<I>,
   // Prefer type of provided event handler props or those on element over
   // built-in HTMLAttributes
@@ -38,32 +36,46 @@ type ComponentProps<I, E extends EventNames = {}> = Omit<
   EventListeners<E> &
   ElementProps<I>;
 
+/** Mapped type to update the render props callback return type */
+type WithJsxRenderProps<T, R extends Renderers> = {
+  [K in keyof T]: K extends keyof R
+    ? NonNullable<T[K]> extends (...args: any[]) => any
+      ? (...args: Parameters<T[K]>) => React.JSX.Element
+      : T[K]
+    : T[K];
+};
+
 export type ReactWebComponent<
   I extends HTMLElement,
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  E extends EventNames = {},
+  E extends EventNames,
+  R extends Renderers,
 > = React.ForwardRefExoticComponent<
   // TODO(augustjk): Remove and use `React.PropsWithoutRef` when
   // https://github.com/preactjs/preact/issues/4124 is fixed.
-  PropsWithoutRef<ComponentProps<I, E>> & React.RefAttributes<I>
+  PropsWithoutRef<WithJsxRenderProps<ComponentProps<I, E>, R>> & React.RefAttributes<I>
 >;
 
 type Renderers = Record<string, string>;
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-interface WrapperOptions<I extends HTMLElement, E extends EventNames = {}> extends Options<I, E> {
-  renderProps?: Renderers;
+interface WrapperOptions<I extends HTMLElement, E extends EventNames, R extends Renderers>
+  extends Options<I, E> {
+  renderProps?: R;
 }
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
-export const createComponent = <I extends HTMLElement, E extends EventNames = {}>({
+export const createComponent = <
+  I extends HTMLElement,
+  // biome-ignore lint/complexity/noBannedTypes: <explanation>
+  E extends EventNames = {},
+  // biome-ignore lint/complexity/noBannedTypes: <explanation>
+  R extends Renderers = {},
+>({
   react: React,
   tagName,
   elementClass,
   events,
   displayName,
   renderProps,
-}: WrapperOptions<I, E>): ReactWebComponent<I, E> => {
+}: WrapperOptions<I, E, R>): ReactWebComponent<I, E, R> => {
   // Register our components
   if ('register' in elementClass) {
     (elementClass as { register: () => void }).register();
