@@ -57,7 +57,7 @@ export default function Grid() {
         data={data}
         primaryKey="id"
         className="ig-typography"
-        columnPinned={logEvent}
+        onColumnPinned={logEvent}
         rowEditable={true}
       >
         <IgrGridToolbar>
@@ -72,7 +72,7 @@ export default function Grid() {
         <IgrColumn field="name" dataType="string"></IgrColumn>
         <IgrColumn field="age" dataType="number"></IgrColumn>
         <IgrColumn field="email" dataType="string"></IgrColumn>
-        <IgrPaginator perPage={5} pagingDone={logEvent}></IgrPaginator>
+        <IgrPaginator perPage={5} onPagingDone={logEvent}></IgrPaginator>
         <IgrActionStrip>
           <IgrGridEditingActions></IgrGridEditingActions>
           <IgrGridPinningActions></IgrGridPinningActions>

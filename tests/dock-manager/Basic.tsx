@@ -144,7 +144,12 @@ export default function BasicDockManager() {
   const logEvent = (e: Event) => console.log(e);
 
   return (
-    <IgrDockManager ref={ref} layout={layout} activePaneChanged={logEvent} paneDragStart={logEvent}>
+    <IgrDockManager
+      ref={ref}
+      layout={layout}
+      onActivePaneChanged={logEvent}
+      onPaneDragStart={logEvent}
+    >
       <div slot="content1" className="dockManagerContent">
         Content 1
       </div>
