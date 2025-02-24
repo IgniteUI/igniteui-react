@@ -83,7 +83,7 @@ jobs:
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
-        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
+        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc --dry-run'
         verbose: ${{ parameters.verbose }}
 
     # grids trial release:
@@ -92,6 +92,12 @@ jobs:
       inputs:
         targetType: inline
         script: Copy-Item -Path "scripts/grids.package.json" -Destination "dist/package.json"
+
+    - task: CopyFiles@2
+      displayName: 'Copy Grid themes to dist/grids'
+      inputs:
+        Contents: node_modules/igniteui-webcomponents-grids/grids/themes/**
+        TargetFolder: 'dist/grids'
 
     - task: Npm@1
       displayName: 'npm version for tag $(Build.SourceBranchName)'
@@ -108,5 +114,5 @@ jobs:
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
-        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
+        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc  --dry-run'
         verbose: ${{ parameters.verbose }}
