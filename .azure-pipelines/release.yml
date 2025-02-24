@@ -96,7 +96,8 @@ jobs:
     - task: CopyFiles@2
       displayName: 'Copy Grid themes to dist/grids'
       inputs:
-        Contents: node_modules/igniteui-webcomponents-grids/grids/themes/**
+        SourceFolder: 'node_modules/igniteui-webcomponents-grids/grids'
+        Contents: 'themes/**'
         TargetFolder: 'dist/grids'
 
     - task: Npm@1
