@@ -47,6 +47,11 @@ export function toReactName(string: string) {
   return string.replace(/^Igc/, 'Igr').replace(/Component$/, '');
 }
 
+export function toReactEventName(string: string) {
+  const name = string.replace(/^igc/, '');
+  return `on${name.at(0)?.toLocaleUpperCase()}${name.slice(1)}`;
+}
+
 /**
  * Parses a custom-elements.json file and returns all custom elements from it
  */
@@ -128,7 +133,8 @@ export function createEvents(
   if (hasEvents(events) && !config.ignoreEvents.has(tagName!)) {
     for (const { name } of events) {
       if (name) {
-        buffer.push(`${name}: '${name}' as EventName<${component}EventMap['${name}']>`);
+        const reactName = toReactEventName(name);
+        buffer.push(`${reactName}: '${name}' as EventName<${component}EventMap['${name}']>`);
       }
     }
   }

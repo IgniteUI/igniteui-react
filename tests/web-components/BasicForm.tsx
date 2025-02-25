@@ -10,6 +10,8 @@ export default function BasicForm() {
     await select.current?.toggle();
   }
 
+  const logEvent = (e: Event) => console.log(e);
+
   return (
     <form style={{ padding: '1rem' }}>
       <IgrInput name="username" label="Username" required>
@@ -22,7 +24,9 @@ export default function BasicForm() {
 
       <CountriesCombo />
 
-      <IgrCheckbox name="remember">Remember credentials</IgrCheckbox>
+      <IgrCheckbox name="remember" onChange={logEvent}>
+        Remember credentials
+      </IgrCheckbox>
 
       <IgrSelect style={{ marginBlockStart: '2rem' }} ref={select} name="pick" value="two">
         <IgrSelectItem value="one">one</IgrSelectItem>
