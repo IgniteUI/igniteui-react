@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   IgrActionStrip,
   IgrColumn,
@@ -28,27 +28,34 @@ export default function Grid() {
   const [allowPinning, setAllowPinning] = useState<boolean>(true);
   const [allowFilter, setAllowFilter] = useState<boolean>(false);
 
-  const data: Record[] = [
-    { id: 1, name: 'Alice', age: 28, email: 'alice@example.com' },
-    { id: 2, name: 'Bob', age: 34, email: 'bob@example.com' },
-    { id: 3, name: 'Charlie', age: 25, email: 'charlie@example.com' },
-    { id: 4, name: 'David', age: 31, email: 'david@example.com' },
-    { id: 5, name: 'Eve', age: 29, email: 'eve@example.com' },
-    { id: 6, name: 'Frank', age: 37, email: 'frank@example.com' },
-    { id: 7, name: 'Grace', age: 22, email: 'grace@example.com' },
-    { id: 8, name: 'Hank', age: 30, email: 'hank@example.com' },
-    { id: 9, name: 'Ivy', age: 27, email: 'ivy@example.com' },
-    { id: 10, name: 'Jack', age: 33, email: 'jack@example.com' },
-  ];
+  const data: Record[] = useMemo(
+    () => [
+      { id: 1, name: 'Alice', age: 28, email: 'alice@example.com' },
+      { id: 2, name: 'Bob', age: 34, email: 'bob@example.com' },
+      { id: 3, name: 'Charlie', age: 25, email: 'charlie@example.com' },
+      { id: 4, name: 'David', age: 31, email: 'david@example.com' },
+      { id: 5, name: 'Eve', age: 29, email: 'eve@example.com' },
+      { id: 6, name: 'Frank', age: 37, email: 'frank@example.com' },
+      { id: 7, name: 'Grace', age: 22, email: 'grace@example.com' },
+      { id: 8, name: 'Hank', age: 30, email: 'hank@example.com' },
+      { id: 9, name: 'Ivy', age: 27, email: 'ivy@example.com' },
+      { id: 10, name: 'Jack', age: 33, email: 'jack@example.com' },
+    ],
+    [],
+  );
 
   function logEvent(args: any) {
     console.log(args);
   }
 
-  // TODO: Igr- & old format poly
+  // TODO: Igr- poly
   // const columnBodyTemplate = (ctx: { dataContext: IgrCellTemplateContext }) => {
   const columnBodyTemplate = (ctx: IgcCellTemplateContext) => {
     return <span>PK: {ctx.cell.value}</span>;
+  };
+
+  const columnBodyTemplateOld = (ctx: { dataContext: IgcCellTemplateContext }) => {
+    return <b>{ctx.dataContext.implicit} Doe</b>;
   };
 
   return (
@@ -69,7 +76,7 @@ export default function Grid() {
           </IgrGridToolbarActions>
         </IgrGridToolbar>
         <IgrColumn field="id" dataType="number" bodyTemplate={columnBodyTemplate}></IgrColumn>
-        <IgrColumn field="name" dataType="string"></IgrColumn>
+        <IgrColumn field="name" dataType="string" bodyTemplate={columnBodyTemplateOld}></IgrColumn>
         <IgrColumn field="age" dataType="number"></IgrColumn>
         <IgrColumn field="email" dataType="string"></IgrColumn>
         <IgrPaginator perPage={5} onPagingDone={logEvent}></IgrPaginator>

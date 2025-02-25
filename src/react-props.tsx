@@ -4,6 +4,7 @@ import { type EventName, type Options, createComponent as _createComponent } fro
 import { html } from 'lit';
 import type React from 'react';
 import { createPortal } from 'react-dom';
+import type { WithDataContext } from './backfills.js';
 import { type SlotRequest, _removeEvent } from './render-event.js';
 import { requestRenderer } from './render-props.js';
 
@@ -40,7 +41,7 @@ type ComponentProps<I, E extends EventNames> = Omit<
 type WithJsxRenderProps<T, R extends Renderers> = {
   [K in keyof T]: K extends keyof R
     ? NonNullable<T[K]> extends (...args: any[]) => any
-      ? (...args: Parameters<T[K]>) => React.JSX.Element
+      ? (...args: WithDataContext<Parameters<T[K]>>) => React.JSX.Element
       : T[K]
     : T[K];
 };
