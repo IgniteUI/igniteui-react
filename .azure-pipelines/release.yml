@@ -93,6 +93,13 @@ jobs:
         targetType: inline
         script: Copy-Item -Path "scripts/grids.package.json" -Destination "dist/package.json"
 
+    - task: CopyFiles@2
+      displayName: 'Copy Grid themes to dist/grids'
+      inputs:
+        SourceFolder: 'node_modules/igniteui-webcomponents-grids/grids'
+        Contents: 'themes/**'
+        TargetFolder: 'dist/grids'
+
     - task: Npm@1
       displayName: 'npm version for tag $(Build.SourceBranchName)'
       continueOnError: false
