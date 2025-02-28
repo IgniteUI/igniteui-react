@@ -30,6 +30,10 @@ export default function Grid() {
   const [allowPinning, setAllowPinning] = useState<boolean>(true);
   const [allowFilter, setAllowFilter] = useState<boolean>(false);
   const [paging, setPaging] = useState(true);
+  const [columns, setColumns] = useState<Partial<IgrColumn>[]>([
+    { field: 'age', dataType: 'number' },
+    { field: 'email', dataType: 'string' },
+  ]);
 
   const data: Record[] = useMemo(
     () => [
@@ -81,8 +85,9 @@ export default function Grid() {
         </IgrGridToolbar>
         <IgrColumn field="id" dataType="number" bodyTemplate={columnBodyTemplate}></IgrColumn>
         <IgrColumn field="name" dataType="string" bodyTemplate={columnBodyTemplateOld}></IgrColumn>
-        <IgrColumn field="age" dataType="number"></IgrColumn>
-        <IgrColumn field="email" dataType="string"></IgrColumn>
+        {columns.map((col) => (
+          <IgrColumn key={col.field} field={col.field} dataType={col.dataType}></IgrColumn>
+        ))}
         {paging && <IgrPaginator perPage={5} onPagingDone={logEvent}></IgrPaginator>}
         <IgrActionStrip>
           <IgrGridEditingActions></IgrGridEditingActions>
@@ -93,6 +98,9 @@ export default function Grid() {
         Toggle toolbar advanced filter
       </IgrButton>
       <IgrButton onClick={() => setAllowPinning(!allowPinning)}>Toggle toolbar pinning</IgrButton>
+      <IgrButton onClick={() => setColumns([{ field: 'email', dataType: 'string' }])}>
+        Without age column
+      </IgrButton>
     </>
   );
 }

@@ -32,4 +32,9 @@ test('Default grid sample', async () => {
   // TODO: Current limitation can't return element if there's an original immediate sibling due to React using `insertBefore`
   // await getByText('switch paging').click();
   // await expect.element(getByTitle('Next page')).toBeVisible();
+
+  // remove age column
+  await getByRole('button', { name: 'Without age column' }).click();
+  await new Promise((resolve) => setTimeout(resolve, 20 /* Elements schedule delay */));
+  expect(getByRole('columnheader').elements()).toHaveLength(3);
 });
