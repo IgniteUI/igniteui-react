@@ -11,6 +11,8 @@ import type {
   Package,
   Event as PackageEvent,
 } from './schema';
+import type { ExportMeta, PackageJsonTypes } from './types';
+import { getExports } from './typescript-utils';
 
 /**
  * CustomElementDeclaration with a `path` property added for convenience
@@ -50,6 +52,16 @@ export function toReactName(string: string) {
 export function toReactEventName(string: string) {
   const name = string.replace(/^igc/, '');
   return `on${name.at(0)?.toLocaleUpperCase()}${name.slice(1)}`;
+}
+
+/** Gets either the main export entry (`'.'`) or root types/typings path*/
+export function getPackageJsonTypesEntry(pkg: PackageJsonTypes): string {
+  // either main entry or root types
+  const entry = pkg.exports?.['.']?.types || pkg.types || pkg.typings;
+  if (!entry) {
+    throw new Error(`Failed to get types entry from ${pkg.name}'s package.json`);
+  }
+  return entry;
 }
 
 /**
@@ -119,6 +131,10 @@ export type WebComponentsConfig = {
     readonly default: string;
     readonly types: string;
   };
+  readonly types: {
+    readonly entry: string;
+    readonly ignoreExports: Set<string>;
+  };
   readonly ignoreEvents: Set<string>;
   readonly ignore: Set<string>;
   readonly templatesFilter: (prop: ClassField, declaration: CustomElementWithPath) => boolean;
@@ -159,6 +175,69 @@ export function createImports(
         ],
       )
     : buffer.push("import { createComponent } from '../react-props.js'");
+
+  return buffer.join('\n');
+}
+
+export function createTypeExports(
+  pkgExports: ExportMeta[],
+  ignore: string[],
+  config: WebComponentsConfig,
+) {
+  const buffer: string[] = [];
+  const imports: string[] = [];
+  const exports: string[] = [];
+  const direct: string[] = [];
+  const eventArgs: string[] = [];
+  const relevantExports = pkgExports
+    .filter((x) => !x.name.endsWith('EventMap'))
+    .filter((x) => !ignore.includes(x.name));
+
+  function shouldAlias(name: string) {
+    return name.startsWith('Igc');
+  }
+
+  function toAlias(name: string, force = false) {
+    if (shouldAlias(name)) {
+      return name.replace('Igc', 'Igr');
+    }
+    if (force) {
+      return `Igr${name}`;
+    }
+    return name;
+  }
+
+  for (const { name, type } of relevantExports) {
+    // ensure type-only exports to allow esbuild / isolated module-like handling
+    // https://github.com/vitejs/vite/issues/2117
+    const typeKeyword = type === 'type' ? 'type ' : '';
+
+    // Separate event args handling; TODO: mark such types with some meta
+    if (name.endsWith('EventArgs') || (name.endsWith('Args') && !name.endsWith('PipeArgs'))) {
+      const alias = toAlias(name, true);
+      imports.push(`${typeKeyword}${name} as ${alias}Detail`);
+      eventArgs.push(alias);
+      exports.push(`${typeKeyword}${alias}Detail`);
+      continue;
+    }
+
+    if (shouldAlias(name)) {
+      imports.push(`${typeKeyword}${name} as ${toAlias(name)}`);
+      exports.push(typeKeyword + toAlias(name));
+    } else {
+      direct.push(typeKeyword + name);
+    }
+  }
+
+  buffer.push(`import { ${imports.join(',')} } from '${config.imports.types}'`, '');
+
+  for (const arg of eventArgs) {
+    const detail = `${arg}Detail`;
+    buffer.push(`export type ${arg} = CustomEvent<${detail}>;`);
+  }
+
+  buffer.push('', `export { ${exports.join(',')} }`);
+  buffer.push('', `export { ${direct.join(',')} } from '${config.imports.types}'`);
 
   return buffer.join('\n');
 }
@@ -236,20 +315,32 @@ export async function wrapWebComponents(manifest: Package, config: WebComponents
   await rimraf(root);
   await mkdir(root, { recursive: true });
 
-  const files = await Promise.all(
-    parseElementsJSON(manifest)
-      .filter((declaration) => !config.ignore.has(declaration.tagName || ''))
-      .map(async (declaration) => {
-        const { filePath, importPath } = getPaths(declaration);
-
-        buffer.push(`export * from '${importPath}'`);
-        const fileContent = await formatSource(
-          createFileContent(declaration, createEvents, createImports, createTemplates, config),
-        );
-
-        return { filePath, fileContent };
-      }),
+  const components = parseElementsJSON(manifest).filter(
+    (declaration) => !config.ignore.has(declaration.tagName || ''),
   );
+
+  const files = await Promise.all(
+    components.map(async (declaration) => {
+      const { filePath, importPath } = getPaths(declaration);
+
+      buffer.push(`export * from '${importPath}'`);
+      const fileContent = await formatSource(
+        createFileContent(declaration, createEvents, createImports, createTemplates, config),
+      );
+
+      return { filePath, fileContent };
+    }),
+  );
+
+  // types:
+  const pkgExports = await getExports(config.types.entry);
+  const typesContent = createTypeExports(
+    pkgExports,
+    [...components.map((c) => c.name), ...config.types.ignoreExports],
+    config,
+  );
+  await writeFile(join(root, 'types.ts'), await formatSource(typesContent), 'utf8');
+  buffer.push(`export * from './types.js';`);
 
   await Promise.all(files.map(async (data) => writeFile(data.filePath, data.fileContent, 'utf8')));
   await writeFile(join(root, 'index.ts'), await formatSource(buffer.join('\n')), 'utf8');

@@ -11,6 +11,17 @@ const config = {
     default: 'igniteui-webcomponents-grids/grids',
     types: 'igniteui-webcomponents-grids/grids',
   },
+  types: {
+    // `/grids` entry not in package.json & not exported from main.d.ts (which also includes DataGrid)
+    // entry: join('node_modules/igniteui-webcomponents-grids', getPackageJsonTypesEntry(pkg)),
+    entry: 'node_modules/igniteui-webcomponents-grids/grids/index.d.ts',
+    ignoreExports: new Set([
+      'defineComponents',
+      'defineAllComponents',
+      TEMPLATE_TYPE,
+      'TemplateContent',
+    ]),
+  },
   templatesFilter: (prop: ClassField, _declaration: CustomElementWithPath) =>
     !!prop.type?.text.startsWith(TEMPLATE_TYPE),
   ignore: new Set<string>(),
