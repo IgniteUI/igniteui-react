@@ -8,8 +8,9 @@ const config = {
   path: '../src/grids',
   imports: {
     // TODO: @infragistics scope packages? Read/resolve from CEM path?
-    default: 'igniteui-webcomponents-grids/grids',
-    types: 'igniteui-webcomponents-grids/grids',
+    // use direct /grids/index.js until package is updated; CRA/Webpack can't resolve (possibly ESM mode)
+    default: 'igniteui-webcomponents-grids/grids/index.js',
+    types: 'igniteui-webcomponents-grids/grids/index.js',
   },
   types: {
     // `/grids` entry not in package.json & not exported from main.d.ts (which also includes DataGrid)
