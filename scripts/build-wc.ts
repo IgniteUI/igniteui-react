@@ -24,6 +24,7 @@ const config = {
     'igc-years-view',
     'igc-carousel-indicator-container',
     'igc-validator',
+    'igc-resize',
   ]),
   templates: new Map<string, Array<string>>(
     Object.entries({
