@@ -100,6 +100,18 @@ export const createComponent = <
     const outProps: Record<string, unknown> = {};
     const portals: Record<string, (e: E) => unknown> = {};
 
+    // https://react.dev/learn/reusing-logic-with-custom-hooks#keep-your-custom-hooks-focused-on-concrete-high-level-use-cases
+    // https://stackoverflow.com/questions/53464595/how-to-use-componentwillmount-in-react-hooks ?
+    // Empty dependency array so this will only run once after first render.
+    React.useLayoutEffect(() => {
+      console.log('I iz created?', elementRef.current?.parentElement); // save original parent
+      // elementRef.current?.parent;
+      return () => {
+        // cleanup **before** component is removed from the DOM
+        console.log('I iz destroying', elementRef.current); // move back to original parent
+      };
+    }, []);
+
     const slotRequestHandler = React.useCallback(
       (event: SlotRequest) => {
         if (event.data === _removeEvent) {

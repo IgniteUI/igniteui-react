@@ -7,7 +7,7 @@ import Grid from './Grid';
 afterAll(() => vi.restoreAllMocks());
 
 test('Default grid sample', async () => {
-  const { getByRole, getByTitle } = render(<Grid />);
+  const { getByRole, getByTitle, getByText } = render(<Grid />);
 
   // templated cell
   await expect.element(getByRole('gridcell', { name: 'PK: 1' })).toBeVisible();
@@ -18,6 +18,10 @@ test('Default grid sample', async () => {
   // conditional element
   await getByRole('button', { name: 'Toggle toolbar advanced filter' }).click();
   await expect.element(getByRole('button', { name: 'Advanced filtering' })).toBeVisible();
+  // conditional element that moved (Angular template projection)
+  await getByText('switch paging').click();
+  await expect.element(getByTitle('Next page')).not.toBeVisible();
+  await getByText('switch paging').click();
 
   const mockLog = vi.spyOn(console, 'log');
   await getByTitle('Next page').click();
