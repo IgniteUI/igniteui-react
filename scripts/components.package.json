@@ -8,8 +8,8 @@
   "license": "Infragistics(R) Ultimate license (http://www.infragistics.com/legal/ultimate/license/)",
   "dependencies": {
     "@lit/react": "^1.0.7",
-    "igniteui-dockmanager": "^1.16.0",
-    "igniteui-webcomponents": "~5.2.4",
+    "igniteui-dockmanager": "~1.16.0",
+    "igniteui-webcomponents": "~5.3.0",
     "lit": "^3.2.1"
   },
   "sideEffects": false,
