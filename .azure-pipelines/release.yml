@@ -100,6 +100,11 @@ jobs:
         Contents: 'themes/**'
         TargetFolder: 'dist/grids'
 
+    # mild backfill for all the `import 'igniteui-react-grids/grids/combined';` ಠ_ರೃ
+    # TODO: consider a warning to skip usage?
+    - script: echo "export {};" > dist/grids/combined.js
+      displayName: "Dummy combined.js"
+
     - task: Npm@1
       displayName: 'npm version for tag $(Build.SourceBranchName)'
       continueOnError: false
