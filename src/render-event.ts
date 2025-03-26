@@ -11,7 +11,7 @@ export class SlotRequest extends Event {
   constructor(name: string, data: unknown, node: Element, key?: string) {
     super('slot-request', { bubbles: false, composed: false });
     this.name = name;
-    this.data = withDataContext(data);
+    this.data = data === _removeEvent ? data : withDataContext(data);
     this.slotName = key !== undefined ? `${name}${key}` : name;
     this.node = node;
   }
