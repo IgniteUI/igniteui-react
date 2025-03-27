@@ -1,6 +1,6 @@
 export function equal<T>(a: unknown, b: T): boolean {
   // Try the base case and return early
-  if (a === b) return true;
+  if (Object.is(a, b)) return true;
 
   // https://en.meming.world/wiki/File:Ah_Shit,_Here_We_Go_Again.jpg/
   if (isObject(a) && isObject(b)) {
@@ -63,7 +63,7 @@ export function equal<T>(a: unknown, b: T): boolean {
     return true;
   }
 
-  return Number.isNaN(a) && Number.isNaN(b);
+  return false;
 }
 
 function isObject(value: unknown): value is object {
