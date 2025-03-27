@@ -17,6 +17,7 @@ test('Simple form rendering and validation', async () => {
   await expect.element(input).toBeValid();
 
   const mockLog = vi.spyOn(console, 'log');
+
   // getByRole/LabelText don't work w/ Shadow DOM https://github.com/testing-library/dom-testing-library/issues/413?
   await screen.getByText('Remember credentials').click();
   expect(mockLog).toHaveBeenCalledWith(
@@ -24,6 +25,17 @@ test('Simple form rendering and validation', async () => {
       type: 'igcChange',
       detail: {
         checked: true,
+      },
+    }),
+  );
+
+  await screen.getByText('Off', { exact: true }).click();
+  expect(mockLog).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: 'igcChange',
+      detail: {
+        checked: true,
+        value: 'off',
       },
     }),
   );

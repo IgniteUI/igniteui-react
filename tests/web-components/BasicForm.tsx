@@ -1,5 +1,15 @@
 import React, { useRef } from 'react';
-import { IgrButton, IgrCheckbox, IgrInput, IgrSelect, IgrSelectItem } from '../../src/components';
+import {
+  IgrButton,
+  IgrCheckbox,
+  type IgrCheckboxChangeEventArgs,
+  IgrInput,
+  IgrRadio,
+  type IgrRadioChangeEventArgs,
+  IgrRadioGroup,
+  IgrSelect,
+  IgrSelectItem,
+} from '../../src/components';
 import CountriesCombo from './Country';
 import '../../node_modules/igniteui-webcomponents/themes/light/bootstrap.css';
 
@@ -10,7 +20,7 @@ export default function BasicForm() {
     await select.current?.toggle();
   }
 
-  const logEvent = (e: Event) => console.log(e);
+  const logEvent = (e: IgrRadioChangeEventArgs | IgrCheckboxChangeEventArgs) => console.log(e);
 
   return (
     <form style={{ padding: '1rem' }}>
@@ -27,6 +37,11 @@ export default function BasicForm() {
       <IgrCheckbox name="remember" onChange={logEvent}>
         Remember credentials
       </IgrCheckbox>
+
+      <IgrRadioGroup name="radios" onChange={logEvent}>
+        <IgrRadio value="on">On</IgrRadio>
+        <IgrRadio value="off">Off</IgrRadio>
+      </IgrRadioGroup>
 
       <IgrSelect style={{ marginBlockStart: '2rem' }} ref={select} name="pick" value="two">
         <IgrSelectItem value="one">one</IgrSelectItem>

@@ -10,6 +10,34 @@ const config = {
     types: 'igniteui-webcomponents',
   },
   ignoreEvents: new Set(['igc-step']),
+  extraEvents: new Map([
+    [
+      'igc-radio-group',
+      [{ name: 'igcChange', type: { text: '' }, delegateFrom: 'IgcRadioComponent' }],
+    ],
+    [
+      'igc-tile-manager',
+      [
+        { name: 'igcTileFullscreen', type: { text: '' }, delegateFrom: 'IgcTileComponent' },
+        { name: 'igcTileMaximize', type: { text: '' }, delegateFrom: 'IgcTileComponent' },
+        { name: 'igcTileDragStart', type: { text: '' }, delegateFrom: 'IgcTileComponent' },
+        { name: 'igcTileDragEnd', type: { text: '' }, delegateFrom: 'IgcTileComponent' },
+        { name: 'igcTileDragCancel', type: { text: '' }, delegateFrom: 'IgcTileComponent' },
+        { name: 'igcTileResizeStart', type: { text: '' }, delegateFrom: 'IgcTileComponent' },
+        { name: 'igcTileResizeEnd', type: { text: '' }, delegateFrom: 'IgcTileComponent' },
+        { name: 'igcTileResizeCancel', type: { text: '' }, delegateFrom: 'IgcTileComponent' },
+      ],
+    ],
+    [
+      'igc-accordion',
+      [
+        { name: 'igcOpening', type: { text: '' }, delegateFrom: 'IgcExpansionPanelComponent' },
+        { name: 'igcOpened', type: { text: '' }, delegateFrom: 'IgcExpansionPanelComponent' },
+        { name: 'igcClosing', type: { text: '' }, delegateFrom: 'IgcExpansionPanelComponent' },
+        { name: 'igcClosed', type: { text: '' }, delegateFrom: 'IgcExpansionPanelComponent' },
+      ],
+    ],
+  ]),
   ignore: new Set([
     'igc-popover',
     'igc-focus-trap',
