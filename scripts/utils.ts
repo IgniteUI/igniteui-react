@@ -11,7 +11,7 @@ import type {
   Package,
   Event as PackageEvent,
 } from './schema';
-import type { ExportMeta, PackageJsonTypes } from './types';
+import type { ExportMeta, PackageDelegateEvent, PackageJsonTypes } from './types';
 import { getExports } from './typescript-utils';
 
 /**
@@ -19,6 +19,13 @@ import { getExports } from './typescript-utils';
  */
 export interface CustomElementWithPath extends CustomElementDeclaration {
   path: string;
+  /**
+   * @inheritdoc
+   * @remarks
+   * Non-optional override guaranteed by {@link isCustomElement}
+   */
+  tagName: string;
+  events?: PackageDelegateEvent[];
 }
 
 // Helpers
@@ -39,6 +46,10 @@ export function isField(member: ClassMember): member is ClassField {
 
 export function hasEvents(events?: PackageEvent[]): events is PackageEvent[] {
   return !!events?.filter((x) => x.name).length;
+}
+
+export function isNonNullable(x: any): x is NonNullable<typeof x> {
+  return x !== null && x !== undefined;
 }
 
 export function indent(string: string) {
@@ -136,6 +147,7 @@ export type WebComponentsConfig = {
     readonly ignoreExports: Set<string>;
   };
   readonly ignoreEvents: Set<string>;
+  readonly extraEvents?: Map<string, PackageDelegateEvent[]>;
   readonly ignore: Set<string>;
   readonly templatesFilter: (prop: ClassField, declaration: CustomElementWithPath) => boolean;
 };
@@ -146,11 +158,17 @@ export function createEvents(
 ) {
   const buffer: string[] = [];
 
-  if (hasEvents(events) && !config.ignoreEvents.has(tagName!)) {
-    for (const { name } of events) {
+  if (config.extraEvents?.has(tagName)) {
+    events ??= [];
+    events.push(...config.extraEvents.get(tagName)!);
+  }
+
+  if (hasEvents(events) && !config.ignoreEvents.has(tagName)) {
+    for (const { name, delegateFrom } of events) {
       if (name) {
         const reactName = toReactEventName(name);
-        buffer.push(`${reactName}: '${name}' as EventName<${component}EventMap['${name}']>`);
+        const comp = delegateFrom ?? component;
+        buffer.push(`${reactName}: '${name}' as EventName<${comp}EventMap['${name}']>`);
       }
     }
   }
@@ -167,10 +185,25 @@ export function createImports(
     `import { ${name} as Component } from '${config.imports.default}'`,
   ];
 
-  hasEvents(events) && !config.ignoreEvents.has(tagName!)
+  const eventMaps: string[] = [];
+  if (hasEvents(events) && !config.ignoreEvents.has(tagName)) {
+    eventMaps.push(`${name}EventMap`);
+  }
+  if (config.extraEvents?.has(tagName)) {
+    eventMaps?.push(
+      ...new Set(
+        config.extraEvents
+          .get(tagName)!
+          .map((x) => x.delegateFrom?.concat('EventMap'))
+          .filter(isNonNullable),
+      ),
+    );
+  }
+
+  eventMaps.length
     ? buffer.push(
         ...[
-          `import type { ${name}EventMap } from '${config.imports.types}'`,
+          `import type { ${eventMaps.join(', ')} } from '${config.imports.types}'`,
           "import { type EventName, createComponent} from '../react-props.js'",
         ],
       )
@@ -305,7 +338,7 @@ export async function wrapWebComponents(manifest: Package, config: WebComponents
   }
 
   function getPaths(declaration: CustomElementWithPath) {
-    const fileName = declaration.tagName?.replace(/^igc-/, '');
+    const fileName = declaration.tagName.replace(/^igc-/, '');
     return {
       filePath: join(root, `${fileName}.ts`),
       importPath: `./${fileName}.js`,
@@ -316,7 +349,7 @@ export async function wrapWebComponents(manifest: Package, config: WebComponents
   await mkdir(root, { recursive: true });
 
   const components = parseElementsJSON(manifest).filter(
-    (declaration) => !config.ignore.has(declaration.tagName || ''),
+    (declaration) => !config.ignore.has(declaration.tagName),
   );
 
   const files = await Promise.all(

@@ -1,3 +1,7 @@
+import type { Event as PackageEvent } from './schema';
+
+export type PackageDelegateEvent = PackageEvent & { delegateFrom?: string };
+
 export type ExportMeta = { name: string; type: 'js' | 'type' };
 
 /** Very basic typing for package.json just to access types entries */
