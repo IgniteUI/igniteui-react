@@ -9,7 +9,7 @@ export default defineConfig({
     lib: {
       entry: {
         components: './src/components.ts',
-        grids: './src/grids/index.ts',
+        grids: './src/grids.ts',
         // disable hash:
         'template-renderer': './src/react-props.tsx',
       },
