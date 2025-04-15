@@ -373,7 +373,8 @@ export async function wrapWebComponents(manifest: Package, config: WebComponents
     config,
   );
   await writeFile(join(root, 'types.ts'), await formatSource(typesContent), 'utf8');
-  buffer.push(`export type * from './types.js';`);
+  // TODO: split direct exports and export type:
+  buffer.push(`export * from './types.js';`);
 
   await Promise.all(files.map(async (data) => writeFile(data.filePath, data.fileContent, 'utf8')));
   await writeFile(join(root, 'index.ts'), await formatSource(buffer.join('\n')), 'utf8');
