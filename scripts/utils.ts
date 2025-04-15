@@ -246,8 +246,8 @@ export function createTypeExports(
     const typeKeyword = type === 'type' ? 'type ' : '';
 
     // Separate event args handling; TODO: mark such types with some meta
-    if (name.endsWith('EventArgs') || (name.endsWith('Args') && !name.endsWith('PipeArgs'))) {
-      const alias = toAlias(name, true);
+    if (name.endsWith('EventArgs')) {
+      const alias = toAlias(name, false);
       imports.push(`${typeKeyword}${name} as ${alias}Detail`);
       eventArgs.push(alias);
       exports.push(`${typeKeyword}${alias}Detail`);
