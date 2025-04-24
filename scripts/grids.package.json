@@ -17,10 +17,10 @@
   "license": "Infragistics(R) Ultimate license (http://www.infragistics.com/legal/ultimate/license/)",
   "dependencies": {
     "@lit/react": "^1.0.7",
-    "igniteui-webcomponents-grids": "~5.3.0",
+    "igniteui-webcomponents-grids": "~5.4.0",
     "lit": "^3.2.1"
   },
-  "typings": "grids/index.d.ts",
+  "typings": "grids.d.ts",
   "main": "grids.js",
   "module": "grids.js",
   "maintainers": [

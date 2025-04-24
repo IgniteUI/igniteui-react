@@ -1,13 +1,19 @@
+import { join } from 'node:path';
 import type { ClassField, Package } from './schema';
-import { type CustomElementWithPath, wrapWebComponents } from './utils';
+import { type CustomElementWithPath, getPackageJsonTypesEntry, wrapWebComponents } from './utils';
 
 import manifest from '../node_modules/igniteui-webcomponents/custom-elements.json';
+import pkg from '../node_modules/igniteui-webcomponents/package.json';
 
 const config = {
   path: '../src/components',
   imports: {
     default: 'igniteui-webcomponents',
     types: 'igniteui-webcomponents',
+  },
+  types: {
+    entry: join('node_modules/igniteui-webcomponents', getPackageJsonTypesEntry(pkg)),
+    ignoreExports: new Set(['defineComponents', 'defineAllComponents']),
   },
   ignoreEvents: new Set(['igc-step']),
   extraEvents: new Map([

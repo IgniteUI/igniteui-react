@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import {
   IgrActionStrip,
+  type IgrCellTemplateContext,
   IgrColumn,
   IgrGrid,
   IgrGridEditingActions,
@@ -11,10 +12,11 @@ import {
   IgrGridToolbarHiding,
   IgrGridToolbarPinning,
   IgrGridToolbarTitle,
+  type IgrPageEventArgs,
   IgrPaginator,
+  type IgrPinColumnEventArgs,
 } from '../../src/grids';
 import '../../node_modules/igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
-import type { IgcCellTemplateContext } from 'igniteui-webcomponents-grids/grids';
 import { IgrButton } from '../../src/components';
 
 interface Record {
@@ -44,17 +46,15 @@ export default function Grid() {
     [],
   );
 
-  function logEvent(args: any) {
+  function logEvent(args: IgrPageEventArgs | IgrPinColumnEventArgs) {
     console.log(args);
   }
 
-  // TODO: Igr- poly
-  // const columnBodyTemplate = (ctx: { dataContext: IgrCellTemplateContext }) => {
-  const columnBodyTemplate = (ctx: IgcCellTemplateContext) => {
+  const columnBodyTemplate = (ctx: IgrCellTemplateContext) => {
     return <span>PK: {ctx.cell.value}</span>;
   };
 
-  const columnBodyTemplateOld = (ctx: { dataContext: IgcCellTemplateContext }) => {
+  const columnBodyTemplateOld = (ctx: { dataContext: IgrCellTemplateContext }) => {
     return <b>{ctx.dataContext.implicit} Doe</b>;
   };
 

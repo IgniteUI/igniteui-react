@@ -1,6 +1,10 @@
-import { type ComboTemplateProps, registerIconFromText } from 'igniteui-webcomponents';
 import React, { useEffect } from 'react';
-import { IgrCombo, IgrIcon } from '../../src/components';
+import {
+  type ComboTemplateProps,
+  IgrCombo,
+  IgrIcon,
+  registerIconFromText,
+} from '../../src/components';
 
 type City = {
   id: string;

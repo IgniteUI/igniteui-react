@@ -1,29 +1,28 @@
-import {
-  type IgcDockManagerComponent,
-  type IgcDockManagerLayout,
-  IgcDockManagerPaneType,
-  IgcSplitPaneOrientation,
-} from 'igniteui-dockmanager';
 import React, { useEffect, useRef } from 'react';
-import { IgrDockManager } from '../../src/components';
+import {
+  IgrDockManager,
+  type IgrDockManagerLayout,
+  IgrDockManagerPaneType,
+  IgrSplitPaneOrientation,
+} from '../../src/components';
 
 export default function BasicDockManager() {
-  const layout: IgcDockManagerLayout = {
+  const layout: IgrDockManagerLayout = {
     rootPane: {
-      type: IgcDockManagerPaneType.splitPane,
-      orientation: IgcSplitPaneOrientation.horizontal,
+      type: IgrDockManagerPaneType.splitPane,
+      orientation: IgrSplitPaneOrientation.horizontal,
       panes: [
         {
-          type: IgcDockManagerPaneType.splitPane,
-          orientation: IgcSplitPaneOrientation.vertical,
+          type: IgrDockManagerPaneType.splitPane,
+          orientation: IgrSplitPaneOrientation.vertical,
           panes: [
             {
-              type: IgcDockManagerPaneType.contentPane,
+              type: IgrDockManagerPaneType.contentPane,
               contentId: 'content1',
               header: 'Content Pane 1',
             },
             {
-              type: IgcDockManagerPaneType.contentPane,
+              type: IgrDockManagerPaneType.contentPane,
               contentId: 'content2',
               header: 'Unpinned Pane 1',
               isPinned: false,
@@ -31,29 +30,29 @@ export default function BasicDockManager() {
           ],
         },
         {
-          type: IgcDockManagerPaneType.splitPane,
-          orientation: IgcSplitPaneOrientation.vertical,
+          type: IgrDockManagerPaneType.splitPane,
+          orientation: IgrSplitPaneOrientation.vertical,
           size: 200,
           panes: [
             {
-              type: IgcDockManagerPaneType.documentHost,
+              type: IgrDockManagerPaneType.documentHost,
               size: 200,
               rootPane: {
-                type: IgcDockManagerPaneType.splitPane,
-                orientation: IgcSplitPaneOrientation.horizontal,
+                type: IgrDockManagerPaneType.splitPane,
+                orientation: IgrSplitPaneOrientation.horizontal,
                 allowEmpty: true,
                 panes: [
                   {
-                    type: IgcDockManagerPaneType.tabGroupPane,
+                    type: IgrDockManagerPaneType.tabGroupPane,
                     panes: [
                       {
-                        type: IgcDockManagerPaneType.contentPane,
+                        type: IgrDockManagerPaneType.contentPane,
                         header: 'Document 1',
                         contentId: 'content3',
                         documentOnly: true,
                       },
                       {
-                        type: IgcDockManagerPaneType.contentPane,
+                        type: IgrDockManagerPaneType.contentPane,
                         header: 'Document 2',
                         contentId: 'content4',
                         documentOnly: true,
@@ -64,7 +63,7 @@ export default function BasicDockManager() {
               },
             },
             {
-              type: IgcDockManagerPaneType.contentPane,
+              type: IgrDockManagerPaneType.contentPane,
               contentId: 'content5',
               header: 'Unpinned Pane 2',
               isPinned: false,
@@ -72,42 +71,42 @@ export default function BasicDockManager() {
           ],
         },
         {
-          type: IgcDockManagerPaneType.splitPane,
-          orientation: IgcSplitPaneOrientation.vertical,
+          type: IgrDockManagerPaneType.splitPane,
+          orientation: IgrSplitPaneOrientation.vertical,
           panes: [
             {
-              type: IgcDockManagerPaneType.tabGroupPane,
+              type: IgrDockManagerPaneType.tabGroupPane,
               size: 200,
               panes: [
                 {
-                  type: IgcDockManagerPaneType.contentPane,
+                  type: IgrDockManagerPaneType.contentPane,
                   contentId: 'content6',
                   header: 'Tab 1',
                 },
                 {
-                  type: IgcDockManagerPaneType.contentPane,
+                  type: IgrDockManagerPaneType.contentPane,
                   contentId: 'content7',
                   header: 'Tab 2',
                 },
                 {
-                  type: IgcDockManagerPaneType.contentPane,
+                  type: IgrDockManagerPaneType.contentPane,
                   contentId: 'content8',
                   header: 'Tab 3',
                 },
                 {
-                  type: IgcDockManagerPaneType.contentPane,
+                  type: IgrDockManagerPaneType.contentPane,
                   contentId: 'content9',
                   header: 'Tab 4',
                 },
                 {
-                  type: IgcDockManagerPaneType.contentPane,
+                  type: IgrDockManagerPaneType.contentPane,
                   contentId: 'content10',
                   header: 'Tab 5',
                 },
               ],
             },
             {
-              type: IgcDockManagerPaneType.contentPane,
+              type: IgrDockManagerPaneType.contentPane,
               contentId: 'content11',
               header: 'Content Pane 2',
             },
@@ -117,14 +116,14 @@ export default function BasicDockManager() {
     },
     floatingPanes: [
       {
-        type: IgcDockManagerPaneType.splitPane,
-        orientation: IgcSplitPaneOrientation.horizontal,
+        type: IgrDockManagerPaneType.splitPane,
+        orientation: IgrSplitPaneOrientation.horizontal,
         floatingHeight: 150,
         floatingWidth: 250,
         floatingLocation: { x: 300, y: 200 },
         panes: [
           {
-            type: IgcDockManagerPaneType.contentPane,
+            type: IgrDockManagerPaneType.contentPane,
             contentId: 'content12',
             header: 'Floating Pane',
           },
@@ -133,7 +132,7 @@ export default function BasicDockManager() {
     ],
   };
 
-  const ref = useRef<IgcDockManagerComponent>(null);
+  const ref = useRef<IgrDockManager>(null);
 
   useEffect(() => {
     if (ref.current) {
