@@ -15,7 +15,7 @@ parameters:
 - name: publishToProdLicensed
   displayName: 'Publish to Production/External Licensed Feed (ProGet)?'
   type: boolean 
-  default: false
+  default: true
 
 - name: verbose
   displayName: 'Get verbose output from steps - where configurable'
@@ -37,6 +37,8 @@ jobs:
   steps:
     # build:
     - template: setup-build-test-steps.yml
+      parameters:
+        verbose: ${{ parameters.verbose }}
 
     # npm registry auth:
     - task: PowerShell@2
@@ -47,11 +49,11 @@ jobs:
         workingDirectory: '$(Build.SourcesDirectory)'
 
     - task: Npm@1
-      displayName: '[npmjs] Register in .npmrc'
-      condition: ${{ parameters.publishToNpm }}
+      displayName: '[npmjs] Add registry in .npmrc'
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)'
+        # required for npmAuthenticate@0 to work https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/npm-authenticate-v0?view=azure-pipelines#npm-1
         customCommand: 'config -L project set registry=https://registry.npmjs.org/'
         verbose: ${{ parameters.verbose }}
 
@@ -115,6 +117,123 @@ jobs:
 
     - task: Npm@1
       displayName: '[npmjs] npm publish'
+      continueOnError: true
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
+        verbose: ${{ parameters.verbose }}
+
+- job: Licensed
+  condition: ${{ parameters.publishToProdLicensed }}
+  steps:
+    # build:
+    - template: setup-build-test-steps.yml
+      parameters:
+        verbose: ${{ parameters.verbose }}
+        licensed: true
+
+    # licensed registry auth:
+    - task: PowerShell@2
+      displayName: 'Ensure empty $(Build.SourcesDirectory)/.npmrc file'
+      inputs:
+        targetType: 'inline'
+        script: 'New-Item -Path . -Name ".npmrc" -ItemType "file" -Force'
+        workingDirectory: '$(Build.SourcesDirectory)'
+
+    - task: Npm@1
+      displayName: '[IG Packages] Add registry in .npmrc'
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)'
+        # required for npmAuthenticate@0 to work https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/npm-authenticate-v0?view=azure-pipelines#npm-1
+        customCommand: 'config -L project set @infragistics:registry=https://packages.infragistics.com/npm/js-licensed/'
+        verbose: ${{ parameters.verbose }}
+
+    - task: npmAuthenticate@0
+      displayName: '[IG Packages] npm authenticate'
+      inputs:
+        workingFile: '$(Build.SourcesDirectory)/.npmrc'
+        customEndpoint: 'public proget'
+
+    # components licensed release:
+    - task: PowerShell@2
+      displayName: 'Copy components package.json'
+      inputs:
+        targetType: inline
+        script: |
+          $content = Get-Content -Path "scripts/components.package.json"
+          $updatedContent = $content -replace 'igniteui-dockmanager', '@infragistics/igniteui-dockmanager'
+          Set-Content -Path "dist/package.json" -Value $updatedContent
+
+    - task: Npm@1
+      displayName: 'npm version for tag $(Build.SourceBranchName)'
+      continueOnError: false
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
+
+    - task: Npm@1
+      displayName: 'update package name to @infragistics/igniteui-react'
+      continueOnError: false
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'pkg set name="@infragistics/igniteui-react"'
+
+    - task: Npm@1
+      displayName: '[IG Packages] npm publish'
+      continueOnError: true
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
+        verbose: ${{ parameters.verbose }}
+
+    # grids licensed release:
+    - task: PowerShell@2
+      displayName: 'Copy grids package.json'
+      inputs:
+        targetType: inline
+        script: |
+          $content = Get-Content -Path "scripts/grids.package.json"
+          $updatedContent = $content -replace 'igniteui-webcomponents-grids', '@infragistics/igniteui-webcomponents-grids'
+          Set-Content -Path "dist/package.json" -Value $updatedContent
+
+    - task: CopyFiles@2
+      displayName: 'Copy Grid themes to dist/grids'
+      inputs:
+        SourceFolder: 'node_modules/igniteui-webcomponents-grids/grids'
+        Contents: 'themes/**'
+        TargetFolder: 'dist/grids'
+
+    # mild backfill for all the `import 'igniteui-react-grids/grids/combined';` ಠ_ರೃ
+    - script: echo "console.warn(`Importing 'igniteui-react-grids/grids/combined' is not necessary and can be removed.`);export {};" > dist/grids/combined.js
+      displayName: "Dummy combined.js"
+
+    - task: Npm@1
+      displayName: 'npm version for tag $(Build.SourceBranchName)'
+      continueOnError: false
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
+
+    - task: Npm@1
+      displayName: 'update package name to @infragistics/igniteui-react-grids'
+      continueOnError: false
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'pkg set name="@infragistics/igniteui-react-grids"'
+
+    - task: Npm@1
+      displayName: '[IG Packages] npm publish'
       continueOnError: true
       inputs:
         command: 'custom'

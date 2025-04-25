@@ -1,3 +1,4 @@
+import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -16,12 +17,13 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: [/^react/, /^lit|^@lit/, /^@floating-ui/, /^igniteui/],
+      external: [/^react/, /^lit|^@lit/, /^@floating-ui/, /^igniteui/, /^@infragistics\/igniteui/],
     },
   },
   optimizeDeps: {
     include: ['react/jsx-dev-runtime'],
   },
+  plugins: [tsconfigPaths()],
   test: {
     browser: {
       enabled: true,
