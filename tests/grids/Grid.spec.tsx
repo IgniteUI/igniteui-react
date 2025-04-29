@@ -20,7 +20,7 @@ test('Default grid sample', async () => {
   await expect.element(getByRole('button', { name: 'Advanced filtering' })).toBeVisible();
   // conditional element that moved (Angular template projection)
   await getByText('switch paging').click();
-  await expect.element(getByTitle('Next page')).not.toBeVisible();
+  await expect.element(getByTitle('Next page')).not.toBeInTheDocument();
   await getByText('switch paging').click();
 
   const mockLog = vi.spyOn(console, 'log');

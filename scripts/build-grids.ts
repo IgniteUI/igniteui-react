@@ -27,6 +27,7 @@ const config = {
     !!prop.type?.text.startsWith(TEMPLATE_TYPE),
   ignore: new Set<string>(),
   ignoreEvents: new Set<string>(),
+  moveBackOnDelete: true,
 } as const;
 
 await wrapWebComponents(manifest as Package, config);
