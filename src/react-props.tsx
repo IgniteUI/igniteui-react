@@ -98,7 +98,6 @@ export const createComponent = <
   return React.forwardRef<I, Props>((props, ref) => {
     const listeners = React.useRef(new Map<string, unknown>());
     const elementRef = React.useRef<I | null>(null);
-    const parentRef = React.useRef<HTMLElement | null | undefined>(null);
     const [renderers, setRenderers] = React.useState(new Map<string, unknown>());
     const outProps: Record<string, unknown> = {};
     const portals: Record<string, (e: E) => unknown> = {};
@@ -108,11 +107,10 @@ export const createComponent = <
       // https://stackoverflow.com/questions/53464595/how-to-use-componentwillmount-in-react-hooks ?
       // Empty dependency array so this will only run once after first render.
       React.useLayoutEffect(() => {
-        // save original parent, TODO: Already too late
-        parentRef.current = elementRef.current?.parentElement;
+        // already too late to save elementRef.current?.parentElement, rely on Elements
         return () => {
           // cleanup **before** component is removed from the DOM
-          const creationParent = elementRef.current?.ngElementStrategy?._creationParent;
+          const creationParent = elementRef.current?.ngElementStrategy?.parentElement?.deref();
           if (creationParent && creationParent !== elementRef.current.parentElement) {
             // move back to original parent
             creationParent.appendChild(elementRef.current);
