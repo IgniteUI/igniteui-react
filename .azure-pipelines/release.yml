@@ -70,6 +70,18 @@ jobs:
         targetType: inline
         script: Copy-Item -Path "scripts/components.package.json" -Destination "dist/package.json"
 
+    - task: PowerShell@2
+      displayName: 'Copy common license'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE" -Destination "dist/"
+
+    - task: PowerShell@2
+      displayName: 'Copy components README'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/README_Components.md" -Destination "dist/README.md"
+
     - task: Npm@1
       displayName: 'npm version for tag $(Build.SourceBranchName)'
       continueOnError: false
@@ -94,6 +106,12 @@ jobs:
       inputs:
         targetType: inline
         script: Copy-Item -Path "scripts/grids.package.json" -Destination "dist/package.json"
+
+    - task: PowerShell@2
+      displayName: 'Copy grids README'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/README_Grids.md" -Destination "dist/README.md"
 
     - task: CopyFiles@2
       displayName: 'Copy Grid themes to dist/grids'
@@ -166,6 +184,18 @@ jobs:
           $updatedContent = $content -replace 'igniteui-dockmanager', '@infragistics/igniteui-dockmanager'
           Set-Content -Path "dist/package.json" -Value $updatedContent
 
+    - task: PowerShell@2
+      displayName: 'Copy common license'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE" -Destination "dist/"
+
+    - task: PowerShell@2
+      displayName: 'Copy components README'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/README_Components.md" -Destination "dist/README.md"
+
     - task: Npm@1
       displayName: 'npm version for tag $(Build.SourceBranchName)'
       continueOnError: false
@@ -202,6 +232,12 @@ jobs:
           $content = Get-Content -Path "scripts/grids.package.json"
           $updatedContent = $content -replace 'igniteui-webcomponents-grids', '@infragistics/igniteui-webcomponents-grids'
           Set-Content -Path "dist/package.json" -Value $updatedContent
+
+    - task: PowerShell@2
+      displayName: 'Copy grids README'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/README_Grids.md" -Destination "dist/README.md"
 
     - task: CopyFiles@2
       displayName: 'Copy Grid themes to dist/grids'
