@@ -61,6 +61,7 @@ type Renderers = Record<string, string>;
 interface WrapperOptions<I extends HTMLElement, E extends EventNames, R extends Renderers>
   extends Options<I, E> {
   renderProps?: R;
+  moveBackOnDelete?: boolean;
 }
 
 export const createComponent = <
@@ -76,13 +77,14 @@ export const createComponent = <
   events,
   displayName,
   renderProps,
+  moveBackOnDelete,
 }: WrapperOptions<I, E, R>): ReactWebComponent<I, E, R> => {
   // Register our components
   if ('register' in elementClass) {
     (elementClass as { register: () => void }).register();
   }
 
-  if (!renderProps) {
+  if (!renderProps && !moveBackOnDelete) {
     return _createComponent({ react: React, tagName, elementClass, events, displayName });
   }
 
@@ -100,6 +102,23 @@ export const createComponent = <
     const outProps: Record<string, unknown> = {};
     const portals: Record<string, (e: E) => unknown> = {};
 
+    if (moveBackOnDelete) {
+      // https://react.dev/learn/reusing-logic-with-custom-hooks#keep-your-custom-hooks-focused-on-concrete-high-level-use-cases
+      // https://stackoverflow.com/questions/53464595/how-to-use-componentwillmount-in-react-hooks ?
+      // Empty dependency array so this will only run once after first render.
+      React.useLayoutEffect(() => {
+        // already too late to save elementRef.current?.parentElement, rely on Elements
+        return () => {
+          // cleanup **before** component is removed from the DOM
+          const creationParent = elementRef.current?.ngElementStrategy?.parentElement?.deref();
+          if (creationParent && creationParent !== elementRef.current.parentElement) {
+            // move back to original parent
+            creationParent.appendChild(elementRef.current);
+          }
+        };
+      }, []);
+    }
+
     const slotRequestHandler = React.useCallback(
       (event: SlotRequest) => {
         if (event.data === _removeEvent) {
@@ -116,12 +135,15 @@ export const createComponent = <
       [portals, renderers],
     );
 
-    for (const key of listeners.current.keys()) {
-      if (props[key] === undefined) {
-        listeners.current.delete(key);
+    if (renderProps) {
+      for (const key of listeners.current.keys()) {
+        if (props[key] === undefined) {
+          listeners.current.delete(key);
+        }
       }
     }
 
+    renderProps ??= {};
     for (const prop in props) {
       if (renderProps[prop] === undefined) {
         outProps[prop] = props[prop];
@@ -143,6 +165,10 @@ export const createComponent = <
       Object.assign(outProps, {
         onSlotRequest: slotRequestHandler,
         children: [...React.Children.toArray(props.children), ...renderers.values()],
+      });
+    } else {
+      Object.assign(outProps, {
+        children: React.Children.toArray(props.children),
       });
     }
 

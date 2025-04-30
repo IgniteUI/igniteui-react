@@ -17,7 +17,7 @@ import {
   type IgrPinColumnEventArgs,
 } from '../../src/grids';
 import '../../node_modules/igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
-import { IgrButton } from '../../src/components';
+import { IgrButton, IgrSwitch } from '../../src/components';
 
 interface Record {
   id: number;
@@ -29,6 +29,11 @@ interface Record {
 export default function Grid() {
   const [allowPinning, setAllowPinning] = useState<boolean>(true);
   const [allowFilter, setAllowFilter] = useState<boolean>(false);
+  const [paging, setPaging] = useState(true);
+  const [columns, setColumns] = useState<Partial<IgrColumn>[]>([
+    { field: 'age', dataType: 'number' },
+    { field: 'email', dataType: 'string' },
+  ]);
 
   const data: Record[] = useMemo(
     () => [
@@ -69,6 +74,9 @@ export default function Grid() {
       >
         <IgrGridToolbar>
           <IgrGridToolbarTitle>Custom Toolbar</IgrGridToolbarTitle>
+          <IgrSwitch checked={paging} onChange={(e) => setPaging(e.detail.checked)}>
+            switch paging
+          </IgrSwitch>
           <IgrGridToolbarActions>
             <IgrGridToolbarHiding></IgrGridToolbarHiding>
             {allowPinning && <IgrGridToolbarPinning />}
@@ -77,9 +85,10 @@ export default function Grid() {
         </IgrGridToolbar>
         <IgrColumn field="id" dataType="number" bodyTemplate={columnBodyTemplate}></IgrColumn>
         <IgrColumn field="name" dataType="string" bodyTemplate={columnBodyTemplateOld}></IgrColumn>
-        <IgrColumn field="age" dataType="number"></IgrColumn>
-        <IgrColumn field="email" dataType="string"></IgrColumn>
-        <IgrPaginator perPage={5} onPagingDone={logEvent}></IgrPaginator>
+        {columns.map((col) => (
+          <IgrColumn key={col.field} field={col.field} dataType={col.dataType}></IgrColumn>
+        ))}
+        {paging && <IgrPaginator perPage={5} onPagingDone={logEvent}></IgrPaginator>}
         <IgrActionStrip>
           <IgrGridEditingActions></IgrGridEditingActions>
           <IgrGridPinningActions></IgrGridPinningActions>
@@ -89,6 +98,9 @@ export default function Grid() {
         Toggle toolbar advanced filter
       </IgrButton>
       <IgrButton onClick={() => setAllowPinning(!allowPinning)}>Toggle toolbar pinning</IgrButton>
+      <IgrButton onClick={() => setColumns([{ field: 'email', dataType: 'string' }])}>
+        Without age column
+      </IgrButton>
     </>
   );
 }

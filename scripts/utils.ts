@@ -150,6 +150,7 @@ export type WebComponentsConfig = {
   readonly extraEvents?: Map<string, PackageDelegateEvent[]>;
   readonly ignore: Set<string>;
   readonly templatesFilter: (prop: ClassField, declaration: CustomElementWithPath) => boolean;
+  readonly moveBackOnDelete?: boolean;
 };
 
 export function createEvents(
@@ -279,7 +280,7 @@ export function createTypeExports(
 
 type ImportRendererParams<T> = (declaration: CustomElementWithPath, config: T) => string;
 
-export function createFileContent<T>(
+export function createFileContent<T extends WebComponentsConfig>(
   declaration: CustomElementWithPath,
   eventRenderer: ImportRendererParams<T>,
   importRenderer: ImportRendererParams<T>,
@@ -293,6 +294,12 @@ export function createFileContent<T>(
     /** @deprecated Module register is no longer needed and can be removed */
     export const ${name}Module = Component;`;
 
+  const extraProps = [
+    config.moveBackOnDelete ? 'moveBackOnDelete: true,' : '',
+    eventRenderer(declaration, config),
+    templateRenderer(declaration, config),
+  ].filter((x) => x);
+
   return `
     ${importRenderer(declaration, config)}
 
@@ -302,8 +309,7 @@ export function createFileContent<T>(
       displayName: '${name}',
       elementClass: Component,
       react: React,
-      ${eventRenderer(declaration, config)}
-      ${templateRenderer(declaration, config)}
+      ${extraProps.join('\n')}
     });
 
     export type ${name} = Component;
