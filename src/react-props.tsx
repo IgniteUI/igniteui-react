@@ -5,8 +5,7 @@ import { html } from 'lit';
 import type React from 'react';
 import { createPortal } from 'react-dom';
 import type { WithDataContext } from './backfills.js';
-import { type SlotRequest, _removeEvent } from './render-event.js';
-import { requestRenderer } from './render-props.js';
+import { REQUEST_REMOVE, type RendererRequest, requestRenderer } from './render-props.js';
 
 export type { EventName } from '@lit/react';
 
@@ -91,8 +90,6 @@ export const createComponent = <
   type Props = ComponentProps<I, E>;
 
   events ??= {} as E;
-  Object.assign(events, { onSlotRequest: 'slot-request' as EventName<SlotRequest> });
-
   const component = _createComponent({ react: React, tagName, elementClass, events, displayName });
 
   return React.forwardRef<I, Props>((props, ref) => {
@@ -119,21 +116,20 @@ export const createComponent = <
       }, []);
     }
 
-    const slotRequestHandler = React.useCallback(
-      (event: SlotRequest) => {
-        if (event.data === _removeEvent) {
-          renderers.delete(event.slotName);
-        } else {
-          renderers.set(
-            event.slotName,
-            createPortal(portals[event.name]?.(event.data), event.node, event.slotName),
-          );
-        }
+    // Don't wrap in an `useCallback` hook since there is no mechanism in React to dispose of the cached function(s),
+    // potentially leading to a memory leak/higher memory usage for heavily templated component instances.
+    const renderFunc = (req: RendererRequest<unknown>) => {
+      if (req.data === REQUEST_REMOVE) {
+        renderers.delete(req.slotName);
+      } else {
+        renderers.set(
+          req.slotName,
+          createPortal(portals[req.name]?.(req.data), req.node, req.slotName),
+        );
+      }
 
-        setRenderers(() => new Map(renderers));
-      },
-      [portals, renderers],
-    );
+      setRenderers(() => new Map(renderers));
+    };
 
     if (renderProps) {
       for (const key of listeners.current.keys()) {
@@ -145,16 +141,16 @@ export const createComponent = <
 
     renderProps ??= {};
     for (const prop in props) {
-      if (renderProps[prop] === undefined) {
+      const renderProp = renderProps[prop];
+      if (renderProp === undefined) {
         outProps[prop] = props[prop];
       } else {
-        portals[renderProps[prop]] = props[prop];
+        portals[renderProp] = props[prop];
 
         if (elementRef.current && listeners.current.has(prop)) {
           outProps[prop] = listeners.current.get(prop);
         } else {
-          const patched = (ctx: unknown) =>
-            html`${requestRenderer(renderProps[prop], ctx, elementRef.current as Element)}`;
+          const patched = createPatched(renderFunc, renderProp);
           outProps[prop] = patched;
           listeners.current.set(prop, patched);
         }
@@ -163,7 +159,6 @@ export const createComponent = <
 
     if (listeners.current.size) {
       Object.assign(outProps, {
-        onSlotRequest: slotRequestHandler,
         children: [...React.Children.toArray(props.children), ...renderers.values()],
       });
     } else {
@@ -188,3 +183,7 @@ export const createComponent = <
     } as PropsWithoutRef<ComponentProps<I, E>> & React.RefAttributes<I>);
   });
 };
+
+function createPatched(callback: any, propertyName: string) {
+  return (ctx: unknown) => html`${requestRenderer(callback, propertyName, ctx)}`;
+}

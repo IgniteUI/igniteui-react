@@ -5,8 +5,10 @@ import {
   type DirectiveParameters,
   directive,
 } from 'lit/async-directive.js';
+import { withDataContext } from './backfills.js';
 import { equal } from './equal.js';
-import { SlotRequest, _removeEvent } from './render-event.js';
+
+export const REQUEST_REMOVE = Symbol('renderer-remove');
 
 type NgState<T> = T & { $implicit: unknown };
 type RendererState<T> = {
@@ -14,24 +16,39 @@ type RendererState<T> = {
   current: T;
 };
 
+function createRequestData<T>(
+  name: string,
+  data: T | typeof REQUEST_REMOVE,
+  node: Element,
+  key?: string,
+): RendererRequest<T> {
+  return {
+    name,
+    data: data === REQUEST_REMOVE ? data : withDataContext(data),
+    slotName: key !== undefined ? `${name}${key}` : name,
+    node,
+  };
+}
+
+export type RendererRequest<T> = {
+  data: T | typeof REQUEST_REMOVE;
+  name: string;
+  slotName: string;
+  node: Element;
+};
+
+type RendererCallback<T> = (req: RendererRequest<T>) => unknown;
+
 class RequestRenderer<T> extends AsyncDirective {
   private readonly _key = crypto.randomUUID();
-  private _part!: ChildPart;
-  private _state = { current: undefined, previous: undefined } as RendererState<T>;
+  private _part: WeakRef<ChildPart> | null = null;
+  private _callback: RendererCallback<T> | null = null;
+
+  private _state = { previous: undefined, current: undefined } as RendererState<T>;
   private _name!: string;
-  private _host!: Element;
-  private _target?: Element;
 
   private get _renderNode(): Element {
-    return this._part.parentNode as Element;
-  }
-
-  private get _eventTarget(): Element {
-    return this._target ?? this._host;
-  }
-
-  private _emit(data: T | typeof _removeEvent): SlotRequest {
-    return new SlotRequest(this._name, data, this._renderNode, this._key);
+    return this._part?.deref()?.parentNode as Element;
   }
 
   private _shouldUpdateNG(data: NgState<T>): boolean {
@@ -58,25 +75,37 @@ class RequestRenderer<T> extends AsyncDirective {
     return true;
   }
 
-  public override render(_name: string, _data: T, _target?: Element): symbol {
+  public override render(_callback: any, _name: string, _data: T): symbol {
     return noChange;
   }
 
-  public override update(part: ChildPart, [name, data, target]: DirectiveParameters<this>): symbol {
-    this._part = part;
+  public override update(
+    part: ChildPart,
+    [callback, name, data]: DirectiveParameters<this>,
+  ): symbol {
+    this._callback = callback;
     this._name = name;
     this._state.current = data;
-    this._target = target;
-    this._host = part.options?.host as Element;
+    this._part = new WeakRef(part);
 
-    if (this._eventTarget && this._shouldUpdate()) {
-      this._eventTarget.dispatchEvent(this._emit(this._state.current));
+    if (this.isConnected && this._callback && this._shouldUpdate()) {
+      this._callback(
+        createRequestData(this._name, this._state.current, this._renderNode, this._key),
+      );
     }
+
     return noChange;
   }
 
   protected override disconnected(): void {
-    this._eventTarget.dispatchEvent(this._emit(_removeEvent));
+    if (this._callback) {
+      this._callback(
+        createRequestData(this._name, REQUEST_REMOVE as T, this._renderNode, this._key),
+      );
+      this._callback = null;
+      this._part = null;
+      this._state = { previous: undefined, current: undefined } as RendererState<T>;
+    }
   }
 }
 
