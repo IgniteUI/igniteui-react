@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import {
+  GridPagingMode,
   IgrActionStrip,
   type IgrCellTemplateContext,
   IgrColumn,
@@ -34,6 +35,8 @@ export default function Grid() {
     { field: 'age', dataType: 'number' },
     { field: 'email', dataType: 'string' },
   ]);
+
+  const pagingMode: GridPagingMode | undefined = 'local';
 
   const data: Record[] = useMemo(
     () => [
@@ -85,6 +88,7 @@ export default function Grid() {
         className="ig-typography"
         onColumnPinned={logEvent}
         rowEditable={true}
+        pagingMode={pagingMode ?? GridPagingMode.Local}
       >
         <IgrGridToolbar>
           <IgrGridToolbarTitle>Custom Toolbar</IgrGridToolbarTitle>

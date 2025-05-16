@@ -1,4 +1,5 @@
 import type {
+  GridPagingMode as GridPagingModeType,
   IgrColumn,
   IgrDimensionsChange,
   IgrFilteringExpressionsTree,
@@ -32,3 +33,12 @@ export type IgrValuesChangeEventArgs = CustomEvent<IgrValuesChange>;
 
 // shared static event args:
 export type IgrComponentArrayDataValueChangedEventArgs = CustomEvent<any[]>;
+
+export type GridPagingMode = GridPagingModeType;
+/** @deprecated use of properties as enum values. GridPagingMode is now union type so use values directly, e.g. `pagingMode="local"` */
+export const GridPagingMode = {
+  /** @deprecated use GridPagingMode union type values directly, e.g. `pagingMode="local"` */
+  Local: 'local',
+  /** @deprecated use GridPagingMode union type values directly, e.g. `pagingMode="remote"` */
+  Remote: 'remote',
+} as const;
