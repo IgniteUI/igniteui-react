@@ -9,6 +9,7 @@ import { withDataContext } from './backfills.js';
 import { equal } from './equal.js';
 
 export const REQUEST_REMOVE = Symbol('renderer-remove');
+const NOT_SET = Symbol('not-set');
 
 type NgState<T> = T & { $implicit: unknown };
 type RendererState<T> = {
@@ -44,7 +45,7 @@ class RequestRenderer<T> extends AsyncDirective {
   private _part: WeakRef<ChildPart> | null = null;
   private _callback: RendererCallback<T> | null = null;
 
-  private _state = { previous: undefined, current: undefined } as RendererState<T>;
+  private _state = { previous: NOT_SET, current: undefined } as RendererState<T>;
   private _name!: string;
 
   private get _renderNode(): Element {
@@ -104,7 +105,7 @@ class RequestRenderer<T> extends AsyncDirective {
       );
       this._callback = null;
       this._part = null;
-      this._state = { previous: undefined, current: undefined } as RendererState<T>;
+      this._state = { previous: NOT_SET, current: undefined } as RendererState<T>;
     }
   }
 }

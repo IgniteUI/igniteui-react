@@ -15,6 +15,9 @@ test('Default grid sample', async () => {
   // second template
   await expect.element(getByRole('gridcell', { name: 'Alice Doe' })).toBeVisible();
 
+  // no-field template
+  await expect.element(getByRole('button', { name: '📌' }).first()).toBeVisible();
+
   // conditional element
   await getByRole('button', { name: 'Toggle toolbar advanced filter' }).click();
   await expect.element(getByRole('button', { name: 'Advanced filtering' })).toBeVisible();
@@ -36,5 +39,5 @@ test('Default grid sample', async () => {
   // remove age column
   await getByRole('button', { name: 'Without age column' }).click();
   await new Promise((resolve) => setTimeout(resolve, 20 /* Elements schedule delay */));
-  expect(getByRole('columnheader').elements()).toHaveLength(3);
+  expect(getByRole('columnheader').elements()).toHaveLength(4);
 });

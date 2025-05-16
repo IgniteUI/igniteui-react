@@ -55,6 +55,20 @@ export default function Grid() {
     console.log(args);
   }
 
+  const pinTemplate = (ctx: IgrCellTemplateContext) => {
+    const row = ctx.cell.row;
+    return (
+      <button
+        type="button"
+        onClick={(_e) => {
+          row.pinned = !row.pinned;
+        }}
+      >
+        📌
+      </button>
+    );
+  };
+
   const columnBodyTemplate = (ctx: IgrCellTemplateContext) => {
     return <span>PK: {ctx.cell.value}</span>;
   };
@@ -83,6 +97,7 @@ export default function Grid() {
             {allowFilter && <IgrGridToolbarAdvancedFiltering />}
           </IgrGridToolbarActions>
         </IgrGridToolbar>
+        <IgrColumn width="80px" pinned={true} bodyTemplate={pinTemplate}></IgrColumn>
         <IgrColumn field="id" dataType="number" bodyTemplate={columnBodyTemplate}></IgrColumn>
         <IgrColumn field="name" dataType="string" bodyTemplate={columnBodyTemplateOld}></IgrColumn>
         {columns.map((col) => (
