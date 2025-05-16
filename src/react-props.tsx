@@ -95,6 +95,7 @@ export const createComponent = <
   return React.forwardRef<I, Props>((props, ref) => {
     const listeners = React.useRef(new Map<string, unknown>());
     const elementRef = React.useRef<I | null>(null);
+    const projectionParent = React.useRef<WeakRef<HTMLElement> | null>(null);
     const [renderers, setRenderers] = React.useState(new Map<string, unknown>());
     const outProps: Record<string, unknown> = {};
     const portals: Record<string, (e: E) => unknown> = {};
@@ -105,11 +106,18 @@ export const createComponent = <
       // Empty dependency array so this will only run once after first render.
       React.useLayoutEffect(() => {
         // already too late to save elementRef.current?.parentElement, rely on Elements
+        // secondary run (likely dev strict mode), move back to projection:
+        const prevParent = projectionParent.current?.deref();
+        if (prevParent && prevParent !== elementRef.current.parentElement) {
+          prevParent.appendChild(elementRef.current);
+          projectionParent.current = null;
+        }
         return () => {
           // cleanup **before** component is removed from the DOM
           const creationParent = elementRef.current?.ngElementStrategy?.parentElement?.deref();
           if (creationParent && creationParent !== elementRef.current.parentElement) {
             // move back to original parent
+            projectionParent.current = new WeakRef(elementRef.current.parentElement);
             creationParent.appendChild(elementRef.current);
           }
         };

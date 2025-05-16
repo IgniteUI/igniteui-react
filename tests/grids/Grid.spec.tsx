@@ -1,6 +1,7 @@
 import React from 'react';
 import { afterAll, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
+import { configure } from 'vitest-browser-react/pure';
 
 import Grid from './Grid';
 
@@ -40,4 +41,25 @@ test('Default grid sample', async () => {
   await getByRole('button', { name: 'Without age column' }).click();
   await new Promise((resolve) => setTimeout(resolve, 20 /* Elements schedule delay */));
   expect(getByRole('columnheader').elements()).toHaveLength(4);
+});
+
+test('should maintain projected parents in Strict mode', async () => {
+  configure({
+    // disabled by default
+    reactStrictMode: true,
+  });
+  const { getByRole } = render(<Grid />);
+
+  // paginator content
+  await expect.element(getByRole('navigation')).toBeVisible();
+
+  const paginatorContent = getByRole('navigation').query()!;
+  const paginator = paginatorContent.closest('igc-paginator')!;
+  const grid = paginator.closest('igc-grid');
+
+  expect(paginator.parentElement!.classList).toContain('igx-grid__footer');
+  expect(paginator.parentElement).not.toBe(grid);
+  configure({
+    reactStrictMode: false,
+  });
 });
