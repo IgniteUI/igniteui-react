@@ -44,14 +44,78 @@ Keeping in mind the customization and configuration your users expect, the Ignit
 |Layouts|Accordion|   ✅   |[Docs][Accordion Docs]|[18.9]|[igniteui-react]|
 | | Avatar | ✅ | [Docs][Avatar Docs] | 16.11 | [igniteui-react] |
 | | Card | ✅ | [Docs][Card Docs] | 16.11 | [igniteui-react] |
-| | Carousel  | ✅ | [Docs][Carousel Docs] | 16.11 | [igniteui-react] |
+| | Carousel  | ✅ | [Docs][Carousel Docs] | [18.7] | [igniteui-react] |
 | | Dock Manager | ✅ | [Docs][Dock Manager Docs] | 16.11 | [igniteui-dockmanager] |
+| | Expansion Panel | ✅ | [Docs][Expansion Panel Docs] | 16.11 | [igniteui-react] |
+| | Stepper | ✅ | [Docs][Stepper Docs] | 16.11 | [igniteui-react] |
+| | Tabs | ✅ | [Docs][Tabs Docs] | 16.11 | [igniteui-react] |
+|Menus|Toolbar|   ✅   |[Docs][Toolbar Docs]|[18.2]|[igniteui-react-charts]|
+| | Navigation Bar (Navbar) | ✅ | [Docs][Navigation Bar Docs] | 16.11 | [igniteui-react] |
+| | Navigation Drawer | ✅ | [Docs][Navigation Drawer Docs] | 16.11 | [igniteui-react] |
+| Frameworks | Excel Library | ✅ | [Docs][Excel Library Docs] | 16.11 | [igniteui-react-excel]  |
+| Gauges | Bullet Graph | ✅ | [Docs][Bullet Graph Docs] | 16.11 | [igniteui-react-gauges]  |
+| | Linear Gauge | ✅ | [Docs][Linear Gauge Docs] | 16.11 | [igniteui-react-gauges]  |
+| | Radial Gauge | ✅ | [Docs][Radial Gauge Docs] | 16.11 | [igniteui-react-gauges]  |
+| Data Entry & Display | Badge | ✅ | [Docs][Badge Docs] | 16.11 | [igniteui-react] |
+| | Button | ✅ | [Docs][Button Docs] | 16.11 | [igniteui-react] |
+| | Button Group | ✅ | [Docs][Button Group Docs] | 16.11 | [igniteui-react] |
+| | Checkbox | ✅ | [Docs][Checkbox Docs] | 16.11 | [igniteui-react] |
+| | Chip | ✅ | [Docs][Chip Docs] | 16.11 | [igniteui-react] |
+| | Color Editor | ✅ | [Docs][Color Editor] | [18.7] | [igniteui-react-inputs] |
+| | ComboBox | ✅ | [Docs][Combo Docs] | 16.11 | [igniteui-react] |
+| | Dropdown | ✅ | [Docs][Dropdown Docs] | 16.11 | [igniteui-react] |
+| | Icon | ✅ | [Docs][Icon Docs] | 16.11 | [igniteui-react] |
+| | Icon Button | ✅ | [Docs][Icon Button Docs] | 16.11 | [igniteui-react] |
+| | Input | ✅ | [Docs][Input Docs] | 16.11 | [igniteui-react] |
+| | Mask Input | ✅ | [Docs][Masked Input Docs] | 16.11 | [igniteui-react] |
+| | Date Time Input | ✅ | [Docs][Date Time Input Docs] | 16.11 | [igniteui-react] |
+| | Radio & Radio Group | ✅ | [Docs][Radio Docs] | 16.11 | [igniteui-react] |
+| | Select | ✅ | [Docs][Select Docs] | 16.11 | [igniteui-react] |
+| | Rating | ✅ | [Docs][Rating Docs] | 16.11 | [igniteui-react] |
+| | Switch | ✅ | [Docs][Switch Docs] | 16.11 | [igniteui-react] |
+| | Text Area | ✅ | [Docs][Textarea Docs] | 16.11 | [igniteui-react] |
+| Interactions | Ripple | ✅ | [Docs][Ripple Docs] | 16.11 | [igniteui-react] |
+| | Slider & Range Slider | ✅ | [Docs][Slider Docs] | 16.11 | [igniteui-react] |
+| | Zoom Slider | ✅ | [Docs][Zoom Slider Docs] | 16.11 | [igniteui-react-charts] |
+| Notifications | Banner | ✅ | [Docs][Banner Docs] | 16.11 | [igniteui-react] |
+| | Snackbar | ✅ | [Docs][Snackbar Docs] | 16.11 | [igniteui-react] |
+| | Toast | ✅ | [Docs][Toast Docs] | 16.11 | [igniteui-react] |
+| | Dialog | ✅ | [Docs][Dialog Docs] | 16.11 | [igniteui-react] |
+| Scheduling | Calendar | ✅ | [Docs][Calendar Docs] | 16.11 | [igniteui-react]
+| | Date Picker | ✅ | [Docs][Date Picker Docs] | 16.11 | [igniteui-react] | |
 
+### Charts & Maps
 
-
-### Charts
-
-
+|Group| Components        | Status |         Documentation          | Released Version | Package |
+|:----|:----------|:--------|:----|:----|:----:|
+|Charts|Bar Chart|   ✅   |[Docs][Area Chart Docs]|16.11|[igniteui-react-charts]|
+||Bar Chart|   ✅   |[Docs][Bar Chart Docs]|16.11|[igniteui-react-charts]|
+||Bubble Chart|   ✅   |[Docs][Bubble Chart Docs]|16.11|[igniteui-react-charts]|
+||Column Chart|   ✅   |[Docs][Column Chart Docs]|16.11|[igniteui-react-charts]|
+||Composite Chart|   ✅   |[Docs][Composite Chart Docs]|16.11|[igniteui-react-charts]|
+||Data Pie Chart|   ✅   |[Docs][Data Pie Chart Docs]|16.11|[igniteui-react-charts]|
+||Donut Chart|   ✅   |[Docs][Donut Chart Docs]|16.11|[igniteui-react-charts]|
+||Financial/Stock Chart|   ✅   |[Docs][Stock Chart Docs]|16.11|[igniteui-react-charts]|
+||Line Chart|   ✅   |[Docs][Line Chart Docs]|16.11|[igniteui-react-charts]|
+||Pie Chart|   ✅   |[Docs][Pie Chart Docs]|16.11|[igniteui-react-charts]|
+||Point Chart|   ✅   |[Docs][Point Chart Docs]|16.11|[igniteui-react-charts]|
+||Polar Chart|   ✅   |[Docs][Polar Chart Docs]|16.11|[igniteui-react-charts]|
+||Radial Chart|   ✅   |[Docs][Radial Chart Docs]|16.11|[igniteui-react-charts]|
+||Scatter Chart|   ✅   |[Docs][Scatter Chart Docs]|16.11|[igniteui-react-charts]|
+||Shape Chart|   ✅   |[Docs][Shape Chart Docs]|16.11|[igniteui-react-charts]|
+||Spline Chart|   ✅   |[Docs][Spline Chart Docs]|16.11|[igniteui-react-charts]|
+||Sparkline Chart|   ✅   |[Docs][Sparkline Chart Docs]|16.11|[igniteui-react-charts]|
+||Stacked Chart|   ✅   |[Docs][Stacked Chart Docs]|16.11|[igniteui-react-charts]|
+||Step Chart|   ✅   |[Docs][Step Chart Docs]|16.11|[igniteui-react-charts]|
+||Treemap|   ✅   |[Docs][Treemap Docs]|16.11|[igniteui-react-charts]|
+|Maps|Geographic Area Map|   ✅   |[Docs][Geographic Area Map Docs]|16.11|[igniteui-react-maps]
+||Geographic Contour Map|   ✅   |[Docs][Geographic Contour Map Docs]|16.11|[igniteui-react-maps]
+||Geographic High Density Map|   ✅   |[Docs][Geographic High Density Map Docs]|16.11|[igniteui-react-maps]
+||Geographic Bubble Map|   ✅   |[Docs][Geographic Bubble Map Docs]|16.11|[igniteui-react-maps]
+||Geographic Symbol Map|   ✅   |[Docs][Geographic Symbol Map Docs]|16.11|[igniteui-react-maps]
+||Geographic Polygon Map|   ✅   |[Docs][Geographic Polygon Map Docs]|16.11|[igniteui-react-maps]
+||Geographic Polyline Map|   ✅   |[Docs][Geographic Polyline Map Docs]|16.11|[igniteui-react-maps]
+|Dashboards|Dashboard Tile|   ✅   |[Docs][Dashboard Tile Docs]|[18.7]|[igniteui-react-dashboards]
 
 ## Create New App
 
@@ -134,6 +198,9 @@ npm run start
 [igniteui-dockmanager]: https://www.npmjs.com/search?q=igniteui-dockmanager
 [Indigo.Design Design System]: https://www.infragistics.com/products/appbuilder/ui-toolkit
 [Ignite UI for WebComponents Grids]: https://www.npmjs.com/package/igniteui-webcomponents-grids
+[igniteui-react-inputs]: https://www.npmjs.com/package/igniteui-react-inputs
+[igniteui-react-maps]: https://www.npmjs.com/package/igniteui-react-maps
+[igniteui-react-dashboards]: https://www.npmjs.com/package/igniteui-react-dashboards
 [Dock Manager Picture]: https://github.com/IgniteUI/igniteui-webcomponents/assets/52001020/a9643f17-f1c2-4554-87aa-96c9daea13b0
 [VSCode Custom Data Format]: https://github.com/microsoft/vscode-custom-data
 [Web Types]: https://plugins.jetbrains.com/docs/intellij/websymbols-web-types.html
@@ -195,6 +262,42 @@ npm run start
 [Financial/Stock charts]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/stock-chart
 [Donut charts]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/donut-chart 
 [Spreadsheet Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/spreadsheet-overview
+[Dock Manager Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/dock-manager
+[Toolbar Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/menus/toolbar
+[Excel Library Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/excel-library
+[Bullet Graph Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/bullet-graph
+[Linear Gauge Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/linear-gauge
+[Radial Gauge Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/radial-gauge
+[Color Editor]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/color-editor
+[Zoom Slider Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/zoomslider-overview
+[Area Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/area-chart
+[Bar Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/bar-chart
+[Bubble Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/bubble-chart
+[Column Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/column-chart
+[Composite Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/composite-chart
+[Data Pie Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/data-pie-chart
+[Donut Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/donut-chart
+[Stock Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/stock-chart
+[Line Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/line-chart
+[Pie Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/pie-chart
+[Point Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/point-chart
+[Polar Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/polar-chart
+[Radial Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/radial-chart
+[Scatter Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/scatter-chart
+[Shape Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/shape-chart
+[Spline Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/spline-chart
+[Sparkline Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/sparkline-chart
+[Stacked Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/stacked-chart
+[Step Chart Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/step-chart
+[Treemap Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/treemap-chart
+[Geographic Area Map Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/geo-map-type-scatter-area-series
+[Geographic Contour Map Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/geo-map-type-scatter-contour-series
+[Geographic High Density Map Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/geo-map-type-scatter-density-series
+[Geographic Bubble Map Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/geo-map-type-scatter-bubble-series
+[Geographic Symbol Map Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/geo-map-type-scatter-symbol-series
+[Geographic Polygon Map Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/geo-map-type-shape-polygon-series
+[Geographic Polyline Map Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/geo-map-type-shape-polyline-series
+[Dashboard Tile Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/dashboard-tile 
 [igniteui-react-gauges]: https://www.npmjs.com/package/igniteui-react-gauges
 [igniteui-react-charts]: https://www.npmjs.com/package/igniteui-react-chartshttps://www.npmjs.com/package/igniteui-react-charts
 [igniteui-react-excel]: https://www.npmjs.com/package/igniteui-react-excel
