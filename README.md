@@ -1,6 +1,6 @@
 # Ignite UI for React - from Infragistics
 
-[![npm version](https://badge.fury.io/js/igniteui-react-core.svg)](https://badge.fury.io/js/igniteui-react)
+[![npm version](https://badge.fury.io/js/igniteui-react.svg)](https://badge.fury.io/js/igniteui-react)
 [![Discord](https://img.shields.io/discord/836634487483269200?logo=discord&logoColor=ffffff)](https://discord.gg/39MjrTRqds)
 
 [Ignite UI for React](https://www.infragistics.com/products/ignite-ui-react) includes a wide range of easy to use React UI components that have been designed and optimized for high-performance, high-volume data scenarios. It includes a grid, charts, gauges and the Excel library.
