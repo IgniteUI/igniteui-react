@@ -211,7 +211,7 @@ npm run start
 [safari_48x48]: https://user-images.githubusercontent.com/2188411/168109527-6c58f2cf-7386-4b97-98b1-cfe0ab4e8626.png
 [Contribution Guidelines]: https://github.com/IgniteUI/igniteui-react/blob/master/.github/CONTRIBUTING.md
 [Pivot Grid Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/pivot-grid/overview
-[Data Grid Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/grid/overview
+[Data Grid Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/data-grid
 [Tree Grid Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/tree-grid/overview
 [Hierarchical Grid Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/hierarchical-grid/overview
 [Switch Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/switch
