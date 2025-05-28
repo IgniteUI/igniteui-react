@@ -13,7 +13,7 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 | --------------- | ---------------- | ------------- | -------------- | --------------- |
 | Latest ✔️       | Latest ✔️        | Latest ✔️     | Latest ✔️      | Latest ✔️       |
 
-## [React Grid]
+## [Data Grid Docs]
 
 The Ignite UI for React Data Grid is both lightweight and developed to handle high data volumes. The React Grid offers powerful data visualization capabilities and superior performance on any device. With interactive features that users expect. Fast rendering. Unbeatable interactions. And the best possible user experience that you wouldn’t otherwise be able to achieve with so little code on your own.
 
@@ -211,7 +211,7 @@ npm run start
 [safari_48x48]: https://user-images.githubusercontent.com/2188411/168109527-6c58f2cf-7386-4b97-98b1-cfe0ab4e8626.png
 [Contribution Guidelines]: https://github.com/IgniteUI/igniteui-react/blob/master/.github/CONTRIBUTING.md
 [Pivot Grid Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/pivot-grid/overview
-[React Grid]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/data-grid
+[Data Grid Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/data-grid
 [Tree Grid Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/tree-grid/overview
 [Hierarchical Grid Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/hierarchical-grid/overview
 [Switch Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/switch
