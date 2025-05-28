@@ -60,7 +60,7 @@ export default function Grid() {
 
   const pinTemplate = (ctx: IgrCellTemplateContext) => {
     const row = ctx.cell.row;
-    return (
+    return row ? (
       <button
         type="button"
         onClick={(_e) => {
@@ -69,7 +69,7 @@ export default function Grid() {
       >
         📌
       </button>
-    );
+    ) : null;
   };
 
   const columnBodyTemplate = (ctx: IgrCellTemplateContext) => {

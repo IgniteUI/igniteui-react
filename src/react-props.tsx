@@ -40,7 +40,7 @@ type ComponentProps<I, E extends EventNames> = Omit<
 type WithJsxRenderProps<T, R extends Renderers> = {
   [K in keyof T]: K extends keyof R
     ? NonNullable<T[K]> extends (...args: any[]) => any
-      ? (...args: WithDataContext<Parameters<T[K]>>) => React.JSX.Element
+      ? (...args: WithDataContext<Parameters<T[K]>>) => React.ReactNode
       : T[K]
     : T[K];
 };
