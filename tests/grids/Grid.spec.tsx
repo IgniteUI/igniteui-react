@@ -41,6 +41,10 @@ test('Default grid sample', async () => {
   await getByRole('button', { name: 'Without age column' }).click();
   await new Promise((resolve) => setTimeout(resolve, 20 /* Elements schedule delay */));
   expect(getByRole('columnheader').elements()).toHaveLength(4);
+  // add back age column
+  await getByRole('button', { name: 'With age column' }).click();
+  await new Promise((resolve) => setTimeout(resolve, 20 /* Elements schedule delay */));
+  expect(getByRole('columnheader').elements()).toHaveLength(5);
 });
 
 test('should maintain projected parents in Strict mode', async () => {

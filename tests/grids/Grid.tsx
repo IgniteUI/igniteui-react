@@ -120,6 +120,16 @@ export default function Grid() {
       <IgrButton onClick={() => setColumns([{ field: 'email', dataType: 'string' }])}>
         Without age column
       </IgrButton>
+      <IgrButton
+        onClick={() =>
+          setColumns([
+            { field: 'age', dataType: 'number' },
+            { field: 'email', dataType: 'string' },
+          ])
+        }
+      >
+        With age column
+      </IgrButton>
     </>
   );
 }
