@@ -1,5 +1,4 @@
 import { userEvent } from '@vitest/browser/context';
-import React from 'react';
 import { afterAll, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-react';
 

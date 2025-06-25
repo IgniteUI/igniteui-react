@@ -26,8 +26,8 @@ import type {
   ToggleLabelPosition,
 } from './components/index.js';
 import type {
-  IgrDockManagerPaneType,
   IgrDockingIndicatorPosition,
+  IgrDockManagerPaneType,
   IgrPaneActionBehavior,
   IgrPaneDragActionType,
   IgrResizerLocation,

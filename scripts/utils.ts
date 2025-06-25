@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { type Options, format } from 'prettier';
+import { format, type Options } from 'prettier';
 import { rimraf } from 'rimraf';
 import type {
   ClassField,

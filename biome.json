@@ -23,15 +23,13 @@
   },
   "overrides": [
     {
-      "include": ["*.json"],
+      "includes": ["**/*.json"],
       "formatter": {
         "indentWidth": 2
       }
     }
   ],
-  "organizeImports": {
-    "enabled": true
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
@@ -41,7 +39,16 @@
       },
       "style": {
         "noNonNullAssertion": "off",
-        "useSelfClosingElements": "off"
+        "useSelfClosingElements": "off",
+        "noParameterAssign": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "useNumberNamespace": "error",
+        "noInferrableTypes": "error",
+        "noUselessElse": "error"
       },
       "suspicious": {
         "noExplicitAny": "off"

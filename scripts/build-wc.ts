@@ -1,9 +1,8 @@
 import { join } from 'node:path';
-import type { ClassField, Package } from './schema';
-import { type CustomElementWithPath, getPackageJsonTypesEntry, wrapWebComponents } from './utils';
-
 import manifest from '../node_modules/igniteui-webcomponents/custom-elements.json';
 import pkg from '../node_modules/igniteui-webcomponents/package.json';
+import type { ClassField, Package } from './schema';
+import { type CustomElementWithPath, getPackageJsonTypesEntry, wrapWebComponents } from './utils';
 
 const config = {
   path: '../src/components',
@@ -53,6 +52,7 @@ const config = {
     'igc-carousel-indicator-container',
     'igc-validator',
     'igc-resize',
+    'igc-predefined-ranges-area',
   ]),
   templates: new Map<string, Array<string>>(
     Object.entries({

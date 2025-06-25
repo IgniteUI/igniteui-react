@@ -1,6 +1,7 @@
 //@ts-nocheck
+/** biome-ignore-all lint/complexity/noBannedTypes: use `{}` literals */
 
-import { type EventName, type Options, createComponent as _createComponent } from '@lit/react';
+import { createComponent as _createComponent, type EventName, type Options } from '@lit/react';
 import { html } from 'lit';
 import type React from 'react';
 import { createPortal } from 'react-dom';
@@ -65,9 +66,7 @@ interface WrapperOptions<I extends HTMLElement, E extends EventNames, R extends 
 
 export const createComponent = <
   I extends HTMLElement,
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
   E extends EventNames = {},
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
   R extends Renderers = {},
 >({
   react: React,
@@ -104,6 +103,7 @@ export const createComponent = <
       // https://react.dev/learn/reusing-logic-with-custom-hooks#keep-your-custom-hooks-focused-on-concrete-high-level-use-cases
       // https://stackoverflow.com/questions/53464595/how-to-use-componentwillmount-in-react-hooks ?
       // Empty dependency array so this will only run once after first render.
+      // biome-ignore lint/correctness/useHookAtTopLevel: Yeah, it would be good to be at top level and not in a branch
       React.useLayoutEffect(() => {
         // already too late to save elementRef.current?.parentElement, rely on Elements
         // secondary run (likely dev strict mode), move back to projection:

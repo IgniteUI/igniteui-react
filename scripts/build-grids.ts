@@ -1,7 +1,6 @@
+import manifest from '../node_modules/igniteui-webcomponents-grids/custom-elements.json';
 import type { ClassField, Package } from './schema';
 import { type CustomElementWithPath, wrapWebComponents } from './utils';
-
-import manifest from '../node_modules/igniteui-webcomponents-grids/custom-elements.json';
 
 const TEMPLATE_TYPE = 'IgcRenderFunction';
 const pkgScope = process.env.IG_LICENSED_BUILD ? '@infragistics/' : '';

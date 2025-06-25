@@ -68,7 +68,7 @@ export function equal<T>(a: unknown, b: T, visited = new WeakSet()): boolean {
     if (aKeys.length !== bKeys.length) return false;
 
     for (const key of aKeys) {
-      if (!Object.prototype.hasOwnProperty.call(b, key)) return false;
+      if (!Object.hasOwn(b, key)) return false;
     }
 
     for (const key of aKeys) {

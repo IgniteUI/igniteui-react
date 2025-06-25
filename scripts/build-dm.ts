@@ -2,6 +2,8 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { rimraf } from 'rimraf';
+import manifest from '../node_modules/igniteui-dockmanager/custom-elements.json';
+import pkg from '../node_modules/igniteui-dockmanager/package.json';
 import type { ClassField, Package } from './schema';
 import { getExports } from './typescript-utils';
 import {
@@ -13,9 +15,6 @@ import {
   parseElementsJSON,
   toReactName,
 } from './utils';
-
-import manifest from '../node_modules/igniteui-dockmanager/custom-elements.json';
-import pkg from '../node_modules/igniteui-dockmanager/package.json';
 
 const pkgScope = process.env.IG_LICENSED_BUILD ? '@infragistics/' : '';
 const config = {

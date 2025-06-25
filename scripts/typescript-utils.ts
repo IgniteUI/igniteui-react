@@ -1,10 +1,10 @@
 import { glob } from 'glob';
 import {
-  SymbolFlags,
-  type TypeChecker,
   createProgram,
   isExportSpecifier,
   isTypeAliasDeclaration,
+  SymbolFlags,
+  type TypeChecker,
   type Symbol as tsSymbol,
 } from 'typescript';
 import type { ExportMeta } from './types';
