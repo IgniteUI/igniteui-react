@@ -6,6 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run build-wc && npm run build-dm && npm run build-grids && tsc && vite build",
+    "build:docs:dev": "cross-env NODE_ENV=\"development\" npm run build:typedoc",
+    "build:docs:staging": "cross-env NODE_ENV=\"staging\" npm run build:typedoc",
+    "build:docs:prod": "cross-env NODE_ENV=\"production\" npm run build:typedoc",
+    "build:typedoc": "npm run build:plugin && typedoc",
+    "build:plugin": "tsc --project ./plugins/typedoc-plugin-react-components/tsconfig.json",
+    "build:plugin:watch": "tsc --project ./plugins/typedoc-plugin-react-components/tsconfig.json --watch",
+    "build:plugin:prod": "tsc --project ./plugins/typedoc-plugin-react-components/tsconfig.prod.json",
     "preview": "vite preview",
     "build-wc": "tsx ./scripts/build-wc.ts",
     "build-dm": "tsx ./scripts/build-dm.ts",
@@ -41,6 +48,10 @@
     "vite": "^7.0.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4",
-    "vitest-browser-react": "^1.0.0"
+    "vitest-browser-react": "^1.0.0",
+    "ig-typedoc-theme": "^6.1.0",
+    "typedoc": "^0.27.9",
+    "typedoc-plugin-localization": "^3.0.6",
+    "cross-env": "^7.0.3"
   }
 }

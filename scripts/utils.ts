@@ -133,6 +133,8 @@ export function createJSDoc({
     }
   }
 
+  buffer.push(indent('@class'));
+
   return `/**\n${buffer.join('\n')}\n*/`;
 }
 
@@ -151,6 +153,7 @@ export type WebComponentsConfig = {
   readonly ignore: Set<string>;
   readonly templatesFilter: (prop: ClassField, declaration: CustomElementWithPath) => boolean;
   readonly moveBackOnDelete?: boolean;
+  readonly typedocModuleName?: string;
 };
 
 export function createEvents(
@@ -359,6 +362,10 @@ export async function wrapWebComponents(manifest: Package, config: WebComponents
   const components = parseElementsJSON(manifest).filter(
     (declaration) => !config.ignore.has(declaration.tagName),
   );
+
+  buffer.push(`/**
+ * @module ${config.typedocModuleName}
+ */`);
 
   const files = await Promise.all(
     components.map(async (declaration) => {

@@ -1,0 +1,87 @@
+trigger:
+  tags:
+    include:
+      - master
+      - '*'
+
+pool:
+  vmImage: ubuntu-latest
+
+parameters:
+- name: verbose
+  displayName: 'Get verbose output from steps - where configurable'
+  type: boolean
+  default: false
+
+variables:
+- name: npmBuildTag
+  value: dev 
+
+name: $(BuildDefinitionName)_$(Build.SourceBranchName)_$(Date:yyyy-MM-dd).$(Rev:r)
+
+steps:
+  # build:
+  - template: setup-build-test-steps.yml
+    parameters:
+      verbose: ${{ parameters.verbose }}
+  - task: PowerShell@2
+    displayName: 'Apply DeployAPI tag'
+    name: ProduceTags
+    inputs:
+      targetType: 'inline'
+      script: |
+        $vNum = [regex]::Match("$(Build.SourceBranchName)", "(?<rMajor>\d+)\.(?<rMinor>\d+)\.(?<rBuild>\d+)(-(?<rSuffix>\S*.\d+))?")
+        $ma = $vNum.Groups['rMajor'].Value
+        $mi = $vNum.Groups['rMinor'].Value
+        $b = $vNum.Groups['rBuild'].Value
+        $s =$vNum.Groups['rSuffix'].Value
+
+        if($ma -and $mi -and $b -and $s) {
+          Write-Output "Not final Release, so deploy to staging"
+          Write-Output "Setting Staging tag"
+          Write-Host "##vso[build.addbuildtag]Staging"
+          Write-Output "Setting DeployAPI tag"
+          Write-Host "##vso[build.addbuildtag]DeployAPI"
+          Write-Host "##vso[task.setvariable variable=npmBuildTag;]staging"
+        } elseif ($ma -and $mi -and $b) {
+          Write-Output "Setting Production tag"
+          Write-Host "##vso[build.addbuildtag]Production"
+          Write-Output "Setting DeployAPI tag"
+          Write-Host "##vso[build.addbuildtag]DeployAPI"
+          Write-Host "##vso[task.setvariable variable=npmBuildTag;]prod"
+        } elseif ("$(Build.SourceBranchName)" -eq "typedoc") {
+          Write-Output "Setting Production tag"
+          Write-Host "##vso[build.addbuildtag]Production"
+          Write-Output "Setting DeployAPI tag"
+          Write-Host "##vso[build.addbuildtag]DeployAPI"
+          Write-Host "##vso[task.setvariable variable=npmBuildTag]prod"
+        } else {
+          Write-Output "Release is not final, so no deploy of api"
+        }
+  - task: Npm@1
+    displayName: 'Build docs'
+    inputs:
+      command: 'custom'
+      verbose: ${{ parameters.verbose }}
+      customCommand: 'run build:docs:$(npmBuildTag)'
+  - task: ArchiveFiles@1
+    displayName: 'Archive TypeDocOutput'
+    inputs:
+      rootFolder: '$(build.sourcesDirectory)/typedocs'
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: '$(Build.ArtifactStagingDirectory)/TypeDocOutput.zip'
+  - task: PowerShell@2
+    displayName: 'Copy components README'
+    inputs:
+      targetType: inline
+      script: Copy-Item -Path ".azure-pipelines/artifacts/versioning.ps1" -Destination "$(Build.ArtifactStagingDirectory)"
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: $(BuildConfiguration)'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'TypeDocOutput'
+      publishLocation: 'Container'
+
+
+

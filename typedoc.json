@@ -1,0 +1,30 @@
+{
+  "entryPoints": [
+    "./src/components",
+    "./src/dock-manager",
+    "./src/grids",
+    "./node_modules/typescript/lib/lib.dom.d.ts"
+  ],
+  "entryPointStrategy": "resolve",
+  "plugin": [
+    "typedoc-plugin-localization",
+    "ig-typedoc-theme",
+    "./plugins/typedoc-plugin-react-components/dist/main.js"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "tests",
+  ],
+  "theme": "igtheme",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "name": "Ignite UI for React",
+  "readme": "none",
+  "out": "./typedocs",
+  "tsconfig": "tsconfig-typedoc.json",
+  "localize": "en",
+  "versioning": true,
+  "product": "ignite-ui-react",
+  "config": "react.oss.config.json"
+}

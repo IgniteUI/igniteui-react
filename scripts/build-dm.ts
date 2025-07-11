@@ -38,6 +38,10 @@ const dockManager = parseElementsJSON(manifest as Package).find(
 )!;
 
 const buffer: string[] = [
+  '/**',
+  ' * @module',
+  ' * @mergeModuleWith igniteui-react',
+  ' */',
   "import * as React from 'react'",
   `import { IgcDockManagerComponent as Component } from '${config.imports.default}'`,
   `import type { IgcDockManagerEventMap } from '${config.imports.types}'`,
@@ -53,6 +57,10 @@ await mkdir(root, { recursive: true });
 
 const name = toReactName(dockManager.name);
 buffer.push(`
+/**
+ * A Dock Manager component that provides means to manage the layout of your application through panes, allowing your end-users to customize it further by pinning, resizing, moving, maximizing and hiding panes.
+ * @class
+ */
 export const ${name} = createComponent({
   tagName: '${dockManager.tagName}',
   displayName: '${name}',

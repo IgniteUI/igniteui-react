@@ -62,6 +62,7 @@ const config = {
   templatesFilter: (prop: ClassField, declaration: CustomElementWithPath) =>
     config.templates.has(declaration.tagName!) &&
     config.templates.get(declaration.tagName!)!.includes(prop.name),
+  typedocModuleName: 'igniteui-react',
 } as const;
 
 await wrapWebComponents(manifest as Package, config);

@@ -27,6 +27,7 @@ const config = {
   ignore: new Set<string>(),
   ignoreEvents: new Set<string>(),
   moveBackOnDelete: true,
+  typedocModuleName: 'igniteui-react-grids',
 } as const;
 
 await wrapWebComponents(manifest as Package, config);
