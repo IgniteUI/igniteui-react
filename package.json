@@ -25,8 +25,8 @@
   "dependencies": {
     "@lit/react": "^1.0.8",
     "igniteui-dockmanager": "~1.16.1",
-    "igniteui-webcomponents": "~6.1.1",
-    "igniteui-webcomponents-grids": "~6.0.4",
+    "igniteui-webcomponents": "~6.1.2",
+    "igniteui-webcomponents-grids": "~6.0.5",
     "lit": "^3.3.1"
   },
   "devDependencies": {
@@ -37,6 +37,8 @@
     "@vitejs/plugin-react": "^4.6.0",
     "@vitest/browser": "^3.2.4",
     "@vitest/coverage-v8": "^3.2.4",
+    "cross-env": "^7.0.3",
+    "ig-typedoc-theme": "^6.1.0",
     "lefthook": "^1.12.2",
     "playwright": "^1.54.1",
     "prettier": "^3.6.2",
@@ -44,14 +46,12 @@
     "react-dom": "^19.1.0",
     "rimraf": "^6.0.1",
     "tsx": "^4.20.3",
+    "typedoc": "^0.27.9",
+    "typedoc-plugin-localization": "^3.0.6",
     "typescript": "^5.8.3",
     "vite": "^7.0.4",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4",
-    "vitest-browser-react": "^1.0.0",
-    "ig-typedoc-theme": "^6.1.0",
-    "typedoc": "^0.27.9",
-    "typedoc-plugin-localization": "^3.0.6",
-    "cross-env": "^7.0.3"
+    "vitest-browser-react": "^1.0.0"
   }
 }
