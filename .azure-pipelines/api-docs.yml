@@ -31,53 +31,69 @@ steps:
       targetType: 'inline'
       script: |
         $vNum = [regex]::Match("$(Build.SourceBranchName)", "(?<rMajor>\d+)\.(?<rMinor>\d+)\.(?<rBuild>\d+)(-(?<rSuffix>\S*.\d+))?")
-        $ma = $vNum.Groups['rMajor'].Value
-        $mi = $vNum.Groups['rMinor'].Value
-        $b = $vNum.Groups['rBuild'].Value
-        $s =$vNum.Groups['rSuffix'].Value
+        Write-Output "Matching regex: $vNum.Value"
+        if ($vNum.Success) {
+          $ma = $vNum.Groups['rMajor'].Value
+          $mi = $vNum.Groups['rMinor'].Value
+          $b = $vNum.Groups['rBuild'].Value
+          $s =$vNum.Groups['rSuffix'].Value
 
-        if($ma -and $mi -and $b -and $s) {
-          Write-Output "Not final Release, so deploy to staging"
-          Write-Output "Setting Staging tag"
-          Write-Host "##vso[build.addbuildtag]Staging"
-          Write-Output "Setting DeployAPI tag"
-          Write-Host "##vso[build.addbuildtag]DeployAPI"
-          Write-Host "##vso[task.setvariable variable=npmBuildTag;]staging"
-        } elseif ($ma -and $mi -and $b) {
-          Write-Output "Setting Production tag"
-          Write-Host "##vso[build.addbuildtag]Production"
-          Write-Output "Setting DeployAPI tag"
-          Write-Host "##vso[build.addbuildtag]DeployAPI"
-          Write-Host "##vso[task.setvariable variable=npmBuildTag;]prod"
-        } elseif ("$(Build.SourceBranchName)" -eq "typedoc") {
-          Write-Output "Setting Production tag"
-          Write-Host "##vso[build.addbuildtag]Production"
-          Write-Output "Setting DeployAPI tag"
-          Write-Host "##vso[build.addbuildtag]DeployAPI"
-          Write-Host "##vso[task.setvariable variable=npmBuildTag]prod"
+          if($ma -and $mi -and $b -and $s) {
+            Write-Output "Not final Release, so deploy to Staging only"
+            Write-Host "##vso[build.addbuildtag]Staging"
+            Write-Output "Setting DeployAPI tag"
+            Write-Host "##vso[build.addbuildtag]DeployAPI"
+            Write-Host "##vso[task.setvariable variable=npmBuildTag;]staging"
+          } elseif ($ma -and $mi -and $b) {
+            Write-Output "Final Release, can deploy to Production as well"
+            Write-Host "##vso[build.addbuildtag]Staging"
+            Write-Host "##vso[build.addbuildtag]Production"
+            Write-Output "Setting DeployAPI tag"
+            Write-Host "##vso[build.addbuildtag]DeployAPI"
+            Write-Host "##vso[task.setvariable variable=npmBuildTag;]prod"
+          } else {
+            Write-Host "##vso[task.setvariable variable=npmBuildTag;]dev"
+            Write-Output "Release is not final, so no deploy of api"
+          }
         } else {
-          Write-Output "Release is not final, so no deploy of api"
+          Write-Host "##vso[task.setvariable variable=npmBuildTag;]dev"
+          Write-Output "Source branch is not a tag. To deploy api please create a tag. For testing purpose use `-alpha.x` or `-beta.x` suffix."
         }
   - task: Npm@1
-    displayName: 'Build docs'
+    displayName: 'Build $(npmBuildTag) TypeDoc'
     inputs:
       command: 'custom'
       verbose: ${{ parameters.verbose }}
       customCommand: 'run build:docs:$(npmBuildTag)'
   - task: ArchiveFiles@1
-    displayName: 'Archive TypeDocOutput'
+    displayName: 'Archive $(npmBuildTag) TypeDoc'
     inputs:
       rootFolder: '$(build.sourcesDirectory)/typedocs'
       includeRootFolder: false
       archiveType: zip
       archiveFile: '$(Build.ArtifactStagingDirectory)/TypeDocOutput.zip'
+  - task: Npm@1
+    displayName: 'Build Production TypeDoc'
+    condition: eq(variables['npmBuildTag'], 'prod')
+    inputs:
+      command: 'custom'
+      verbose: ${{ parameters.verbose }}
+      customCommand: 'run build:docs:prod'
+  - task: ArchiveFiles@1
+    displayName: 'Archive Production TypeDoc'
+    condition: eq(variables['npmBuildTag'], 'prod')
+    inputs:
+      rootFolder: '$(build.sourcesDirectory)/typedocs'
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: '$(Build.ArtifactStagingDirectory)/TypeDocOutputProduction.zip'
   - task: PowerShell@2
     displayName: 'Copy components README'
     inputs:
       targetType: inline
       script: Copy-Item -Path ".azure-pipelines/artifacts/versioning.ps1" -Destination "$(Build.ArtifactStagingDirectory)"
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: $(BuildConfiguration)'
+    displayName: 'Publish Artifacts'
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'TypeDocOutput'
