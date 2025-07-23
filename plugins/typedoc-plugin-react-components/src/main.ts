@@ -73,9 +73,13 @@ export function load(app: Application) {
                   case SymbolFlags.Property:
                     category = "Properties";
                 }
+                if (value.flags.toString() === "16777220") {
+                    // For some reason optional properties get flagged to this number, even though the optional is 16777216
+                    category = "Properties";
+                }
                 if (category === "Other") {
-                  // Other types we just ignore creating.
-                  return;
+                    // Other types we just ignore creating.
+                    return;
                 }
 
                 createMemberDeclaration(context, value, reflectionKind, category);
