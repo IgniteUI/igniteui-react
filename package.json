@@ -25,8 +25,8 @@
   "dependencies": {
     "@lit/react": "^1.0.8",
     "igniteui-dockmanager": "~1.16.1",
-    "igniteui-webcomponents": "~6.1.2",
-    "igniteui-webcomponents-grids": "~6.0.5",
+    "igniteui-webcomponents": "~6.2.0",
+    "igniteui-webcomponents-grids": "~6.0.7",
     "lit": "^3.3.1"
   },
   "devDependencies": {
