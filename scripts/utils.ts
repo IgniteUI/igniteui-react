@@ -341,6 +341,11 @@ export async function wrapWebComponents(manifest: Package, config: WebComponents
       declaration.members?.filter((x) => isField(x) && config.templatesFilter(x, declaration)) ||
       [];
 
+    if (declaration.tagName === 'igc-chat' && 'templates' in config) {
+      buffer.push(`renderProps: ${(config.templates as any).get(declaration.tagName)}`);
+      return buffer.join(',\n');
+    }
+
     for (const prop of templateProps) {
       buffer.push(`${prop.name}: '${prop.name}'`);
     }

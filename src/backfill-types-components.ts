@@ -8,6 +8,9 @@ import type {
   IgrActiveStepChangedEventArgs,
   IgrActiveStepChangingEventArgs,
   IgrButton,
+  IgrChatMessage,
+  IgrChatMessageAttachment,
+  IgrChatMessageReaction,
   IgrCheckbox,
   IgrDropdownItem,
   IgrExpansionPanel,
@@ -44,6 +47,10 @@ export type IgrSelectItemComponentEventArgs = CustomEvent<IgrSelectItem>;
 export type IgrTabComponentEventArgs = CustomEvent<IgrTab>;
 export type IgrTileComponentEventArgs = CustomEvent<IgrTile>;
 export type IgrTreeItemComponentEventArgs = CustomEvent<IgrTreeItem>;
+export type IgrChatMessageEventArgs = CustomEvent<IgrChatMessage>;
+export type IgrChatMessageReactionEventArgs = CustomEvent<IgrChatMessageReaction>;
+export type IgrChatMessageAttachmentEventArgs = CustomEvent<IgrChatMessageAttachment>;
+export type IgrChatAddedMessageAttachmentEventArgs = CustomEvent<IgrChatMessageAttachment[]>;
 //#endregion
 
 //#region shared static event args for primitives

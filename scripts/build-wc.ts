@@ -53,10 +53,38 @@ const config = {
     'igc-validator',
     'igc-resize',
     'igc-predefined-ranges-area',
+    'igc-chat-input',
+    'igc-chat-message',
+    'igc-message-attachments',
   ]),
   templates: new Map<string, Array<string>>(
     Object.entries({
       'igc-combo': ['itemTemplate', 'groupHeaderTemplate'],
+      'igc-chat': [
+        `{
+          "options": {
+            "renderers": {
+              "attachment": "attachment",
+              "attachmentContent": "attachmentContent",
+              "attachmentHeader": "attachmentHeader",
+              "fileUploadButton": "fileUploadButton",
+              "input": "input",
+              "inputActions": "inputActions",
+              "inputActionsEnd": "inputActionsEnd",
+              "inputActionsStart": "inputActionsStart",
+              "inputAttachments": "inputAttachments",
+              "message": "message",
+              "messageActions": "messageActions",
+              "messageAttachments": "messageAttachments",
+              "messageContent": "messageContent",
+              "messageHeader": "messageHeader",
+              "typingIndicator": "typingIndicator",
+              "sendButton": "sendButton",
+              "suggestionPrefix": "suggestionPrefix"
+            }
+          }
+        }`,
+      ],
     }),
   ),
   templatesFilter: (prop: ClassField, declaration: CustomElementWithPath) =>

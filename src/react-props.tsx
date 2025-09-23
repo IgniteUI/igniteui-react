@@ -56,7 +56,7 @@ export type ReactWebComponent<
   PropsWithoutRef<WithJsxRenderProps<ComponentProps<I, E>, R>> & React.RefAttributes<I>
 >;
 
-type Renderers = Record<string, string>;
+type Renderers = Record<string, unknown>;
 
 interface WrapperOptions<I extends HTMLElement, E extends EventNames, R extends Renderers>
   extends Options<I, E> {
@@ -139,31 +139,51 @@ export const createComponent = <
       setRenderers(() => new Map(renderers));
     };
 
-    if (renderProps) {
-      for (const key of listeners.current.keys()) {
-        if (props[key] === undefined) {
-          listeners.current.delete(key);
-        }
-      }
-    }
+    const processProps = (
+      propMap: Record<string, unknown>,
+      propDefinitions: Record<string, unknown>,
+      outProps: Record<string, unknown>,
+      prefix = '',
+    ) => {
+      for (const prop in propMap) {
+        const fullPropName = prefix ? `${prefix}.${prop}` : prop;
+        const rendererName = propDefinitions?.[prop];
 
-    renderProps ??= {};
-    for (const prop in props) {
-      const renderProp = renderProps[prop];
-      if (renderProp === undefined) {
-        outProps[prop] = props[prop];
-      } else {
-        portals[renderProp] = props[prop];
-
-        if (elementRef.current && listeners.current.has(prop)) {
-          outProps[prop] = listeners.current.get(prop);
+        if (rendererName !== undefined && typeof rendererName === 'string') {
+          if (listeners.current.has(fullPropName)) {
+            outProps[prop] = listeners.current.get(fullPropName);
+          } else {
+            portals[rendererName] = propMap[prop];
+            const patched = createPatched(renderFunc, rendererName);
+            outProps[prop] = patched;
+            listeners.current.set(fullPropName, patched);
+          }
+        } else if (
+          typeof propMap[prop] === 'object' &&
+          propMap[prop] !== null &&
+          propDefinitions?.[prop] &&
+          typeof propDefinitions[prop] === 'object'
+        ) {
+          outProps[prop] = {};
+          processProps(
+            propMap[prop] as Record<string, unknown>,
+            propDefinitions?.[prop] as Record<string, unknown>,
+            outProps[prop],
+            fullPropName,
+          );
         } else {
-          const patched = createPatched(renderFunc, renderProp);
-          outProps[prop] = patched;
-          listeners.current.set(prop, patched);
+          outProps[prop] = propMap[prop];
         }
       }
+    };
+
+    for (const key of listeners.current.keys()) {
+      if (!hasNestedProperty(props, key)) {
+        listeners.current.delete(key);
+      }
     }
+
+    processProps(props, renderProps ?? {}, outProps);
 
     if (listeners.current.size) {
       Object.assign(outProps, {
@@ -194,4 +214,16 @@ export const createComponent = <
 
 function createPatched(callback: any, propertyName: string) {
   return (ctx: unknown) => html`${requestRenderer(callback, propertyName, ctx)}`;
+}
+
+function hasNestedProperty(object: any, path: string) {
+  const parts = path.split('.');
+  let current = object;
+  for (const part of parts) {
+    if (current === undefined || current === null) {
+      return false;
+    }
+    current = current[part];
+  }
+  return current !== undefined;
 }
