@@ -307,7 +307,7 @@ export function createFileContent<T extends WebComponentsConfig>(
     ${importRenderer(declaration, config)}
 
     ${createJSDoc(declaration)}
-    export const ${name} = createComponent({
+    export const ${name} = /* @__PURE__ */ createComponent({
       tagName: '${declaration.tagName}',
       displayName: '${name}',
       elementClass: Component,
