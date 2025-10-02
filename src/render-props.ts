@@ -7,6 +7,7 @@ import {
 } from 'lit/async-directive.js';
 import { withDataContext } from './backfills.js';
 import { equal } from './equal.js';
+import { getUUID } from './random-uuid.js';
 
 export const REQUEST_REMOVE = Symbol('renderer-remove');
 const NOT_SET = Symbol('not-set');
@@ -41,7 +42,7 @@ export type RendererRequest<T> = {
 type RendererCallback<T> = (req: RendererRequest<T>) => unknown;
 
 class RequestRenderer<T> extends AsyncDirective {
-  private readonly _key = crypto.randomUUID();
+  private readonly _key = getUUID();
   private _part: WeakRef<ChildPart> | null = null;
   private _callback: RendererCallback<T> | null = null;
 
