@@ -10,6 +10,7 @@ export default defineConfig({
     lib: {
       entry: {
         components: './src/components.ts',
+        extras: './src/extras/index.tsx',
         grids: './src/grids.ts',
         // disable hash:
         'template-renderer': './src/react-props.tsx',
@@ -17,7 +18,16 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: [/^react/, /^lit|^@lit/, /^@floating-ui/, /^igniteui/, /^@infragistics\/igniteui/],
+      external: [
+        /^react/,
+        /^lit|^@lit/,
+        /^@floating-ui/,
+        /^igniteui/,
+        /^@infragistics\/igniteui/,
+        /^marked/,
+        /^shiki/,
+        /^dompurify/,
+      ],
     },
   },
   optimizeDeps: {

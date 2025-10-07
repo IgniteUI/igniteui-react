@@ -36,6 +36,48 @@ test('Simple chat rendering and event', async () => {
   expect(headings.length).toBe(1);
 });
 
+test('Markdown support with default renderer', async () => {
+  const screen = render(<Chat />);
+
+  const input = screen.getByRole('textbox', { name: 'Type your message here...' });
+  await userEvent.fill(input, '# Hello world');
+  await userEvent.keyboard('{Enter}');
+
+  const messages = screen.getByPart('message-item').all();
+  expect(messages.length).toBe(2);
+
+  // The default renderer is async so wait for the DOM to be ready
+  await nextFrame();
+
+  let message = screen.getByText('Hello world');
+
+  expect(message).toBeVisible();
+  expect(message.element().tagName).toMatch(/h1/i);
+
+  await userEvent.fill(input, '```ts\nconst chat = document.createElement("igc-chat");\n```');
+  await userEvent.keyboard('{Enter}');
+  await nextFrame();
+
+  message = screen.getByText(/^const/);
+  expect(message).toBeVisible();
+
+  const shikiContainer = message.element().closest('pre');
+  expect(shikiContainer?.classList.contains('shiki')).to.be.true;
+  expect(shikiContainer?.classList.contains('shiki')).to.be.true;
+
+  await userEvent.fill(input, 'Powered by [Infragistics](https://infragistics.com/)');
+  await userEvent.keyboard('{Enter}');
+  await nextFrame();
+
+  message = screen.getByText(/Infragistics/);
+  expect(message).toBeVisible();
+  expect(message.element().tagName).toMatch(/a/i);
+});
+
+async function nextFrame() {
+  return new Promise((resolve) => requestAnimationFrame(resolve));
+}
+
 //#region Locator extension
 locators.extend({
   getByPart(part: string) {

@@ -6,21 +6,48 @@
   "homepage": "https://github.com/IgniteUI/igniteui-react",
   "keywords": ["react", "UI Components", "infragistics", "core"],
   "license": "Infragistics(R) Ultimate license (http://www.infragistics.com/legal/ultimate/license/)",
-  "dependencies": {
-    "@lit/react": "^1.0.7",
-    "igniteui-dockmanager": "~1.17.0",
-    "igniteui-webcomponents": "~6.3.1",
-    "lit": "^3.3.0"
-  },
-  "sideEffects": false,
-  "typings": "components.d.ts",
-  "main": "components.js",
-  "module": "components.js",
   "maintainers": [
     {
       "name": "igniteui",
       "email": "igniteui@infragistics.com"
     }
   ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./components.d.ts",
+      "default": "./components.js"
+    },
+    "./extras": {
+      "types": "./extras/index.d.ts",
+      "default": "./extras.js"
+    }
+  },
+  "dependencies": {
+    "@lit/react": "^1.0.7",
+    "igniteui-dockmanager": "~1.17.0",
+    "igniteui-webcomponents": "~6.3.2",
+    "lit": "^3.3.0"
+  },
+  "peerDependencies": {
+    "dompurify": "^3.2.0",
+    "marked": "^16.3.0",
+    "marked-shiki": "^1.2.0",
+    "shiki": "^3.12.0"
+  },
+  "peerDependenciesMeta": {
+    "dompurify": {
+      "optional": true
+    },
+    "marked": {
+      "optional": true
+    },
+    "marked-shiki": {
+      "optional": true
+    },
+    "shiki": {
+      "optional": true
+    }
+  },
   "files": ["**/*", "!grids/**/*", "!grids.*"]
 }

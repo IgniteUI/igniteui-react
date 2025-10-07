@@ -1,5 +1,8 @@
 import { type ChatMessageRenderContext, IgrChat } from '../../src/components';
 import '../../node_modules/igniteui-webcomponents/themes/light/bootstrap.css';
+import { createChatMarkdownRenderer } from '../../src/extras/index';
+
+const markdownRenderer = await createChatMarkdownRenderer();
 
 export default function BasicForm() {
   const logEvent = (e: any) => console.log(e);
@@ -21,6 +24,9 @@ export default function BasicForm() {
     ) : null;
   };
 
+  const messageContent = async ({ message }: ChatMessageRenderContext) =>
+    await markdownRenderer(message);
+
   return (
     <IgrChat
       messages={messages}
@@ -31,6 +37,7 @@ export default function BasicForm() {
         headerText: 'Chat Header',
         renderers: {
           messageHeader,
+          messageContent,
         },
       }}
       onMessageCreated={logEvent}
