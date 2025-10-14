@@ -31,6 +31,7 @@ export default function Grid() {
   const [allowPinning, setAllowPinning] = useState<boolean>(true);
   const [allowFilter, setAllowFilter] = useState<boolean>(false);
   const [paging, setPaging] = useState(true);
+  const [merge, setMerge] = useState(false);
   const [columns, setColumns] = useState<Partial<IgrColumn>[]>([
     { field: 'age', dataType: 'number' },
     { field: 'email', dataType: 'string' },
@@ -89,11 +90,15 @@ export default function Grid() {
         onColumnPinned={logEvent}
         rowEditable={true}
         pagingMode={pagingMode ?? GridPagingMode.Local}
+        cellMergeMode="always"
       >
         <IgrGridToolbar>
           <IgrGridToolbarTitle>Custom Toolbar</IgrGridToolbarTitle>
           <IgrSwitch checked={paging} onChange={(e) => setPaging(e.detail.checked)}>
             switch paging
+          </IgrSwitch>
+          <IgrSwitch checked={merge} onChange={(e) => setMerge(e.detail.checked)}>
+            switch merge
           </IgrSwitch>
           <IgrGridToolbarActions>
             <IgrGridToolbarHiding></IgrGridToolbarHiding>
@@ -105,7 +110,12 @@ export default function Grid() {
         <IgrColumn field="id" dataType="number" bodyTemplate={columnBodyTemplate}></IgrColumn>
         <IgrColumn field="name" dataType="string" bodyTemplate={columnBodyTemplateOld}></IgrColumn>
         {columns.map((col) => (
-          <IgrColumn key={col.field} field={col.field} dataType={col.dataType}></IgrColumn>
+          <IgrColumn
+            key={col.field}
+            field={col.field}
+            dataType={col.dataType}
+            merge={merge}
+          ></IgrColumn>
         ))}
         {paging && <IgrPaginator perPage={5} onPagingDone={logEvent}></IgrPaginator>}
         <IgrActionStrip>
