@@ -26,7 +26,7 @@
   "dependencies": {
     "@lit/react": "^1.0.7",
     "igniteui-dockmanager": "~1.17.0",
-    "igniteui-webcomponents": "~6.3.2",
+    "igniteui-webcomponents": "~6.3.3",
     "lit": "^3.3.0"
   },
   "peerDependencies": {
