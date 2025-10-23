@@ -1,5 +1,5 @@
-import { locators, userEvent } from '@vitest/browser/context';
 import { afterAll, expect, test, vi } from 'vitest';
+import { locators, page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 
 import Chat from './Chat';
@@ -7,17 +7,17 @@ import Chat from './Chat';
 afterAll(() => vi.restoreAllMocks());
 
 test('Simple chat rendering and event', async () => {
-  const screen = render(<Chat />);
+  render(<Chat />);
 
-  const header = screen.getByText('Chat Header');
+  const header = page.getByText('Chat Header');
   await expect.element(header).toBeVisible();
 
-  const headingTemplate = screen.getByText('Customer Support BOLD');
+  const headingTemplate = page.getByText('Customer Support BOLD');
   await expect.element(headingTemplate).toBeVisible();
 
   const mockLog = vi.spyOn(console, 'log');
 
-  const input = screen.getByRole('textbox', { name: 'Type your message here...' });
+  const input = page.getByRole('textbox', { name: 'Type your message here...' });
   await userEvent.fill(input, 'Text message');
   await userEvent.keyboard('{Enter}');
 
@@ -28,28 +28,28 @@ test('Simple chat rendering and event', async () => {
     }),
   );
 
-  const messages = screen.getByPart('message-item').all();
+  const messages = page.getByPart('message-item').all();
   expect(messages.length).toBe(2);
 
   // count elements by text "Customer Support BOLD" - should be 1 (header only)
-  const headings = screen.getByText('Customer Support BOLD').all();
+  const headings = page.getByText('Customer Support BOLD').all();
   expect(headings.length).toBe(1);
 });
 
 test('Markdown support with default renderer', async () => {
-  const screen = render(<Chat />);
+  render(<Chat />);
 
-  const input = screen.getByRole('textbox', { name: 'Type your message here...' });
+  const input = page.getByRole('textbox', { name: 'Type your message here...' });
   await userEvent.fill(input, '# Hello world');
   await userEvent.keyboard('{Enter}');
 
-  const messages = screen.getByPart('message-item').all();
+  const messages = page.getByPart('message-item').all();
   expect(messages.length).toBe(2);
 
   // The default renderer is async so wait for the DOM to be ready
   await nextFrame();
 
-  let message = screen.getByText('Hello world');
+  let message = page.getByText('Hello world');
 
   expect(message).toBeVisible();
   expect(message.element().tagName).toMatch(/h1/i);
@@ -58,7 +58,7 @@ test('Markdown support with default renderer', async () => {
   await userEvent.keyboard('{Enter}');
   await nextFrame();
 
-  message = screen.getByText(/^const/);
+  message = page.getByText(/^const/);
   expect(message).toBeVisible();
 
   const shikiContainer = message.element().closest('pre');
@@ -69,7 +69,7 @@ test('Markdown support with default renderer', async () => {
   await userEvent.keyboard('{Enter}');
   await nextFrame();
 
-  message = screen.getByText(/Infragistics/);
+  message = page.getByText(/Infragistics/);
   expect(message).toBeVisible();
   expect(message.element().tagName).toMatch(/a/i);
 });

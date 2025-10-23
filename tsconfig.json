@@ -15,8 +15,6 @@
     "emitDeclarationOnly": true,
     // "noEmit": true,
 
-    "types": ["@vitest/browser/providers/playwright"],
-
     "paths": {
       "@infragistics/igniteui-dockmanager": ["./node_modules/igniteui-dockmanager"],
       "@infragistics/igniteui-dockmanager/*": ["./node_modules/igniteui-dockmanager/*"],

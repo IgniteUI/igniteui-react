@@ -1,4 +1,5 @@
 import { afterAll, expect, test, vi } from 'vitest';
+import { page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 
 import BasicDocManager from './Basic';
@@ -6,10 +7,10 @@ import BasicDocManager from './Basic';
 afterAll(() => vi.restoreAllMocks());
 
 test('Default dock manager sample', async () => {
-  const { getByRole } = render(<BasicDocManager />);
+  render(<BasicDocManager />);
 
   const mockLog = vi.spyOn(console, 'log');
-  await getByRole('group', { name: 'Floating Pane' }).click();
+  await page.getByRole('group', { name: 'Floating Pane' }).click();
   expect(mockLog).toHaveBeenCalledWith(
     expect.objectContaining({
       type: 'activePaneChanged',
