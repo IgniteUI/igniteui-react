@@ -4,7 +4,7 @@ import {
   type IgrDockManagerLayout,
   IgrDockManagerPaneType,
   IgrSplitPaneOrientation,
-} from '../../src/components';
+} from '../../src/dock-manager';
 
 export default function BasicDockManager() {
   const layout: IgrDockManagerLayout = {

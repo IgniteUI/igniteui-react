@@ -13,6 +13,7 @@ export default defineConfig({
         components: './src/components.ts',
         extras: './src/extras/index.tsx',
         grids: './src/grids.ts',
+        'dock-manager': './src/dock-manager.ts',
         // disable hash:
         'template-renderer': './src/react-props.tsx',
       },

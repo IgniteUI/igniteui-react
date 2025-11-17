@@ -28,15 +28,6 @@ import type {
   SliderTickOrientation,
   ToggleLabelPosition,
 } from './components/index.js';
-import type {
-  IgrDockingIndicatorPosition,
-  IgrDockManagerPaneType,
-  IgrPaneActionBehavior,
-  IgrPaneDragActionType,
-  IgrResizerLocation,
-  IgrSplitPaneOrientation,
-  IgrUnpinnedLocation,
-} from './dock-manager/index.js';
 
 //#region manual event args not picked up as args
 
@@ -65,14 +56,6 @@ export type IgrVoidEventArgs = CustomEvent<void>;
 //#region backfills
 export type IgrCalendarFormatOptions = Pick<Intl.DateTimeFormatOptions, 'month' | 'weekday'>;
 export type NumberFormatOptions = Intl.NumberFormatOptions;
-
-export type DockManagerPaneType = IgrDockManagerPaneType;
-export type SplitPaneOrientation = IgrSplitPaneOrientation;
-export type UnpinnedLocation = IgrUnpinnedLocation;
-export type PaneActionBehavior = IgrPaneActionBehavior;
-export type DockingIndicatorPosition = IgrDockingIndicatorPosition;
-export type PaneDragActionType = IgrPaneDragActionType;
-export type ResizerLocation = IgrResizerLocation;
 
 /** @deprecated use PopoverPlacement */
 export type DropdownPlacement = PopoverPlacement;

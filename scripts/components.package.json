@@ -5,7 +5,7 @@
   "description": "Ignite UI React.",
   "homepage": "https://github.com/IgniteUI/igniteui-react",
   "keywords": ["react", "UI Components", "infragistics", "core"],
-  "license": "Infragistics(R) Ultimate license (http://www.infragistics.com/legal/ultimate/license/)",
+  "license": "MIT",
   "maintainers": [
     {
       "name": "igniteui",
@@ -49,5 +49,5 @@
       "optional": true
     }
   },
-  "files": ["**/*", "!grids/**/*", "!grids.*"]
+  "files": ["**/*", "!grids/**/*", "!grids.*", "!dock-manager/**/*", "!dock-manager.*"]
 }

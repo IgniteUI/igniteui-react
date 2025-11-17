@@ -63,7 +63,7 @@ jobs:
         workingFile: '$(Build.SourcesDirectory)/.npmrc'
         customEndpoint: 'NPMJS.ORG PUBLIC-NetAdvantage'
 
-    # components trial release:
+    # components release:
     - task: PowerShell@2
       displayName: 'Copy components package.json'
       inputs:
@@ -71,10 +71,10 @@ jobs:
         script: Copy-Item -Path "scripts/components.package.json" -Destination "dist/package.json"
 
     - task: PowerShell@2
-      displayName: 'Copy common license'
+      displayName: 'Copy MIT license'
       inputs:
         targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE" -Destination "dist/"
+        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_MIT" -Destination "dist/LICENSE"
 
     - task: PowerShell@2
       displayName: 'Copy components README'
@@ -92,7 +92,44 @@ jobs:
         customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
 
     - task: Npm@1
-      displayName: '[npmjs] npm publish'
+      displayName: '[npmjs] npm publish igniteui-react'
+      continueOnError: true
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
+        verbose: ${{ parameters.verbose }}
+
+    # dock-manager trial release:
+    - task: PowerShell@2
+      displayName: 'Copy dock-manager package.json'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path "scripts/dock-manager.package.json" -Destination "dist/package.json"
+
+    - task: PowerShell@2
+      displayName: 'Copy IG license'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_IG" -Destination "dist/LICENSE"
+
+    - task: PowerShell@2
+      displayName: 'Copy dock-manager README'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/README_DockManager.md" -Destination "dist/README.md"
+
+    - task: Npm@1
+      displayName: 'npm version for tag $(Build.SourceBranchName)'
+      continueOnError: false
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
+
+    - task: Npm@1
+      displayName: '[npmjs] npm publish igniteui-react-dockmanager'
       continueOnError: true
       inputs:
         command: 'custom'
@@ -174,27 +211,27 @@ jobs:
         workingFile: '$(Build.SourcesDirectory)/.npmrc'
         customEndpoint: 'public proget'
 
-    # components licensed release:
+    # dock-manager licensed release:
     - task: PowerShell@2
-      displayName: 'Copy components package.json'
+      displayName: 'Copy dock-manager package.json'
       inputs:
         targetType: inline
         script: |
-          $content = Get-Content -Path "scripts/components.package.json"
+          $content = Get-Content -Path "scripts/dock-manager.package.json"
           $updatedContent = $content -replace 'igniteui-dockmanager', '@infragistics/igniteui-dockmanager'
           Set-Content -Path "dist/package.json" -Value $updatedContent
 
     - task: PowerShell@2
-      displayName: 'Copy common license'
+      displayName: 'Copy IG license'
       inputs:
         targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE" -Destination "dist/"
+        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_IG" -Destination "dist/LICENSE"
 
     - task: PowerShell@2
       displayName: 'Copy components README'
       inputs:
         targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/README_Components.md" -Destination "dist/README.md"
+        script: Copy-Item -Path ".azure-pipelines/artifacts/README_DockManager.md" -Destination "dist/README.md"
 
     - task: Npm@1
       displayName: 'npm version for tag $(Build.SourceBranchName)'
@@ -206,13 +243,13 @@ jobs:
         customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
 
     - task: Npm@1
-      displayName: 'update package name to @infragistics/igniteui-react'
+      displayName: 'update package name to @infragistics/igniteui-react-dockmanager'
       continueOnError: false
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
         verbose: ${{ parameters.verbose }}
-        customCommand: 'pkg set name="@infragistics/igniteui-react"'
+        customCommand: 'pkg set name="@infragistics/igniteui-react-dockmanager"'
 
     - task: Npm@1
       displayName: '[IG Packages] npm publish'
