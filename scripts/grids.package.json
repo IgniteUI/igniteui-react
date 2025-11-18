@@ -29,5 +29,13 @@
       "email": "igniteui@infragistics.com"
     }
   ],
-  "files": ["**/*", "!components/**/*", "!components.*", "!dock-manager/**/*", "!dock-manager.*"]
+  "files": [
+    "**/*",
+    "!components/**/*",
+    "!components.*",
+    "!dock-manager/**/*",
+    "!dock-manager.*",
+    "!extras/**/*",
+    "!extras.*"
+  ]
 }
