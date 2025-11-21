@@ -211,6 +211,61 @@ jobs:
         workingFile: '$(Build.SourcesDirectory)/.npmrc'
         customEndpoint: 'public proget'
 
+    # components licensed feed release:
+    - task: PowerShell@2
+      displayName: 'Copy components package.json'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path "scripts/components.package.json" -Destination "dist/package.json"
+
+    - task: PowerShell@2
+      displayName: 'Copy MIT license'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_MIT" -Destination "dist/LICENSE"
+
+    - task: PowerShell@2
+      displayName: 'Copy components README'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/README_Components.md" -Destination "dist/README.md"
+
+    - task: Npm@1
+      displayName: 'npm version for tag $(Build.SourceBranchName)'
+      continueOnError: false
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
+
+    - task: Npm@1
+      displayName: 'update package name to @infragistics/igniteui-react'
+      continueOnError: false
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'pkg set name="@infragistics/igniteui-react"'
+
+    - task: Npm@1
+      displayName: 'add deprecation postinstall script'
+      continueOnError: false
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        verbose: ${{ parameters.verbose }}
+        customCommand: 'pkg set scripts.postinstall=''echo "⚠️ Deprecated(@infragistics/igniteui-react): Now distributed as MIT, use igniteui-react from the npmjs.org registry instead."'''
+
+    - task: Npm@1
+      displayName: '[IG Packages] npm publish'
+      continueOnError: true
+      inputs:
+        command: 'custom'
+        workingDir: '$(Build.SourcesDirectory)/dist'
+        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
+        verbose: ${{ parameters.verbose }}
+
     # dock-manager licensed release:
     - task: PowerShell@2
       displayName: 'Copy dock-manager package.json'
