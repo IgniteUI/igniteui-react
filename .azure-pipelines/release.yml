@@ -248,14 +248,12 @@ jobs:
         verbose: ${{ parameters.verbose }}
         customCommand: 'pkg set name="@infragistics/igniteui-react"'
 
-    - task: Npm@1
+
+    - script: |
+        npm pkg set scripts.postinstall='echo "⚠️ Deprecated(@infragistics/igniteui-react): Now distributed as MIT, use igniteui-react from the npmjs.org registry instead."'
       displayName: 'add deprecation postinstall script'
       continueOnError: false
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        verbose: ${{ parameters.verbose }}
-        customCommand: "pkg set scripts.postinstall='echo \"⚠️ Deprecated(@infragistics/igniteui-react): Now distributed as MIT, use igniteui-react from the npmjs.org registry instead.\"'"
+      workingDirectory: '$(Build.SourcesDirectory)/dist'
 
     - task: Npm@1
       displayName: '[IG Packages] npm publish'
