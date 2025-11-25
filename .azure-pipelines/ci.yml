@@ -1,0 +1,27 @@
+# CI pipeline is triggered by branch policy
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/azure-repos-git?view=azure-devops&tabs=yaml#pr-triggers
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+parameters:
+- name: verbose
+  displayName: 'Get verbose output from steps - where configurable'
+  type: boolean
+  default: false
+
+steps:
+- template: setup-build-test-steps.yml
+  parameters:
+    verbose: ${{ parameters.verbose }}
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: JUnit
+    testResultsFiles: 'test-report/junit-report.xml'
+
+- task: PublishCodeCoverageResults@2
+  inputs: 
+    summaryFileLocation: 'coverage/*coverage.xml'

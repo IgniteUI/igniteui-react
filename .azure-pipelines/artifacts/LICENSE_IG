@@ -1,0 +1,28 @@
+==============================================================
+====             Ignite UI(R) for React                   ====
+==============================================================
+
+==============================================================
+====  Distributed under Infragistics(R) Ultimate license  ====
+====  agreement. You have to fully read, understand,      ====
+====  and agree with the following license prior to       ====
+====  using this copy of the Ignite UI product:           ====
+====  http://www.infragistics.com/legal/ultimate/license/ ====
+==============================================================
+
+
+Getting Started with Ignite UI for React
+--------------------------------------------------------------
+You can find getting started information related to this product here:
+
+https://igniteui.com/
+
+THIRD PARTY COMPONENTS, USAGE & RESTRICTIONS.
+
+A. The SOFTWARE may include certain third party components ("MS-PL Components") licensed under the Microsoft Permissive License ("MS-PL"). A list of included MS-PL Components and their respective licenses shall be provided upon request.
+              To the extent required by the MS-PL, the terms of such license will apply in lieu of the terms of this Agreement, and Infragistics, Inc. hereby represents and warrants that the license granted to such MS-PL Components will be no less broad than the license granted in this Agreement. To the extent the terms of the license applicable to MS-PL Components prohibit any of the restrictions in this agreement with respect to such MS-PL Components, such restrictions will not apply to such MS-PL Components. The MS-PL Components are provided "as is" by the third party licensors who disclaim all liabilities, damages, (even if they have been advised of the possibility of such damages), warranties, indemnities and other obligations of any kind, express or implied, with regard to the MS-PL Components. The MS-PL Components are excluded from any indemnity provided by Infragistics Inc. in this license. Nothing in the foregoing affects any performance warranty provided by Infragistics Inc. with regard to the SOFTWARE as a whole.
+
+B. The SOFTWARE may also include third party components ("Other Components") licensed under, and subject to the permission of the MIT License found at https://opensource.org/licenses/MIT. The Other Components are provided "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE OTHER COMPONENTS OR THE USE OF OTHER DEALINGS IN THE OTHER COMPONENTS.
+
+C. Note: To the best of our knowledge, Microsoft© doesn't forbid third-party companies from developing a product for the XPS document generation. However, according to the XML Paper Specification Patent License, we need to provide the following notice for your information:
+              This product may incorporate intellectual property owned by Microsoft Corporation. The terms and conditions upon which Microsoft is licensing such intellectual property can be found at http://www.microsoft.com/whdc/XPS/XpsLicense.mspx.

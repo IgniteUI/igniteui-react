@@ -1,0 +1,36 @@
+{
+  "name": "igniteui-react-dockmanager",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Ignite UI React Dock Manager component.",
+  "homepage": "https://github.com/IgniteUI/igniteui-react",
+  "keywords": ["react", "UI Components", "infragistics", "dock manager"],
+  "license": "Infragistics(R) Ultimate license (http://www.infragistics.com/legal/ultimate/license/)",
+  "maintainers": [
+    {
+      "name": "igniteui",
+      "email": "igniteui@infragistics.com"
+    }
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dock-manager.d.ts",
+      "default": "./dock-manager.js"
+    }
+  },
+  "dependencies": {
+    "@lit/react": "^1.0.7",
+    "igniteui-dockmanager": "~1.18.1",
+    "lit": "^3.3.0"
+  },
+  "files": [
+    "**/*",
+    "!grids/**/*",
+    "!grids.*",
+    "!components/**/*",
+    "!components.*",
+    "!extras/**/*",
+    "!extras.*"
+  ]
+}
