@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "declaration": true,
+    "jsx": "react-jsx",
+
+    "useDefineForClassFields": false,
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "emitDeclarationOnly": true,
+    // "noEmit": true,
+
+    "paths": {
+      "@infragistics/igniteui-dockmanager": ["./node_modules/igniteui-dockmanager"],
+      "@infragistics/igniteui-dockmanager/*": ["./node_modules/igniteui-dockmanager/*"],
+      "@infragistics/igniteui-webcomponents-grids": ["./node_modules/igniteui-webcomponents-grids"],
+      "@infragistics/igniteui-webcomponents-grids/*": [
+        "./node_modules/igniteui-webcomponents-grids/*"
+      ]
+    },
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}

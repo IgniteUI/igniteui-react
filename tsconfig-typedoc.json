@@ -1,0 +1,23 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+      "outDir": "docsDist",
+      "target": "ESNext",
+      "module": "ESNext",
+      "moduleResolution": "bundler",
+      "lib": ["ESNext", "DOM", "DOM.Iterable", "ES2021.WeakRef"],
+      "allowUmdGlobalAccess": true,
+		  "jsx": "react-jsx",
+      "sourceMap": false,
+      "declaration": true,
+      "removeComments": true,
+      "skipLibCheck": true,
+      "noCheck": true
+  },
+  "include": [
+      "./src",
+      "./node_modules/typescript/lib/lib.dom.d.ts"
+  ],
+  "exclude": [
+  ]
+}

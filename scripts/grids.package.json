@@ -1,0 +1,41 @@
+{
+  "name": "igniteui-react-grids",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Ignite UI React grid components.",
+  "homepage": "https://github.com/IgniteUI/igniteui-react",
+  "keywords": [
+    "react",
+    "UI Components",
+    "grid",
+    "scroll",
+    "datagrid",
+    "data",
+    "infragistics",
+    "grids"
+  ],
+  "license": "Infragistics(R) Ultimate license (http://www.infragistics.com/legal/ultimate/license/)",
+  "dependencies": {
+    "@lit/react": "^1.0.7",
+    "igniteui-webcomponents-grids": "~6.2.1",
+    "lit": "^3.3.0"
+  },
+  "typings": "grids.d.ts",
+  "main": "grids.js",
+  "module": "grids.js",
+  "maintainers": [
+    {
+      "name": "igniteui",
+      "email": "igniteui@infragistics.com"
+    }
+  ],
+  "files": [
+    "**/*",
+    "!components/**/*",
+    "!components.*",
+    "!dock-manager/**/*",
+    "!dock-manager.*",
+    "!extras/**/*",
+    "!extras.*"
+  ]
+}
