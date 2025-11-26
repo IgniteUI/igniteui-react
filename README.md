@@ -19,9 +19,12 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 
 | Components        | Status |         Documentation          | Released Version | License |
 |:----------|:--------|:----|:----|:----:|
+|AI Chat|   ✅   |[Docs][Chat Docs]|[19.3]|[MIT]|
+|Date Range Picker|   ✅   |[Docs][Date Range]|[19.1]|[MIT]|
+|Tooltip|   ✅   |[Docs][Tooltip]|[19.1]|[MIT]|
 |Accordion|   ✅   |[Docs][Accordion Docs]|[18.9]|[MIT]|
+|Tile Manager|   ✅   |[Docs][Tile Manager]|[18.9]|[MIT]|
 |Carousel  | ✅ | [Docs][Carousel Docs] | [18.7] |[MIT]|
-|Color Editor | ✅ | [Docs][Color Editor] | [18.7] |[MIT]|
 |Toolbar|   ✅   |[Docs][Toolbar Docs]|[18.2]|[MIT]|
 |Tree|   ✅   |[Docs][Tree Docs]|16.16|[MIT]|
 | Avatar | ✅ | [Docs][Avatar Docs] | 16.11 |[MIT]|
@@ -29,7 +32,6 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 | Banner | ✅ | [Docs][Banner Docs] | 16.11 |[MIT]|
 | Button | ✅ | [Docs][Button Docs] | 16.11 |[MIT]|
 | Button Group | ✅ | [Docs][Button Group Docs] | 16.11 |[MIT]|
-| Bullet Graph | ✅ | [Docs][Bullet Graph Docs] | 16.11 |[MIT]|
 | Calendar | ✅ | [Docs][Calendar Docs] | 16.11 |[MIT]|
 | Card | ✅ | [Docs][Card Docs] | 16.11 |[MIT]|
 | Checkbox | ✅ | [Docs][Checkbox Docs] | 16.11 |[MIT]|
@@ -38,32 +40,27 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 | Date Picker | ✅ | [Docs][Date Picker Docs] | 16.11 |[MIT]|
 | Date Time Input | ✅ | [Docs][Date Time Input Docs] | 16.11 |[MIT]|
 | Dialog | ✅ | [Docs][Dialog Docs] | 16.11 |[MIT]|
-| Dock Manager | ✅ | [Docs][Dock Manager Docs] | 16.11 |[MIT]|
 | Dropdown | ✅ | [Docs][Dropdown Docs] | 16.11 |[MIT]|
-| Excel Library | ✅ | [Docs][Excel Library Docs] | 16.11 |[MIT]|
 | Expansion Panel | ✅ | [Docs][Expansion Panel Docs] | 16.11 |[MIT]|
 | Icon | ✅ | [Docs][Icon Docs] | 16.11 |[MIT]|
 | Icon Button | ✅ | [Docs][Icon Button Docs] | 16.11 |[MIT]|
 | Input | ✅ | [Docs][Input Docs] | 16.11 |[MIT]|
-| Linear Gauge | ✅ | [Docs][Linear Gauge Docs] | 16.11 |[MIT]|
+| Linear Progress | ✅ | Docs | 16.11 |[MIT]|
 |List|   ✅   |[Docs][List Docs]|16.11|[MIT]|
 | Mask Input | ✅ | [Docs][Masked Input Docs] | 16.11 |[MIT]|
 | Navigation Bar (Navbar) | ✅ | [Docs][Navigation Bar Docs] | 16.11 |[MIT]|
 | Navigation Drawer | ✅ | [Docs][Navigation Drawer Docs] | 16.11 |[MIT]|
-| Radial Gauge | ✅ | [Docs][Radial Gauge Docs] | 16.11 |[MIT]|
 | Radio & Radio Group | ✅ | [Docs][Radio Docs] | 16.11 |[MIT]|
 | Rating | ✅ | [Docs][Rating Docs] | 16.11 |[MIT]|
 | Ripple | ✅ | [Docs][Ripple Docs] | 16.11 |[MIT]|
 | Select | ✅ | [Docs][Select Docs] | 16.11 |[MIT]|
 | Slider & Range Slider | ✅ | [Docs][Slider Docs] | 16.11 |[MIT]|
 | Snackbar | ✅ | [Docs][Snackbar Docs] | 16.11 |[MIT]|
-|Spreadsheet|   ✅   |[Docs][Spreadsheet Docs]|16.11|[MIT]|
 | Stepper | ✅ | [Docs][Stepper Docs] | 16.11 |[MIT]|
 | Switch | ✅ | [Docs][Switch Docs] | 16.11 |[MIT]|
 | Tabs | ✅ | [Docs][Tabs Docs] | 16.11 |[MIT]|
 | Text Area | ✅ | [Docs][Textarea Docs] | 16.11 |[MIT]|
 | Toast | ✅ | [Docs][Toast Docs] | 16.11 |[MIT]|
-| Zoom Slider | ✅ | [Docs][Zoom Slider Docs] | 16.11 |[MIT]|
 
 ## Ignite UI for React Components in Other Packages
 
@@ -78,7 +75,7 @@ The Ignite UI for React Data Grid is both lightweight and developed to handle hi
 | Pivot Grid        |   ✅   |    [Docs][Pivot Grid Docs]     |[18.3]| [igniteui-react-grids]| [Commercial] |
 | Hierarchical Grid |   ✅   | [Docs][Hierarchical Grid Docs] |[18.6]| [igniteui-react-grids]| [Commercial] |
 |
-| Grid Lite |   ✅   | [Docs][Grid Lite] |1.0| [igniteui-react-grid-lite]| [Commercial] |
+| Grid Lite |   ✅   | [Docs][Grid Lite] |1.0| [igniteui-react-grid-lite]| [MIT] |
 
 ### Dock Manager - EXCLUSIVE FEATURE
 
@@ -346,6 +343,12 @@ For development of the plugin you can use the `npm run build:plugin:watch` and r
 [igniteui-react-gauges]: https://www.npmjs.com/package/igniteui-react-gauges
 [igniteui-react-charts]: https://www.npmjs.com/package/igniteui-react-charts
 [igniteui-react-excel]: https://www.npmjs.com/package/igniteui-react-excel
+[Chat Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/interactivity/chat
+[Tile Manager]: https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/tile-manager
+[Tooltip]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/tooltip
+[Date Range]: https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/date-range-picker
+[19.3]: https://www.infragistics.com/products/ignite-ui-react/react/components/interactivity/chat
+[19.1]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1910-july-2025
 [19.0]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1900-april-2025
 [18.9]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1890-april-2025
 [18.7.6]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1876-december-2024
