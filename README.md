@@ -85,7 +85,7 @@ Provide a complete windowing experience, splitting complex layouts into smaller,
 
 - [Documentation][Dock Manager]
 - License - [Commercial]
-- Package - [igniteui-dockmanager](https://www.npmjs.com/package/igniteui-dockmanager)
+- Package - [igniteui-react-dockmanager](https://www.npmjs.com/package/igniteui-react-dockmanager)
 
 ### Charts & Maps in [igniteui-react-charts] & [igniteui-react-maps]
 
