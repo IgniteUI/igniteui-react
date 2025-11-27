@@ -25,7 +25,6 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 |Accordion|   ✅   |[Docs][Accordion Docs]|[18.9]|[MIT]|
 |Tile Manager|   ✅   |[Docs][Tile Manager]|[18.9]|[MIT]|
 |Carousel  | ✅ | [Docs][Carousel Docs] | [18.7] |[MIT]|
-|Toolbar|   ✅   |[Docs][Toolbar Docs]|[18.2]|[MIT]|
 |Tree|   ✅   |[Docs][Tree Docs]|16.16|[MIT]|
 | Avatar | ✅ | [Docs][Avatar Docs] | 16.11 |[MIT]|
 | Badge | ✅ | [Docs][Badge Docs] | 16.11 |[MIT]|
@@ -72,7 +71,6 @@ The Ignite UI for React Data Grid is both lightweight and developed to handle hi
 | Tree Grid         |   ✅   |     [Docs][Tree Grid Docs]     |[18.3]| [igniteui-react-grids]| [Commercial] |
 | Pivot Grid        |   ✅   |    [Docs][Pivot Grid Docs]     |[18.3]| [igniteui-react-grids]| [Commercial] |
 | Hierarchical Grid |   ✅   | [Docs][Hierarchical Grid Docs] |[18.6]| [igniteui-react-grids]| [Commercial] |
-|
 | Grid Lite |   ✅   | [Docs][Grid Lite] |0.0.1| [igniteui-grid-lite]| [MIT] |
 
 ### Dock Manager - EXCLUSIVE FEATURE - [igniteui-react-dockmanager](https://www.npmjs.com/package/igniteui-react-dockmanager)
