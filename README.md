@@ -62,7 +62,7 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 | Text Area | ✅ | [Docs][Textarea Docs] | 16.11 |[MIT]|
 | Toast | ✅ | [Docs][Toast Docs] | 16.11 |[MIT]|
 
-### Grids in [igniteui-react-grids] & [igniteui-react-grid-lite]
+### Grids in [igniteui-react-grids] & [igniteui-grid-lite]
 
 The Ignite UI for React Data Grid is both lightweight and developed to handle high data volumes. The React Grid offers powerful data visualization capabilities and superior performance on any device. With interactive features that users expect. Fast rendering. Unbeatable interactions. And the best possible user experience that you wouldn’t otherwise be able to achieve with so little code on your own.
 
@@ -73,7 +73,7 @@ The Ignite UI for React Data Grid is both lightweight and developed to handle hi
 | Pivot Grid        |   ✅   |    [Docs][Pivot Grid Docs]     |[18.3]| [igniteui-react-grids]| [Commercial] |
 | Hierarchical Grid |   ✅   | [Docs][Hierarchical Grid Docs] |[18.6]| [igniteui-react-grids]| [Commercial] |
 |
-| Grid Lite |   ✅   | [Docs][Grid Lite] |0.0.1| [igniteui-react-grid-lite]| [MIT] |
+| Grid Lite |   ✅   | [Docs][Grid Lite] |0.0.1| [igniteui-grid-lite]| [MIT] |
 
 ### Dock Manager - EXCLUSIVE FEATURE - [igniteui-react-dockmanager](https://www.npmjs.com/package/igniteui-react-dockmanager)
 
@@ -230,6 +230,7 @@ For development of the plugin you can use the `npm run build:plugin:watch` and r
 [MIT]: LICENSE
 [igniteui-react-grids]: https://www.npmjs.com/package/igniteui-react-grids
 [igniteui-react-grid-lite]: https://www.npmjs.com/package/igniteui-react-grid-lite
+[igniteui-grid-lite]: https://www.npmjs.com/package/igniteui-grid-lite
 [igniteui-react]: https://www.npmjs.com/package/igniteui-react
 [igniteui-core]: https://www.npmjs.com/package/igniteui-react-core 
 [Ignite UI for Web Components]: https://www.infragistics.com/products/ignite-ui-react
