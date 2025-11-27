@@ -25,7 +25,6 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 |Accordion|   ✅   |[Docs][Accordion Docs]|[18.9]|[MIT]|
 |Tile Manager|   ✅   |[Docs][Tile Manager]|[18.9]|[MIT]|
 |Carousel  | ✅ | [Docs][Carousel Docs] | [18.7] |[MIT]|
-|Toolbar|   ✅   |[Docs][Toolbar Docs]|[18.2]|[MIT]|
 |Tree|   ✅   |[Docs][Tree Docs]|16.16|[MIT]|
 | Avatar | ✅ | [Docs][Avatar Docs] | 16.11 |[MIT]|
 | Badge | ✅ | [Docs][Badge Docs] | 16.11 |[MIT]|
