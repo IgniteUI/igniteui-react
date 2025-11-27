@@ -45,7 +45,7 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 | Icon | ✅ | [Docs][Icon Docs] | 16.11 |[MIT]|
 | Icon Button | ✅ | [Docs][Icon Button Docs] | 16.11 |[MIT]|
 | Input | ✅ | [Docs][Input Docs] | 16.11 |[MIT]|
-| Linear Progress | ✅ | Docs | 16.11 |[MIT]|
+| Linear Progress | ✅ | [Docs][Linear Progress Docs] | 16.11 |[MIT]|
 |List|   ✅   |[Docs][List Docs]|16.11|[MIT]|
 | Mask Input | ✅ | [Docs][Masked Input Docs] | 16.11 |[MIT]|
 | Navigation Bar (Navbar) | ✅ | [Docs][Navigation Bar Docs] | 16.11 |[MIT]|
@@ -277,10 +277,10 @@ For development of the plugin you can use the `npm run build:plugin:watch` and r
 [Chip Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/chip
 [Circular Progress Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/circular-progress
 [Linear Progress Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/linear-progress
-[Dropdown Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/notifications/toast
+[Dropdown Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/dropdown
 [Tree Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/grids/tree
 [Expansion Panel Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/expansion-panel
-[Masked Input Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/input
+[Masked Input Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/mask-input
 [Accordion Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/accordion
 [Tabs Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/tabs
 [Date Time Input Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/date-time-input
