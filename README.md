@@ -75,7 +75,7 @@ The Ignite UI for React Data Grid is both lightweight and developed to handle hi
 | Pivot Grid        |   ✅   |    [Docs][Pivot Grid Docs]     |[18.3]| [igniteui-react-grids]| [Commercial] |
 | Hierarchical Grid |   ✅   | [Docs][Hierarchical Grid Docs] |[18.6]| [igniteui-react-grids]| [Commercial] |
 |
-| Grid Lite |   ✅   | [Docs][Grid Lite] |1.0| [igniteui-react-grid-lite]| [MIT] |
+| Grid Lite |   ✅   | [Docs][Grid Lite] |0.0.1| [igniteui-react-grid-lite]| [MIT] |
 
 ### Dock Manager - EXCLUSIVE FEATURE
 
