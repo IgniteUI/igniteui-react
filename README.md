@@ -62,8 +62,6 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 | Text Area | ✅ | [Docs][Textarea Docs] | 16.11 |[MIT]|
 | Toast | ✅ | [Docs][Toast Docs] | 16.11 |[MIT]|
 
-## Ignite UI for React Components in Other Packages
-
 ### Grids in [igniteui-react-grids] & [igniteui-react-grid-lite]
 
 The Ignite UI for React Data Grid is both lightweight and developed to handle high data volumes. The React Grid offers powerful data visualization capabilities and superior performance on any device. With interactive features that users expect. Fast rendering. Unbeatable interactions. And the best possible user experience that you wouldn’t otherwise be able to achieve with so little code on your own.
@@ -77,7 +75,7 @@ The Ignite UI for React Data Grid is both lightweight and developed to handle hi
 |
 | Grid Lite |   ✅   | [Docs][Grid Lite] |0.0.1| [igniteui-react-grid-lite]| [MIT] |
 
-### Dock Manager - EXCLUSIVE FEATURE
+### Dock Manager - EXCLUSIVE FEATURE - [igniteui-react-dockmanager](https://www.npmjs.com/package/igniteui-react-dockmanager)
 
 ![Dock Manager Picture]
 
