@@ -24,11 +24,13 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 |Tooltip|   ✅   |[Docs][Tooltip]|[19.1]|[MIT]|
 |Accordion|   ✅   |[Docs][Accordion Docs]|[18.9]|[MIT]|
 |Tile Manager|   ✅   |[Docs][Tile Manager]|[18.9]|[MIT]|
+|Banner | ✅ | [Docs][Banner Docs] | [18.7] |[MIT]|
+|Date Picker | ✅ | [Docs][Date Picker Docs] | [18.7] |[MIT]|
+|Divider|   ✅   |[Docs][Divider|[18.7]|[MIT]|
 |Carousel  | ✅ | [Docs][Carousel Docs] | [18.7] |[MIT]|
 |Tree|   ✅   |[Docs][Tree Docs]|16.16|[MIT]|
 | Avatar | ✅ | [Docs][Avatar Docs] | 16.11 |[MIT]|
 | Badge | ✅ | [Docs][Badge Docs] | 16.11 |[MIT]|
-| Banner | ✅ | [Docs][Banner Docs] | 16.11 |[MIT]|
 | Button | ✅ | [Docs][Button Docs] | 16.11 |[MIT]|
 | Button Group | ✅ | [Docs][Button Group Docs] | 16.11 |[MIT]|
 | Calendar | ✅ | [Docs][Calendar Docs] | 16.11 |[MIT]|
@@ -36,7 +38,6 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 | Checkbox | ✅ | [Docs][Checkbox Docs] | 16.11 |[MIT]|
 | Chip | ✅ | [Docs][Chip Docs] | 16.11 |[MIT]|
 | ComboBox | ✅ | [Docs][Combo Docs] | 16.11 |[MIT]|
-| Date Picker | ✅ | [Docs][Date Picker Docs] | 16.11 |[MIT]|
 | Date Time Input | ✅ | [Docs][Date Time Input Docs] | 16.11 |[MIT]|
 | Dialog | ✅ | [Docs][Dialog Docs] | 16.11 |[MIT]|
 | Dropdown | ✅ | [Docs][Dropdown Docs] | 16.11 |[MIT]|
@@ -342,6 +343,7 @@ For development of the plugin you can use the `npm run build:plugin:watch` and r
 [igniteui-react-excel]: https://www.npmjs.com/package/igniteui-react-excel
 [Chat Docs]: https://www.infragistics.com/products/ignite-ui-react/react/components/interactivity/chat
 [Tile Manager]: https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/tile-manager
+[Divider]: https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/dividers
 [Tooltip]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/tooltip
 [Date Range]: https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/date-range-picker
 [19.3]: https://www.infragistics.com/products/ignite-ui-react/react/components/interactivity/chat
