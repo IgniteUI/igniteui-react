@@ -4,16 +4,56 @@
 
 1. New Carousel Component
 
-## Milestone 5, Due by Aug, 2023
+## Milestone 12, Due by Jan, 2026
 
-1. New Date Picker Component
-2. New Banner Component
+1. Grids Localization
+2. Grid PDF exporter service
+3. Grids filtering performance improvements
 
-## Going down the road
+## Going Down the Road
 
-1. Data Analysis Tool for IgrDataGrid [#48](https://github.com/IgniteUI/igniteui-react/issues/48)
+1. QueryBuilder component
 
 # Previous Milestone
+
+## Milestone 11, version [19.4]() Released Nov, 2025
+
+1. **[DONE]** Grids sorting performance improvements
+2. **[DONE]** Grids pinning on both sides feature
+3. **[DONE]** Grids cell merging feature
+4. **[DONE]** New Tooltip component
+
+## Milestone 11, version [19.3](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1930-october-2025) Released Oct, 2025
+
+1. **[DONE]** New Chat component
+
+## Milestone 10, version [19.2](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1920-august-2025) Released Aug, 2025
+
+1. **[DONE]** [Bug Fixes](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#bug-fixes-4)
+
+## Milestone 9, version [19.1](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1910-july-2025) Released Jul, 2025
+
+1. **[DONE]** New Date Range Picker component
+
+## Milestone 8, version [19.0](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1880-february-2025) Released Feb, 2025
+
+1. **[DONE]** React product introduces many breaking changes done to improve and streamline the API. Please refer to the full [Update Guide](https://www.infragistics.com/products/ignite-ui-react/react/components/update-guide)
+
+## Milestone 7, version [18.9](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1890-april-2025) Released Apr, 2025
+
+1. **[DONE]** New Tile Manager component
+
+## Milestone 6, version [18.8](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1880-february-2025) Released Feb, 2025
+
+1. **[DONE]** Disabled Summaries property for all grids
+2. **[DONE]** New Carousel component
+
+## Milestone 5, version [18.7](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1870-september-2024) Released Sep, 2024
+
+1. **[DONE]** New Banner component
+2. **[DONE]** New Date Picker component
+3. **[DONE]** New Divider component
+4. **[DONE]** Deprecated Display Density  
 
 ## Milestone 4, version [18.6](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1860-march-2024) Released Mar 27th, 2024
 
@@ -26,11 +66,11 @@
 
 ## Milestone 3, version [18.5](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1850-january-2024) Released Jan 3rd, 2024
 
-1.**[DONE]** Chart Highlight Filter
+1. **[DONE]** Chart Highlight Filter
 
 ## Milestone 2, version [18.4](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1840-december-2023) Released Dec 14th, 2023
 
-1.**[DONE]** IgrDataGrid - State Persistence [#47](https://github.com/IgniteUI/igniteui-react/issues/47)
+1. **[DONE]** IgrDataGrid - State Persistence [#47](https://github.com/IgniteUI/igniteui-react/issues/47)
 
 ## Milestone 1, version [18.3](https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1840-december-2023) (Released Oct 23, 2023) [Release Blog 18.3.0](https://www.infragistics.com/community/blogs/b/infragistics/posts/ignite-ui-for-react-data-grid-release)
 
