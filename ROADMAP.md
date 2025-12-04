@@ -7,7 +7,7 @@
 ## Milestone 12, Due by Jan, 2026
 
 1. Grids Localization
-2. PDF exporter service
+2. Grid PDF exporter service
 3. Grids filtering performance improvements
 
 ## Going Down the Road
