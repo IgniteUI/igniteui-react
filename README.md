@@ -13,6 +13,9 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 | --------------- | ---------------- | ------------- | -------------- | --------------- |
 | Latest ✔️       | Latest ✔️        | Latest ✔️     | Latest ✔️      | Latest ✔️       |
 
+## About this repository
+This repository contains the base logic and build process for generating the React wrappers published for the `igniteui-react`, `igniteui-react-dockmanager` and `igniteui-react-grids` packages.
+
 ## Overview
 
 ### Components in [igniteui-react]
@@ -203,9 +206,6 @@ Finally, we can run our new application by using one of the following commands:
 ```
 npm run start
 ```
-
-## About this repository
-This repository contains the base logic and build process for generating the React wrappers published for the `igniteui-react`, `igniteui-react-dockmanager` and `igniteui-react-grids` packages.
 
 ## Typedoc
 
