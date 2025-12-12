@@ -41,6 +41,13 @@ export async function getExports(entry: string): Promise<ExportMeta[]> {
 function wouldBeElided(x: tsSymbol, checker: TypeChecker) {
   // resolve alias to actual symbol to interrogate
   const symbol = x.getFlags() & SymbolFlags.Alias ? checker.getAliasedSymbol(x) : x;
+
+  if (symbol.getFlags() & SymbolFlags.Value) {
+    // if the export symbol is any `Value` (exists at runtime - functions, classes, enums, variables,etc)
+    // even if behind alias combining `TypeAlias` (e.g.`const UnpinnedLocation ..; type UnpinnedLocation`) - assume it won't be elided:
+    return false;
+  }
+
   return (
     symbol.getFlags() & (SymbolFlags.Interface | SymbolFlags.TypeAlias | SymbolFlags.ConstEnum)
   );

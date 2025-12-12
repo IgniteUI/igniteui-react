@@ -44,10 +44,10 @@ const buffer: string[] = [
   ' */',
   "import * as React from 'react'",
   `import { IgcDockManagerComponent as Component } from '${config.imports.default}'`,
-  `import type { IgcDockManagerEventMap } from '${config.imports.types}'`,
+  `import type { IgcDockManagerComponentEventMap } from '${config.imports.types}'`,
   "import { type EventName, createComponent } from '../react-props.js'",
   '// HACK',
-  `import { defineCustomElements } from '${pkgScope}igniteui-dockmanager/loader/index.js'`,
+  `import { defineCustomElements } from '${pkgScope}igniteui-dockmanager/loader'`,
   'defineCustomElements()',
 ];
 
