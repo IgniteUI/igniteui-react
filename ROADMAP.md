@@ -2,8 +2,6 @@
 
 # Current Milestone
 
-1. New Carousel Component
-
 ## Milestone 12, Due by Jan, 2026
 
 1. Grids Localization
