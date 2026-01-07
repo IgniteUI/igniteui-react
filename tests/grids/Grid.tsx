@@ -64,6 +64,7 @@ export default function Grid() {
     return row ? (
       <button
         type="button"
+        data-id={row.data.id}
         onClick={(_e) => {
           row.pinned = !row.pinned;
         }}

@@ -1,8 +1,8 @@
 import { afterAll, expect, test, vi } from 'vitest';
-import { page } from 'vitest/browser';
+import { type Locator, page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { configure } from 'vitest-browser-react/pure';
-
+import type { IgrGrid } from '../../src/grids';
 import Grid from './Grid';
 
 afterAll(() => vi.restoreAllMocks());
@@ -66,4 +66,29 @@ test('should maintain projected parents in Strict mode', async () => {
   configure({
     reactStrictMode: false,
   });
+});
+
+test('should render correct template values on repeating cell values between rows', async () => {
+  render(<Grid />);
+  await page.getByText('switch paging').click();
+  await expect.element(page.getByRole('gridcell', { name: 'PK: 6' })).toBeInTheDocument();
+
+  async function checkRowTemplatedButtonId(rows: Locator[]) {
+    for (const row of rows) {
+      const id = Number(row.element().getAttribute('data-rowindex')) + 1;
+      const button = row.getByRole('button', { name: '📌' });
+      await expect.element(button, { timeout: 100 }).toHaveAttribute('data-id', `${id}`);
+    }
+  }
+
+  let rows = page.getByRole('row').filter({ hasText: 'PK:' }).all();
+  const grid = document.querySelector<IgrGrid>('igc-grid')!;
+
+  await checkRowTemplatedButtonId(rows);
+
+  grid.navigateTo(9);
+  await expect.element(page.getByRole('gridcell', { name: 'PK: 10' })).toBeVisible();
+  rows = rows = page.getByRole('row').filter({ hasText: 'PK:' }).all();
+
+  await checkRowTemplatedButtonId(rows);
 });

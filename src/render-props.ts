@@ -53,12 +53,15 @@ class RequestRenderer<T> extends AsyncDirective {
     return this._part?.deref()?.parentNode as Element;
   }
 
-  private _shouldUpdateNG(data: NgState<T>): boolean {
-    if (equal(data.$implicit, this._state.previous)) {
-      return false;
-    }
+  private _shouldUpdateNG(_data: NgState<T>): boolean {
+    /* Can't compare implicit, in main use case it'd be the cell value which might repeat,
+      be undefined or otherwise unrelated to the template content. Disabled for now. Reevaluate: */
 
-    this._state.previous = data.$implicit as T;
+    // if (equal(data.$implicit, this._state.previous)) {
+    //   return false;
+    // }
+
+    // this._state.previous = data.$implicit as T;
     return true;
   }
 
