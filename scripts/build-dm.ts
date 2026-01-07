@@ -43,6 +43,7 @@ const config = {
   ]),
   ignoreEvents: new Set<string>(),
   templatesFilter: (_prop: ClassField, _declaration: CustomElementWithPath) => false,
+  typedocModuleName: 'igniteui-react-dockmanager',
 } as const;
 
 await wrapWebComponents(manifest as Package, config);
