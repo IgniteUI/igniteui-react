@@ -1,4 +1,3 @@
-//@ts-nocheck
 /** biome-ignore-all lint/complexity/noBannedTypes: use `{}` literals */
 
 import { createComponent as _createComponent, type EventName, type Options } from '@lit/react';
@@ -40,8 +39,8 @@ type ComponentProps<I, E extends EventNames> = Omit<
 /** Mapped type to update the render props callback return type */
 type WithJsxRenderProps<T, R extends Renderers> = {
   [K in keyof T]: K extends keyof R
-    ? NonNullable<T[K]> extends (...args: any[]) => any
-      ? (...args: WithDataContext<Parameters<T[K]>>) => React.ReactNode
+    ? NonNullable<T[K]> extends (...args: infer Args) => unknown
+      ? (...args: WithDataContext<Args>) => React.ReactNode
       : T[K]
     : T[K];
 };
@@ -83,46 +82,66 @@ export const createComponent = <
   }
 
   if (!renderProps && !moveBackOnDelete) {
-    return _createComponent({ react: React, tagName, elementClass, events, displayName });
+    // When R is empty (no renderProps), the component types are equivalent at runtime
+    return _createComponent({
+      react: React,
+      tagName,
+      elementClass,
+      events,
+      displayName,
+    }) as unknown as ReactWebComponent<I, E, R>;
   }
 
   type Props = ComponentProps<I, E>;
 
-  events ??= {} as E;
-  const component = _createComponent({ react: React, tagName, elementClass, events, displayName });
+  const safeEvents = events ?? ({} as E);
+  const component = _createComponent({
+    react: React,
+    tagName,
+    elementClass,
+    events: safeEvents,
+    displayName,
+  });
 
-  return React.forwardRef<I, Props>((props, ref) => {
+  type PropsWithRenderProps = WithJsxRenderProps<Props, R>;
+
+  return React.forwardRef<I, PropsWithRenderProps>((props, ref) => {
     const listeners = React.useRef(new Map<string, unknown>());
     const elementRef = React.useRef<I | null>(null);
     const projectionParent = React.useRef<WeakRef<HTMLElement> | null>(null);
     const [renderers, setRenderers] = React.useState(new Map<string, unknown>());
     const outProps: Record<string, unknown> = {};
-    const portals: Record<string, (e: E) => unknown> = {};
+    const portals: Record<string, (data: unknown) => React.ReactNode> = {};
 
-    if (moveBackOnDelete) {
-      // https://react.dev/learn/reusing-logic-with-custom-hooks#keep-your-custom-hooks-focused-on-concrete-high-level-use-cases
-      // https://stackoverflow.com/questions/53464595/how-to-use-componentwillmount-in-react-hooks ?
-      // Empty dependency array so this will only run once after first render.
-      // biome-ignore lint/correctness/useHookAtTopLevel: Yeah, it would be good to be at top level and not in a branch
-      React.useLayoutEffect(() => {
-        // already too late to save elementRef.current?.parentElement, rely on Elements
-        // secondary run (likely dev strict mode), move back to projection:
-        const prevParent = projectionParent.current?.deref();
-        if (prevParent && prevParent !== elementRef.current.parentElement) {
-          prevParent.appendChild(elementRef.current);
-          projectionParent.current = null;
-        }
-        return () => {
-          // cleanup **before** component is removed from the DOM
-          const creationParent = elementRef.current?.ngElementStrategy?.parentElement?.deref();
-          if (creationParent && creationParent !== elementRef.current.parentElement) {
-            // move back to original parent
-            projectionParent.current = new WeakRef(elementRef.current.parentElement);
-            creationParent.appendChild(elementRef.current);
+    // https://react.dev/learn/reusing-logic-with-custom-hooks#keep-your-custom-hooks-focused-on-concrete-high-level-use-cases
+    // Runs once after first render to handle element re-parenting for Angular integration.
+    React.useLayoutEffect(() => {
+      if (!moveBackOnDelete) return;
+
+      // already too late to save elementRef.current?.parentElement, rely on Elements
+      // secondary run (likely dev strict mode), move back to projection:
+      const prevParent = projectionParent.current?.deref();
+      if (prevParent && elementRef.current && prevParent !== elementRef.current.parentElement) {
+        prevParent.appendChild(elementRef.current);
+        projectionParent.current = null;
+      }
+      return () => {
+        // cleanup **before** component is removed from the DOM
+        const element = elementRef.current;
+        if (!element) return;
+
+        const creationParent = (
+          element as I & { ngElementStrategy?: { parentElement?: WeakRef<HTMLElement> } }
+        ).ngElementStrategy?.parentElement?.deref();
+        if (creationParent && creationParent !== element.parentElement) {
+          // move back to original parent
+          if (element.parentElement) {
+            projectionParent.current = new WeakRef(element.parentElement);
           }
-        };
-      }, []);
-    }
+          creationParent.appendChild(element);
+        }
+      };
+    }, [moveBackOnDelete]);
 
     // Don't wrap in an `useCallback` hook since there is no mechanism in React to dispose of the cached function(s),
     // potentially leading to a memory leak/higher memory usage for heavily templated component instances.
@@ -135,7 +154,6 @@ export const createComponent = <
           createPortal(portals[req.name]?.(req.data), req.node, req.slotName),
         );
       }
-
       setRenderers(() => new Map(renderers));
     };
 
@@ -153,7 +171,7 @@ export const createComponent = <
           if (listeners.current.has(fullPropName)) {
             outProps[prop] = listeners.current.get(fullPropName);
           } else {
-            portals[rendererName] = propMap[prop];
+            portals[rendererName] = propMap[prop] as (data: unknown) => React.ReactNode;
             const patched = createPatched(renderFunc, rendererName);
             outProps[prop] = patched;
             listeners.current.set(fullPropName, patched);
@@ -168,7 +186,7 @@ export const createComponent = <
           processProps(
             propMap[prop] as Record<string, unknown>,
             propDefinitions?.[prop] as Record<string, unknown>,
-            outProps[prop],
+            outProps[prop] as Record<string, unknown>,
             fullPropName,
           );
         } else {
@@ -185,13 +203,14 @@ export const createComponent = <
 
     processProps(props, renderProps ?? {}, outProps);
 
+    const propsWithChildren = props as Props & { children?: React.ReactNode };
     if (listeners.current.size) {
       Object.assign(outProps, {
-        children: [...React.Children.toArray(props.children), ...renderers.values()],
+        children: [...React.Children.toArray(propsWithChildren.children), ...renderers.values()],
       });
     } else {
       Object.assign(outProps, {
-        children: React.Children.toArray(props.children),
+        children: React.Children.toArray(propsWithChildren.children),
       });
     }
 
@@ -212,18 +231,18 @@ export const createComponent = <
   });
 };
 
-function createPatched(callback: any, propertyName: string) {
+function createPatched(callback: (req: RendererRequest<unknown>) => void, propertyName: string) {
   return (ctx: unknown) => html`${requestRenderer(callback, propertyName, ctx)}`;
 }
 
-function hasNestedProperty(object: any, path: string) {
+function hasNestedProperty(object: Record<string, unknown>, path: string): boolean {
   const parts = path.split('.');
-  let current = object;
+  let current: unknown = object;
   for (const part of parts) {
-    if (current === undefined || current === null) {
+    if (current === undefined || current === null || typeof current !== 'object') {
       return false;
     }
-    current = current[part];
+    current = (current as Record<string, unknown>)[part];
   }
   return current !== undefined;
 }
