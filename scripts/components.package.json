@@ -25,28 +25,8 @@
   },
   "dependencies": {
     "@lit/react": "^1.0.7",
-    "igniteui-webcomponents": "~6.4.0",
+    "igniteui-webcomponents": "~6.5.0",
     "lit": "^3.3.0"
-  },
-  "peerDependencies": {
-    "dompurify": "^3.3.0",
-    "marked": "^17.0.0",
-    "marked-shiki": "^1.2.0",
-    "shiki": "^3.20.0"
-  },
-  "peerDependenciesMeta": {
-    "dompurify": {
-      "optional": true
-    },
-    "marked": {
-      "optional": true
-    },
-    "marked-shiki": {
-      "optional": true
-    },
-    "shiki": {
-      "optional": true
-    }
   },
   "files": ["**/*", "!grids/**/*", "!grids.*", "!dock-manager/**/*", "!dock-manager.*"]
 }
