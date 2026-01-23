@@ -44,7 +44,7 @@ type RendererCallback<T> = (req: RendererRequest<T>) => unknown;
 class RequestRenderer<T> extends AsyncDirective {
   private readonly _key = getUUID();
   private _part: WeakRef<ChildPart> | null = null;
-  private _callback: RendererCallback<T> | null = null;
+  private _callback: WeakRef<RendererCallback<T>> | null = null;
 
   private _state = { previous: NOT_SET, current: undefined } as RendererState<T>;
   private _name!: string;
@@ -88,28 +88,31 @@ class RequestRenderer<T> extends AsyncDirective {
     part: ChildPart,
     [callback, name, data]: DirectiveParameters<this>,
   ): symbol {
-    this._callback = callback;
+    this._callback = new WeakRef(callback);
     this._name = name;
     this._state.current = data;
     this._part = new WeakRef(part);
 
-    if (this.isConnected && this._callback && this._shouldUpdate()) {
-      this._callback(
-        createRequestData(this._name, this._state.current, this._renderNode, this._key),
-      );
+    if (this.isConnected && callback && this._shouldUpdate()) {
+      callback(createRequestData(this._name, this._state.current, this._renderNode, this._key));
     }
 
     return noChange;
   }
 
+  protected override reconnected(): void {
+    const callback = this._callback?.deref();
+    if (callback && this._shouldUpdate()) {
+      callback(createRequestData(this._name, this._state.current, this._renderNode, this._key));
+    }
+  }
+
   protected override disconnected(): void {
-    if (this._callback) {
-      this._callback(
-        createRequestData(this._name, REQUEST_REMOVE as T, this._renderNode, this._key),
-      );
-      this._callback = null;
-      this._part = null;
-      this._state = { previous: NOT_SET, current: undefined } as RendererState<T>;
+    const callback = this._callback?.deref();
+    if (callback) {
+      callback(createRequestData(this._name, REQUEST_REMOVE as T, this._renderNode, this._key));
+      // drop prev, so a reconnect would behave like initial
+      this._state.previous = NOT_SET as T;
     }
   }
 }
