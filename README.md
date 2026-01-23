@@ -228,7 +228,6 @@ For development of the plugin you can use the `npm run build:plugin:watch` and r
 [Commercial]: https://www.infragistics.com/legal/license
 [MIT]: LICENSE
 [igniteui-react-grids]: https://www.npmjs.com/package/igniteui-react-grids
-[igniteui-react-grid-lite]: https://www.npmjs.com/package/igniteui-react-grid-lite
 [igniteui-grid-lite]: https://www.npmjs.com/package/igniteui-grid-lite
 [igniteui-react]: https://www.npmjs.com/package/igniteui-react
 [igniteui-core]: https://www.npmjs.com/package/igniteui-react-core 

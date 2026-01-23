@@ -21,12 +21,24 @@
     "./extras": {
       "types": "./extras/index.d.ts",
       "default": "./extras.js"
+    },
+    "./grid-lite": {
+      "types": "./grid-lite.d.ts",
+      "default": "./grid-lite.js"
     }
   },
   "dependencies": {
     "@lit/react": "^1.0.7",
     "igniteui-webcomponents": "~6.5.0",
     "lit": "^3.3.0"
+  },
+  "peerDependencies": {
+    "igniteui-grid-lite": "~0.4.0"
+  },
+  "peerDependenciesMeta": {
+    "igniteui-grid-lite": {
+      "optional": true
+    }
   },
   "files": ["**/*", "!grids/**/*", "!grids.*", "!dock-manager/**/*", "!dock-manager.*"]
 }

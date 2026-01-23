@@ -3,6 +3,7 @@
     "./src/components",
     "./src/dock-manager",
     "./src/grids",
+    "./src/grid-lite",
     "./node_modules/typescript/lib/lib.dom.d.ts"
   ],
   "entryPointStrategy": "resolve",
@@ -11,10 +12,7 @@
     "ig-typedoc-theme",
     "./plugins/typedoc-plugin-react-components/dist/main.js"
   ],
-  "exclude": [
-    "**/*.spec.ts",
-    "tests",
-  ],
+  "exclude": ["**/*.spec.ts", "tests"],
   "theme": "igtheme",
   "excludePrivate": true,
   "excludeProtected": true,

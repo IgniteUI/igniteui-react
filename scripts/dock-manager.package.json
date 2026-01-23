@@ -28,6 +28,8 @@
     "**/*",
     "!grids/**/*",
     "!grids.*",
+    "!grid-lite/**/*",
+    "!grid-lite.*",
     "!components/**/*",
     "!components.*",
     "!extras/**/*",

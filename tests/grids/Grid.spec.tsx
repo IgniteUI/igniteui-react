@@ -87,7 +87,7 @@ test('should render correct template values on repeating cell values between row
   await checkRowTemplatedButtonId(rows);
 
   grid.navigateTo(9);
-  await expect.element(page.getByRole('gridcell', { name: 'PK: 10' })).toBeVisible();
+  await expect.element(page.getByRole('gridcell', { name: 'PK: 10' })).toBeInViewport();
   rows = rows = page.getByRole('row').filter({ hasText: 'PK:' }).all();
 
   await checkRowTemplatedButtonId(rows);

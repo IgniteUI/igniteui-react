@@ -2,7 +2,7 @@
   "name": "igniteui-react-grids",
   "version": "0.0.0",
   "type": "module",
-  "description": "Ignite UI React grid components.",
+  "description": "Ignite UI React Grid components.",
   "homepage": "https://github.com/IgniteUI/igniteui-react",
   "keywords": [
     "react",
@@ -35,6 +35,8 @@
     "!components.*",
     "!dock-manager/**/*",
     "!dock-manager.*",
+    "!grid-lite/**/*",
+    "!grid-lite.*",
     "!extras/**/*",
     "!extras.*"
   ]

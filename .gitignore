@@ -18,6 +18,7 @@ typedocs
 src/components/*
 src/dock-manager/*
 src/grids/*
+src/grid-lite/*
 
 # Test results
 coverage
