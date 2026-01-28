@@ -2,6 +2,7 @@ import type {
   GridPagingMode as GridPagingModeType,
   IgrColumn,
   IgrDimensionsChange,
+  IgrExpressionTree,
   IgrFilteringExpressionsTree,
   IgrForOfState,
   IgrGridClipboardEvent,
@@ -29,6 +30,7 @@ export type IgrPivotValueDetail = IgrPivotValue;
 export type IgrPivotValueEventArgs = CustomEvent<IgrPivotValue>;
 export type IgrSortingExpressionEventArgs = CustomEvent<IgrSortingExpression[]>;
 export type IgrValuesChangeEventArgs = CustomEvent<IgrValuesChange>;
+export type IgrExpressionTreeEventArgs = CustomEvent<IgrExpressionTree>;
 //#endregion
 
 // shared static event args:
