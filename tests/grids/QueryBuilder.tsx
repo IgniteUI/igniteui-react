@@ -89,7 +89,7 @@ export default function QueryBuilder() {
         </IgrQueryBuilderHeader>
       </IgrQueryBuilder>
 
-      <IgrGrid data={data} autoGenerate={true}></IgrGrid>
+      <IgrGrid autoGenerate={true} data={data} style={{ minHeight: '300px' }}></IgrGrid>
       <IgrButton onClick={() => setEntities([customersEntity, ordersEntity])}>
         With orders entity
       </IgrButton>
