@@ -29,11 +29,11 @@
   },
   "dependencies": {
     "@lit/react": "^1.0.7",
-    "igniteui-webcomponents": "~7.0.0-rc.0",
+    "igniteui-webcomponents": "~7.0.0",
     "lit": "^3.3.0"
   },
   "peerDependencies": {
-    "igniteui-grid-lite": "~0.5.1"
+    "igniteui-grid-lite": "~0.6.0"
   },
   "peerDependenciesMeta": {
     "igniteui-grid-lite": {
