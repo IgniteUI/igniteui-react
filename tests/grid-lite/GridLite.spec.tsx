@@ -7,7 +7,7 @@ import GridLite from './GridLite';
 afterAll(() => vi.restoreAllMocks());
 
 test('Default grid lite sample', async () => {
-  render(<GridLite />);
+  await render(<GridLite />);
   const grid = document.querySelector<IgrGridLite>('igc-grid-lite')!;
 
   // templated cell
@@ -54,7 +54,7 @@ test('Default grid lite sample', async () => {
 });
 
 test('should render correct template values on repeating cell values between rows', async () => {
-  render(<GridLite />);
+  await render(<GridLite />);
   await expect.element(page.getByText('PK: 1', { exact: true })).toBeVisible();
 
   async function checkRowTemplatedButtonId(buttons: Locator[]) {
