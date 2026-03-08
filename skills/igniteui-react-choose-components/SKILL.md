@@ -42,14 +42,15 @@ Ignite UI for React is distributed across several packages depending on your nee
 
 | Package | License | Install | Best For |
 |---|---|---|---|
-| [`igniteui-react`](https://www.npmjs.com/package/igniteui-react) | MIT | `npm install igniteui-react` | General UI components (inputs, layouts, notifications, scheduling) and lightweight grid |
+| [`igniteui-react`](https://www.npmjs.com/package/igniteui-react) | MIT | `npm install igniteui-react` | General UI components (inputs, layouts, notifications, scheduling) |
+| [`igniteui-grid-lite`](https://www.npmjs.com/package/igniteui-grid-lite) | MIT | `npm install igniteui-grid-lite` | Lightweight grid (Grid Lite) — web component, requires `IgcGridLite.register()` |
 | [`igniteui-react-grids`](https://www.npmjs.com/package/igniteui-react-grids) | Commercial | `npm install igniteui-react-grids` (trial) | Advanced data grids (Data Grid, Tree Grid, Hierarchical Grid, Pivot Grid) |
 | [`igniteui-react-charts`](https://www.npmjs.com/package/igniteui-react-charts) | Commercial | `npm install igniteui-react-charts` (trial) | Charts (Category, Financial, Pie, Scatter, etc.) |
 | [`igniteui-react-maps`](https://www.npmjs.com/package/igniteui-react-maps) | Commercial | `npm install igniteui-react-maps` (trial) | Geographic maps |
 | [`igniteui-react-gauges`](https://www.npmjs.com/package/igniteui-react-gauges) | Commercial | `npm install igniteui-react-gauges` (trial) | Radial and linear gauges |
 | [`reveal-sdk-wrappers-react`](https://www.npmjs.com/package/reveal-sdk-wrappers-react) | Commercial | `npm install reveal-sdk-wrappers-react` | Embedded BI dashboards (Reveal SDK) |
 
-> **Note:** `igniteui-react` also exports a lightweight grid (`IgrGrid` from `igniteui-react/grid-lite`) under the MIT license.
+> **Note:** The lightweight Grid Lite (`IgcGridLite` from `igniteui-grid-lite`) is a **web component** — not a React wrapper. It uses the `Igc` prefix and requires `IgcGridLite.register()` before use, plus a sized container. See the [use-components skill](../igniteui-react-use-components/SKILL.md) for setup details.
 
 ---
 
@@ -141,7 +142,7 @@ Use the tables below to map a UI need to the right React component. All componen
 |---|---|---|---|
 | Simple scrollable list | `IgrList` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/grids/list) |
 | Hierarchical / tree data | `IgrTree` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/grids/tree) |
-| Tabular data (MIT, lightweight) | `IgrGrid` | `igniteui-react/grid-lite` | [Docs](https://www.infragistics.com/reactsite/components/grid-lite/overview) |
+| Tabular data (MIT, lightweight) | `IgcGridLite` | `igniteui-grid-lite` (requires `.register()`) | [Docs](https://www.infragistics.com/reactsite/components/grid-lite/overview) |
 | Full-featured tabular data grid | `IgrDataGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/reactsite/components/grids/grid/overview) |
 | Nested / master-detail grid | `IgrHierarchicalGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/reactsite/components/grids/hierarchical-grid/overview) |
 | Parent-child relational tree grid | `IgrTreeGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/reactsite/components/grids/tree-grid/overview) |
@@ -197,8 +198,8 @@ Use the **Component Catalogue** tables above to find matching components. When i
 | Simple static list | `IgrList` | Data Grid |
 | Basic dropdown | `IgrSelect` | `IgrCombo` |
 | Searchable or multi-select dropdown | `IgrCombo` | `IgrSelect` |
-| Tabular data with basic display | `IgrGrid` (grid-lite) | `IgrDataGrid` (commercial) |
-| Tabular data, advanced features needed | `IgrDataGrid` | `IgrGrid` (grid-lite) |
+| Tabular data with basic display | `IgcGridLite` (grid-lite) | `IgrDataGrid` (commercial) |
+| Tabular data, advanced features needed | `IgrDataGrid` | `IgcGridLite` (grid-lite) |
 | Single dismissible message | `IgrToast` | `IgrSnackbar` |
 | Message requiring user action | `IgrSnackbar` | `IgrToast` |
 | Collapsible single section | `IgrExpansionPanel` | `IgrAccordion` |
@@ -212,7 +213,7 @@ Use the **Component Catalogue** tables above to find matching components. When i
 Confirm which package provides the component:
 
 - **MIT components** (inputs, layout, notifications, scheduling, chat) → `igniteui-react`
-- **Lightweight grid** (Grid Lite) → `igniteui-react/grid-lite` *(MIT)*
+- **Lightweight grid** (Grid Lite) → `igniteui-grid-lite` *(MIT, web component — requires `IgcGridLite.register()`)*
 - **Advanced grids** (Data Grid, Tree Grid, Hierarchical Grid, Pivot Grid) → `igniteui-react-grids` *(commercial)*
 - **Charts** → `igniteui-react-charts` *(commercial)*
 - **Maps** → `igniteui-react-maps` *(commercial)*
@@ -292,7 +293,7 @@ function Dashboard() {
 
 - `IgrInput` — search bar
 - `IgrCombo` — filter dropdowns
-- `IgrGrid` (grid-lite) or `IgrDataGrid` — tabular data
+- `IgcGridLite` (grid-lite) or `IgrDataGrid` — tabular data
 - `IgrButton` / `IgrIconButton` — actions
 - `IgrDialog` — confirm delete modal
 - `IgrBadge` — status indicators

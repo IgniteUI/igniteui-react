@@ -43,6 +43,9 @@ This skill covers everything you need to install, set up, and use Ignite UI for 
 # Core UI components (MIT)
 npm install igniteui-react
 
+# If you need the lightweight grid (MIT, web component)
+npm install igniteui-grid-lite
+
 # If you need advanced grids (commercial)
 npm install igniteui-react-grids
 
@@ -171,7 +174,7 @@ export default App;
 
 > **No `defineComponents()` needed.** Unlike the underlying web components library, the React wrappers automatically register the web component when you import and render them. You never need to call `defineComponents()`.
 >
-> **Exception — Charts, Gauges & Maps:** Components from `igniteui-react-charts`, `igniteui-react-gauges`, and `igniteui-react-maps` **do** require explicit module registration (e.g., `IgrCategoryChartModule.register()`). See [Charts, Gauges & Maps — Module Registration](#charts-gauges--maps--module-registration-and-container-sizing) below.
+> **Exception — Charts, Gauges, Maps & Grid Lite:** Components from `igniteui-react-charts`, `igniteui-react-gauges`, `igniteui-react-maps`, and `igniteui-grid-lite` **do** require explicit registration. Charts/gauges/maps use `*Module.register()` (e.g., `IgrCategoryChartModule.register()`), while Grid Lite uses `IgcGridLite.register()`. See [Charts, Gauges, Maps & Grid Lite — Module Registration](#charts-gauges-maps--grid-lite--module-registration-and-container-sizing) below.
 
 ---
 
@@ -260,9 +263,11 @@ function UserGrid({ users }: { users: User[] }) {
 }
 ```
 
-### Charts, Gauges & Maps — Module Registration and Container Sizing
+### Charts, Gauges, Maps & Grid Lite — Module Registration and Container Sizing
 
 > **⚠️ IMPORTANT:** Unlike core UI components (from `igniteui-react`), chart, gauge, and map components from `igniteui-react-charts`, `igniteui-react-gauges`, and `igniteui-react-maps` **require explicit module registration** before use. You must import the corresponding `*Module` class and call `.register()` at the module level (outside the component function).
+>
+> **Grid Lite** (`IgcGridLite` from `igniteui-grid-lite`) is a **web component** — not a React wrapper. It also requires `IgcGridLite.register()` and a sized container.
 
 #### Module Registration
 
@@ -283,6 +288,7 @@ Common module registrations:
 | `IgrRadialGauge` | `IgrRadialGaugeModule` | `IgrRadialGaugeModule.register()` |
 | `IgrLinearGauge` | `IgrLinearGaugeModule` | `IgrLinearGaugeModule.register()` |
 | `IgrGeographicMap` | `IgrGeographicMapModule` | `IgrGeographicMapModule.register()` |
+| `IgcGridLite` | (self-registering) | `IgcGridLite.register()` |
 
 #### Container Sizing (REQUIRED)
 
@@ -347,8 +353,40 @@ export default function DashboardView() {
 }
 ```
 
-> **Note:** Core UI components from `igniteui-react` (e.g., `IgrButton`, `IgrInput`, `IgrGrid`) do NOT require module registration — they auto-register when imported. Only charts, gauges, and maps from the commercial packages need `.register()`.
+> **Note:** Core UI components from `igniteui-react` (e.g., `IgrButton`, `IgrInput`) do NOT require module registration — they auto-register when imported. Charts, gauges, maps, and Grid Lite all need explicit `.register()` calls.
 
+#### Complete Grid Lite Example
+
+> **⚠️ IMPORTANT:** Grid Lite (`IgcGridLite`) is a **web component** from `igniteui-grid-lite` — it uses the `Igc` prefix (not `Igr`). It requires `IgcGridLite.register()` and a sized container.
+
+```tsx
+import { IgcGridLite } from 'igniteui-grid-lite';
+import { useGetCustomers } from '../hooks/northwind-hooks';
+import styles from './master-view.module.css';
+
+// ⚠️ REQUIRED — register the web component before use
+IgcGridLite.register();
+
+export default function MasterView() {
+  const { northwindCustomers } = useGetCustomers();
+
+  return (
+    <div className={styles['grid-lite']}>
+      <IgcGridLite data={northwindCustomers} />
+    </div>
+  );
+}
+```
+
+```css
+/* master-view.module.css */
+.grid-lite {
+  min-width: 400px;
+  min-height: 220px;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+```
 ### IgrTabs — Content Panels vs Navigation
 
 `IgrTabs` supports two distinct usage patterns. Choosing the wrong one is a common mistake.
@@ -887,19 +925,51 @@ import 'igniteui-webcomponents/themes/light/bootstrap.css';           // Base th
 import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css'; // Grid theme
 ```
 
-### Issue: `IgrGrid` from `igniteui-react/grid-lite` is confused with `IgrDataGrid` from `igniteui-react-grids`
+### Issue: Grid Lite does not render or compilation error
+
+**Cause:** Grid Lite (`IgcGridLite`) is a **web component** from `igniteui-grid-lite` — not a React wrapper from `igniteui-react`. It uses the `Igc` prefix and requires explicit registration.
+
+**Solution:**
+
+1. Install the correct package: `npm install igniteui-grid-lite`
+2. Import `IgcGridLite` from `igniteui-grid-lite` (not from `igniteui-react`)
+3. Call `IgcGridLite.register()` at module level
+4. Wrap in a sized container
+
+```tsx
+import { IgcGridLite } from 'igniteui-grid-lite';
+
+IgcGridLite.register();
+
+// Use in JSX with a sized container:
+<div className={styles['grid-lite']}>
+  <IgcGridLite data={data} />
+</div>
+```
+
+```css
+.grid-lite {
+  min-width: 400px;
+  min-height: 220px;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+```
+
+### Issue: `IgcGridLite` from `igniteui-grid-lite` is confused with `IgrDataGrid` from `igniteui-react-grids`
 
 **Solution:** These are different components:
-- `igniteui-react/grid-lite` → lightweight MIT grid (`IgrGrid`)
-- `igniteui-react-grids` → full-featured commercial grids (`IgrDataGrid`, `IgrTreeGrid`, etc.)
+- `igniteui-grid-lite` → lightweight MIT grid (`IgcGridLite`, web component — requires `.register()`)
+- `igniteui-react-grids` → full-featured commercial grids (`IgrDataGrid`, `IgrTreeGrid`, etc. — React wrappers)
 
 Import from the correct package for your needs:
 
 ```tsx
-// Lightweight grid (MIT)
-import { IgrGrid } from 'igniteui-react/grid-lite';
+// Lightweight grid (MIT, web component)
+import { IgcGridLite } from 'igniteui-grid-lite';
+IgcGridLite.register();
 
-// Full-featured grid (commercial)
+// Full-featured grid (commercial, React wrapper)
 import { IgrDataGrid } from 'igniteui-react-grids';
 ```
 
@@ -928,11 +998,11 @@ const dialogRef = useRef<HTMLElement>(null);
 (dialogRef.current as any)?.show();
 ```
 
-### Issue: Chart / gauge / map does not render or is invisible
+### Issue: Chart / gauge / map / Grid Lite does not render or is invisible
 
 **Cause:** Two common causes:
-1. The corresponding `*Module` was not registered (e.g., `IgrCategoryChartModule.register()` was not called)
-2. The chart's parent container has no explicit dimensions — charts inherit size from their container and will be invisible if the container has zero height/width
+1. The corresponding module was not registered (e.g., `IgrCategoryChartModule.register()` or `IgcGridLite.register()` was not called)
+2. The parent container has no explicit dimensions — these components inherit size from their container and will be invisible if the container has zero height/width
 
 **Solution:**
 
@@ -990,14 +1060,15 @@ IgrCategoryChartModule.register();
 
 1. **Always import theme CSS** — components will not render correctly without it. Import `igniteui-webcomponents/themes/...` for core components and additionally `igniteui-webcomponents-grids/grids/themes/...` for grids. In Next.js, import in each client component file or the root layout
 2. **Don't call `defineComponents()`** — the React wrappers handle registration automatically
-3. **Register chart/gauge/map modules** — unlike core UI components, charts, gauges, and maps require `*Module.register()` (e.g., `IgrCategoryChartModule.register()`) called at module level before use
-4. **Wrap charts in sized containers** — charts, gauges, and maps need a parent element with explicit `min-width`, `min-height`, or `flex-grow` dimensions. Without sizing, the component will be invisible
-5. **Use named imports** — `import { IgrButton } from 'igniteui-react'` enables tree-shaking
-6. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
-7. **Use refs sparingly** — prefer declarative props; use refs only for imperative methods like `show()` / `hide()`
-8. **Prefer controlled components** for forms — wire up `value` + `onInput` / `onChange` with `useState`
-9. **Check slot names** in the docs — use the `slot` attribute on child elements to target named slots
-10. **Tabs for navigation** — when using `IgrTabs` with React Router, do NOT include `IgrTabPanel`. Use only `IgrTab` and render content via `<Outlet />`
+3. **Register chart/gauge/map/Grid Lite modules** — charts, gauges, and maps require `*Module.register()` (e.g., `IgrCategoryChartModule.register()`); Grid Lite requires `IgcGridLite.register()`. Call at module level before use
+4. **Wrap charts, gauges, maps, and Grid Lite in sized containers** — these components need a parent element with explicit `min-width`, `min-height`, or `flex-grow` dimensions. Without sizing, the component will be invisible
+5. **Grid Lite uses `Igc` prefix** — `IgcGridLite` from `igniteui-grid-lite` is a web component, not a React wrapper. It uses `Igc` prefix (not `Igr`) and requires `.register()`
+6. **Use named imports** — `import { IgrButton } from 'igniteui-react'` enables tree-shaking
+7. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
+8. **Use refs sparingly** — prefer declarative props; use refs only for imperative methods like `show()` / `hide()`
+9. **Prefer controlled components** for forms — wire up `value` + `onInput` / `onChange` with `useState`
+10. **Check slot names** in the docs — use the `slot` attribute on child elements to target named slots
+11. **Tabs for navigation** — when using `IgrTabs` with React Router, do NOT include `IgrTabPanel`. Use only `IgrTab` and render content via `<Outlet />`
 
 ## Additional Resources
 
