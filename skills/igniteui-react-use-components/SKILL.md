@@ -233,7 +233,8 @@ function MyForm() {
   };
 
   const handleInput = (event: CustomEvent) => {
-    console.log('Input value:', (event.target as HTMLInputElement).value);
+    // event.target is the underlying web component element (e.g., igc-input)
+    console.log('Input value:', (event.target as any).value);
   };
 
   const handleChange = (event: CustomEvent) => {

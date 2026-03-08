@@ -183,7 +183,7 @@ function AdminPanel() {
 
 ### Inline Styles on a Wrapper
 
-For quick one-off overrides, you can apply CSS custom properties via inline styles:
+For truly dynamic one-off overrides, you can apply CSS custom properties via inline styles. **Prefer CSS classes or CSS modules** for better type safety and maintainability — use inline styles only when values need to change at runtime:
 
 ```tsx
 <div style={{ '--ig-primary-h': '260deg', '--ig-primary-s': '60%', '--ig-primary-l': '45%' } as React.CSSProperties}>
@@ -191,7 +191,7 @@ For quick one-off overrides, you can apply CSS custom properties via inline styl
 </div>
 ```
 
-> **Note:** TypeScript requires the `as React.CSSProperties` cast because CSS custom properties are not in the standard `CSSProperties` type.
+> **Note:** TypeScript requires the `as React.CSSProperties` cast because CSS custom properties are not in the standard `CSSProperties` type. This bypasses type safety — prefer CSS classes when possible.
 
 ---
 
