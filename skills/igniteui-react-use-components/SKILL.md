@@ -170,6 +170,8 @@ export default App;
 ```
 
 > **No `defineComponents()` needed.** Unlike the underlying web components library, the React wrappers automatically register the web component when you import and render them. You never need to call `defineComponents()`.
+>
+> **Exception — Charts, Gauges & Maps:** Components from `igniteui-react-charts`, `igniteui-react-gauges`, and `igniteui-react-maps` **do** require explicit module registration (e.g., `IgrCategoryChartModule.register()`). See [Charts, Gauges & Maps — Module Registration](#charts-gauges--maps--module-registration-and-container-sizing) below.
 
 ---
 
@@ -257,6 +259,95 @@ function UserGrid({ users }: { users: User[] }) {
   );
 }
 ```
+
+### Charts, Gauges & Maps — Module Registration and Container Sizing
+
+> **⚠️ IMPORTANT:** Unlike core UI components (from `igniteui-react`), chart, gauge, and map components from `igniteui-react-charts`, `igniteui-react-gauges`, and `igniteui-react-maps` **require explicit module registration** before use. You must import the corresponding `*Module` class and call `.register()` at the module level (outside the component function).
+
+#### Module Registration
+
+```tsx
+import { IgrCategoryChart, IgrCategoryChartModule } from 'igniteui-react-charts';
+
+// ⚠️ REQUIRED — register the module before using the component
+IgrCategoryChartModule.register();
+```
+
+Common module registrations:
+
+| Component | Module Import | Registration |
+|---|---|---|
+| `IgrCategoryChart` | `IgrCategoryChartModule` | `IgrCategoryChartModule.register()` |
+| `IgrPieChart` | `IgrPieChartModule` | `IgrPieChartModule.register()` |
+| `IgrFinancialChart` | `IgrFinancialChartModule` | `IgrFinancialChartModule.register()` |
+| `IgrRadialGauge` | `IgrRadialGaugeModule` | `IgrRadialGaugeModule.register()` |
+| `IgrLinearGauge` | `IgrLinearGaugeModule` | `IgrLinearGaugeModule.register()` |
+| `IgrGeographicMap` | `IgrGeographicMapModule` | `IgrGeographicMapModule.register()` |
+
+#### Container Sizing (REQUIRED)
+
+> **⚠️ CRITICAL:** Charts, gauges, and maps **require an explicit-sized container** to render. They inherit their dimensions from the parent element — if the parent has no height/width, the chart will not be visible. Always wrap chart components in a container with explicit `min-width`, `min-height`, or `flex-grow` styling.
+
+```css
+/* Chart container CSS */
+.chart-container {
+  min-width: 400px;
+  min-height: 300px;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+/* Ensure the chart fills its container */
+.chart-container > * {
+  height: 100%;
+  width: 100%;
+}
+```
+
+#### Complete Chart Example
+
+```tsx
+import { IgrCategoryChart, IgrCategoryChartModule } from 'igniteui-react-charts';
+import styles from './dashboard-view.module.css';
+
+// Register the chart module (required, called once at module level)
+IgrCategoryChartModule.register();
+
+export default function DashboardView() {
+  const salesData = [
+    { month: 'Jan', revenue: 12500 },
+    { month: 'Feb', revenue: 18200 },
+    { month: 'Mar', revenue: 15800 },
+  ];
+
+  return (
+    <div className={styles['chart-container']}>
+      <IgrCategoryChart
+        dataSource={salesData}
+        chartType="column"
+        xAxisTitle="Month"
+        yAxisTitle="Revenue ($)"
+      />
+    </div>
+  );
+}
+```
+
+```css
+/* dashboard-view.module.css */
+.chart-container {
+  min-width: 400px;
+  min-height: 300px;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+.chart-container > * {
+  height: 100%;
+  width: 100%;
+}
+```
+
+> **Note:** Core UI components from `igniteui-react` (e.g., `IgrButton`, `IgrInput`, `IgrGrid`) do NOT require module registration — they auto-register when imported. Only charts, gauges, and maps from the commercial packages need `.register()`.
 
 ### IgrTabs — Content Panels vs Navigation
 
@@ -837,6 +928,39 @@ const dialogRef = useRef<HTMLElement>(null);
 (dialogRef.current as any)?.show();
 ```
 
+### Issue: Chart / gauge / map does not render or is invisible
+
+**Cause:** Two common causes:
+1. The corresponding `*Module` was not registered (e.g., `IgrCategoryChartModule.register()` was not called)
+2. The chart's parent container has no explicit dimensions — charts inherit size from their container and will be invisible if the container has zero height/width
+
+**Solution:**
+
+1. **Register the module** at the top level of the file (outside the component):
+
+```tsx
+import { IgrCategoryChart, IgrCategoryChartModule } from 'igniteui-react-charts';
+IgrCategoryChartModule.register();
+```
+
+2. **Wrap the chart in a sized container** with explicit dimensions:
+
+```css
+.chart-container {
+  min-width: 400px;
+  min-height: 300px;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+.chart-container > * { height: 100%; width: 100%; }
+```
+
+```tsx
+<div className={styles['chart-container']}>
+  <IgrCategoryChart dataSource={data} />
+</div>
+```
+
 ### Issue: IgrTabs used for navigation fills the entire view with an empty panel
 
 **Cause:** `IgrTabPanel` elements were included alongside `IgrTab` elements when using tabs for navigation with React Router. The tab panels create empty content areas that take up space and push the routed content out of view.
@@ -866,12 +990,14 @@ const dialogRef = useRef<HTMLElement>(null);
 
 1. **Always import theme CSS** — components will not render correctly without it. Import `igniteui-webcomponents/themes/...` for core components and additionally `igniteui-webcomponents-grids/grids/themes/...` for grids. In Next.js, import in each client component file or the root layout
 2. **Don't call `defineComponents()`** — the React wrappers handle registration automatically
-3. **Use named imports** — `import { IgrButton } from 'igniteui-react'` enables tree-shaking
-4. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
-5. **Use refs sparingly** — prefer declarative props; use refs only for imperative methods like `show()` / `hide()`
-6. **Prefer controlled components** for forms — wire up `value` + `onInput` / `onChange` with `useState`
-7. **Check slot names** in the docs — use the `slot` attribute on child elements to target named slots
-8. **Tabs for navigation** — when using `IgrTabs` with React Router, do NOT include `IgrTabPanel`. Use only `IgrTab` and render content via `<Outlet />`
+3. **Register chart/gauge/map modules** — unlike core UI components, charts, gauges, and maps require `*Module.register()` (e.g., `IgrCategoryChartModule.register()`) called at module level before use
+4. **Wrap charts in sized containers** — charts, gauges, and maps need a parent element with explicit `min-width`, `min-height`, or `flex-grow` dimensions. Without sizing, the component will be invisible
+5. **Use named imports** — `import { IgrButton } from 'igniteui-react'` enables tree-shaking
+6. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
+7. **Use refs sparingly** — prefer declarative props; use refs only for imperative methods like `show()` / `hide()`
+8. **Prefer controlled components** for forms — wire up `value` + `onInput` / `onChange` with `useState`
+9. **Check slot names** in the docs — use the `slot` attribute on child elements to target named slots
+10. **Tabs for navigation** — when using `IgrTabs` with React Router, do NOT include `IgrTabPanel`. Use only `IgrTab` and render content via `<Outlet />`
 
 ## Additional Resources
 

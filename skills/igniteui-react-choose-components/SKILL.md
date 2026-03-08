@@ -149,14 +149,16 @@ Use the tables below to map a UI need to the right React component. All componen
 
 ### Charts & Data Visualization
 
-| UI Need | Component | Import | Docs |
-|---|---|---|---|
-| Category / bar / line chart | `IgrCategoryChart` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/reactsite/components/charts/chart-overview) |
-| Pie / doughnut chart | `IgrPieChart` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/reactsite/components/charts/chart-overview) |
-| Financial / stock chart | `IgrFinancialChart` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/reactsite/components/charts/chart-overview) |
-| Radial gauge | `IgrRadialGauge` | `igniteui-react-gauges` | [Docs](https://www.infragistics.com/reactsite/components/gauges/radial-gauge) |
-| Linear gauge | `IgrLinearGauge` | `igniteui-react-gauges` | [Docs](https://www.infragistics.com/reactsite/components/gauges/linear-gauge) |
-| Geographic map | `IgrGeographicMap` | `igniteui-react-maps` | [Docs](https://www.infragistics.com/reactsite/components/maps/geographic-map) |
+> **⚠️ IMPORTANT:** Chart, gauge, and map components require **explicit module registration** and a **sized container**. Import the `*Module` class and call `.register()` at module level, and wrap the component in a container with explicit `min-width`/`min-height` or `flex-grow`. See the [use-components skill](../igniteui-react-use-components/SKILL.md) for details.
+
+| UI Need | Component | Module Registration | Import | Docs |
+|---|---|---|---|---|
+| Category / bar / line chart | `IgrCategoryChart` | `IgrCategoryChartModule.register()` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/reactsite/components/charts/chart-overview) |
+| Pie / doughnut chart | `IgrPieChart` | `IgrPieChartModule.register()` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/reactsite/components/charts/chart-overview) |
+| Financial / stock chart | `IgrFinancialChart` | `IgrFinancialChartModule.register()` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/reactsite/components/charts/chart-overview) |
+| Radial gauge | `IgrRadialGauge` | `IgrRadialGaugeModule.register()` | `igniteui-react-gauges` | [Docs](https://www.infragistics.com/reactsite/components/gauges/radial-gauge) |
+| Linear gauge | `IgrLinearGauge` | `IgrLinearGaugeModule.register()` | `igniteui-react-gauges` | [Docs](https://www.infragistics.com/reactsite/components/gauges/linear-gauge) |
+| Geographic map | `IgrGeographicMap` | `IgrGeographicMapModule.register()` | `igniteui-react-maps` | [Docs](https://www.infragistics.com/reactsite/components/maps/geographic-map) |
 
 ### Conversational / AI
 
