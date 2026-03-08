@@ -79,6 +79,15 @@ The quickest way to theme an app is to import a pre-built CSS file in your React
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
 ```
 
+> **CRITICAL:** Theme CSS imports are **required** for components to render correctly. Without them, components will appear unstyled, with missing icons and broken layouts.
+
+**For grids**, you **must also** import the grid theme CSS:
+
+```tsx
+import 'igniteui-webcomponents/themes/light/bootstrap.css';
+import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+```
+
 Available pre-built CSS files:
 
 | Import path | Theme |
@@ -92,7 +101,38 @@ Available pre-built CSS files:
 | `igniteui-webcomponents/themes/light/indigo.css` | Indigo Light |
 | `igniteui-webcomponents/themes/dark/indigo.css` | Indigo Dark |
 
-> **Note:** The theme CSS comes from the underlying `igniteui-webcomponents` package (a dependency of `igniteui-react`).
+Grid theme CSS files follow the same pattern under `igniteui-webcomponents-grids/grids/themes/`:
+
+| Import path | Theme |
+|---|---|
+| `igniteui-webcomponents-grids/grids/themes/light/bootstrap.css` | Grid Bootstrap Light |
+| `igniteui-webcomponents-grids/grids/themes/dark/bootstrap.css` | Grid Bootstrap Dark |
+| `igniteui-webcomponents-grids/grids/themes/light/material.css` | Grid Material Light |
+| `igniteui-webcomponents-grids/grids/themes/dark/material.css` | Grid Material Dark |
+| `igniteui-webcomponents-grids/grids/themes/light/fluent.css` | Grid Fluent Light |
+| `igniteui-webcomponents-grids/grids/themes/dark/fluent.css` | Grid Fluent Dark |
+| `igniteui-webcomponents-grids/grids/themes/light/indigo.css` | Grid Indigo Light |
+| `igniteui-webcomponents-grids/grids/themes/dark/indigo.css` | Grid Indigo Dark |
+
+> **Note:** The theme CSS comes from the underlying `igniteui-webcomponents` and `igniteui-webcomponents-grids` packages (dependencies of `igniteui-react` and `igniteui-react-grids`).
+
+### Next.js
+
+In Next.js, import the theme CSS in each client component file that uses Ignite UI components, or in a shared root layout:
+
+```tsx
+// app/layout.tsx
+import 'igniteui-webcomponents/themes/light/bootstrap.css';
+import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
 
 ---
 

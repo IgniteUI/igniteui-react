@@ -64,9 +64,11 @@ npm install igniteui-react-maps
 npm install react react-dom
 ```
 
-### Import a Theme
+### Import a Theme (REQUIRED)
 
-Components require a CSS theme to render correctly. Import one in your entry point (`main.tsx`, `index.tsx`, or `App.tsx`):
+> **CRITICAL:** Components will render without styles, with broken icons and missing visuals if the theme CSS is not imported. **Always import the theme CSS before using any Ignite UI component.**
+
+Import one theme CSS file in your entry point (`main.tsx`, `index.tsx`, or `App.tsx`). The theme CSS must be imported **in every file that uses Ignite UI components** if your framework does not have a single global entry point (e.g., Next.js — see below).
 
 ```tsx
 // main.tsx or index.tsx
@@ -86,16 +88,56 @@ Available themes:
 | `igniteui-webcomponents/themes/light/indigo.css` | Indigo Light |
 | `igniteui-webcomponents/themes/dark/indigo.css` | Indigo Dark |
 
-For grids, also import the grid theme:
+**For grids**, you **must also** import the grid theme CSS. Without it, the grid will be missing styles and icons will show as placeholders:
 
 ```tsx
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
 import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
 ```
 
-> **Note:** The theme CSS is imported from the underlying `igniteui-webcomponents` package (a dependency of `igniteui-react`), not from `igniteui-react` itself.
+> **Note:** The theme CSS is imported from the underlying `igniteui-webcomponents` and `igniteui-webcomponents-grids` packages (dependencies of `igniteui-react` and `igniteui-react-grids`), not from `igniteui-react` itself.
 
-### Minimal App Example
+### Next.js Setup
+
+In Next.js, there is no single `main.tsx` entry point. Import the theme CSS **in each client component file** that uses Ignite UI components, or in a shared layout component:
+
+```tsx
+// app/components/DataTable.tsx
+'use client';
+
+import 'igniteui-webcomponents/themes/light/bootstrap.css';
+import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+
+import { IgrGrid, IgrColumn, IgrPaginator } from 'igniteui-react-grids';
+
+export default function DataTable({ data }: { data: any[] }) {
+  return (
+    <IgrGrid dataSource={data} autoGenerate={false}>
+      <IgrColumn field="name" header="Name" />
+      <IgrColumn field="email" header="Email" />
+      <IgrPaginator perPage={10} />
+    </IgrGrid>
+  );
+}
+```
+
+Alternatively, import themes once in a root layout:
+
+```tsx
+// app/layout.tsx
+import 'igniteui-webcomponents/themes/light/bootstrap.css';
+import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+### Minimal App Example (Vite / CRA)
 
 ```tsx
 // main.tsx
@@ -530,12 +572,39 @@ IDEs with TypeScript support will provide auto-complete for all `Igr*` component
 
 ### Issue: Components render without styles
 
-**Cause:** Missing theme CSS import.
+**Cause:** Missing theme CSS import. Without the theme CSS, components will render with broken layouts, missing icons (showing placeholders), and no visual styling.
 
-**Solution:** Add a theme import in your entry point:
+**Solution:** Add the theme CSS import **before** any component usage. In Vite/CRA apps, add it to your entry point. In Next.js, add it to each client component file or the root layout:
 
 ```tsx
+// Always required for core components
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
+
+// Also required when using grids (IgrGrid, IgrDataGrid, IgrTreeGrid, etc.)
+import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+```
+
+**Next.js example:**
+
+```tsx
+'use client';
+
+import 'igniteui-webcomponents/themes/light/bootstrap.css';
+import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+
+import { IgrNavbar, IgrButton } from 'igniteui-react';
+import { IgrGrid, IgrColumn, IgrPaginator } from 'igniteui-react-grids';
+```
+
+### Issue: Grid renders but icons show as placeholders and styles are missing
+
+**Cause:** The grid theme CSS (`igniteui-webcomponents-grids/grids/themes/...`) is not imported. The base theme CSS alone is not enough for grids.
+
+**Solution:** Import **both** theme CSS files:
+
+```tsx
+import 'igniteui-webcomponents/themes/light/bootstrap.css';           // Base theme
+import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css'; // Grid theme
 ```
 
 ### Issue: `IgrGrid` from `igniteui-react/grid-lite` is confused with `IgrDataGrid` from `igniteui-react-grids`
@@ -583,7 +652,7 @@ const dialogRef = useRef<HTMLElement>(null);
 
 ## Best Practices
 
-1. **Import a theme CSS** in your app entry point — components will not render correctly without it
+1. **Always import theme CSS** — components will not render correctly without it. Import `igniteui-webcomponents/themes/...` for core components and additionally `igniteui-webcomponents-grids/grids/themes/...` for grids. In Next.js, import in each client component file or the root layout
 2. **Don't call `defineComponents()`** — the React wrappers handle registration automatically
 3. **Use named imports** — `import { IgrButton } from 'igniteui-react'` enables tree-shaking
 4. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
