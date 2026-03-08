@@ -258,6 +258,93 @@ function UserGrid({ users }: { users: User[] }) {
 }
 ```
 
+### IgrTabs — Content Panels vs Navigation
+
+`IgrTabs` supports two distinct usage patterns. Choosing the wrong one is a common mistake.
+
+#### Pattern 1: Tabs with Content Panels (inline content)
+
+Use `IgrTab` + `IgrTabPanel` when the tabbed content is rendered inline — no routing involved:
+
+```tsx
+import { IgrTabs, IgrTab, IgrTabPanel } from 'igniteui-react';
+
+function SettingsPage() {
+  return (
+    <IgrTabs>
+      <IgrTab panel="profile" selected>Profile</IgrTab>
+      <IgrTab panel="security">Security</IgrTab>
+      <IgrTab panel="notifications">Notifications</IgrTab>
+
+      <IgrTabPanel id="profile">
+        <p>Profile settings content here</p>
+      </IgrTabPanel>
+      <IgrTabPanel id="security">
+        <p>Security settings content here</p>
+      </IgrTabPanel>
+      <IgrTabPanel id="notifications">
+        <p>Notification preferences content here</p>
+      </IgrTabPanel>
+    </IgrTabs>
+  );
+}
+```
+
+#### Pattern 2: Tabs as Navigation (with React Router — NO `IgrTabPanel`)
+
+> **⚠️ CRITICAL:** When using `IgrTabs` for navigation with React Router (or any router), **do NOT include `IgrTabPanel`**. Adding tab panels creates empty content areas that fill the view and push the routed content out of sight. Only render `IgrTab` elements and let the router's `<Outlet />` handle the content below the tabs.
+
+```tsx
+import { IgrTabs, IgrTab } from 'igniteui-react';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+
+const tabs = [
+  { path: '/dashboard', label: 'Dashboard' },
+  { path: '/orders', label: 'Orders' },
+  { path: '/customers', label: 'Customers' },
+];
+
+function MainLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleTabChange = (e: CustomEvent) => {
+    const selectedIndex = (e.target as any).selectedIndex;
+    if (selectedIndex !== undefined && tabs[selectedIndex]) {
+      navigate(tabs[selectedIndex].path);
+    }
+  };
+
+  return (
+    <div>
+      {/* Tabs for navigation — NO IgrTabPanel */}
+      <IgrTabs onChange={handleTabChange}>
+        {tabs.map((tab) => (
+          <IgrTab
+            key={tab.path}
+            selected={location.pathname === tab.path}
+          >
+            {tab.label}
+          </IgrTab>
+        ))}
+      </IgrTabs>
+
+      {/* Router outlet renders the routed view */}
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  );
+}
+```
+
+**Key rules for tabs-as-navigation:**
+- ✅ Use only `IgrTab` inside `IgrTabs` — no `IgrTabPanel`
+- ✅ Sync the active tab to the current route using the `selected` prop
+- ✅ Handle `onChange` to call `navigate()` for route changes
+- ✅ Use `<Outlet />` (or the equivalent in your router) for content rendering
+- ❌ Do NOT add `IgrTabPanel` — it creates an empty panel body that fills the viewport
+
 ---
 
 ## Step 3 — Event Handling
@@ -648,6 +735,29 @@ const dialogRef = useRef<HTMLElement>(null);
 (dialogRef.current as any)?.show();
 ```
 
+### Issue: IgrTabs used for navigation fills the entire view with an empty panel
+
+**Cause:** `IgrTabPanel` elements were included alongside `IgrTab` elements when using tabs for navigation with React Router. The tab panels create empty content areas that take up space and push the routed content out of view.
+
+**Solution:** When using `IgrTabs` for navigation, use **only `IgrTab`** — do NOT include `IgrTabPanel`. Let the router's `<Outlet />` render the content:
+
+```tsx
+// ✅ Correct — navigation tabs without panels
+<IgrTabs onChange={handleTabChange}>
+  <IgrTab selected={location.pathname === '/dashboard'}>Dashboard</IgrTab>
+  <IgrTab selected={location.pathname === '/orders'}>Orders</IgrTab>
+</IgrTabs>
+<Outlet />
+
+// ❌ Wrong — panels create empty space when used for navigation
+<IgrTabs>
+  <IgrTab panel="dashboard">Dashboard</IgrTab>
+  <IgrTab panel="orders">Orders</IgrTab>
+  <IgrTabPanel id="dashboard">...</IgrTabPanel>  {/* Don't do this for navigation */}
+  <IgrTabPanel id="orders">...</IgrTabPanel>      {/* Don't do this for navigation */}
+</IgrTabs>
+```
+
 ---
 
 ## Best Practices
@@ -659,6 +769,7 @@ const dialogRef = useRef<HTMLElement>(null);
 5. **Use refs sparingly** — prefer declarative props; use refs only for imperative methods like `show()` / `hide()`
 6. **Prefer controlled components** for forms — wire up `value` + `onInput` / `onChange` with `useState`
 7. **Check slot names** in the docs — use the `slot` attribute on child elements to target named slots
+8. **Tabs for navigation** — when using `IgrTabs` with React Router, do NOT include `IgrTabPanel`. Use only `IgrTab` and render content via `<Outlet />`
 
 ## Additional Resources
 

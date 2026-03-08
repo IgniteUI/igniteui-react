@@ -120,7 +120,7 @@ Use the tables below to map a UI need to the right React component. All componen
 | Horizontal or vertical divider | `IgrDivider` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/divider) |
 | Collapsible section | `IgrExpansionPanel` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/expansion-panel) |
 | Multiple collapsible sections | `IgrAccordion` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/accordion) |
-| Tabbed content panels | `IgrTabs` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/tabs) |
+| Tabbed content panels (with inline content) | `IgrTabs` + `IgrTabPanel` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/tabs) |
 | Image / content slideshow | `IgrCarousel` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/carousel) |
 | Multi-step wizard / onboarding flow | `IgrStepper` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/stepper) |
 | Resizable, draggable dashboard tiles | `IgrTileManager` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/tile-manager) |
@@ -131,6 +131,7 @@ Use the tables below to map a UI need to the right React component. All componen
 |---|---|---|---|
 | Top application bar / toolbar | `IgrNavbar` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/menus/navbar) |
 | Side navigation drawer | `IgrNavDrawer` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/menus/navigation-drawer) |
+| Tab-based navigation (with router) | `IgrTabs` (no `IgrTabPanel`) | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/tabs) |
 | Context menu / actions dropdown | `IgrDropdown` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/dropdown) |
 
 ### Lists & Data Display
@@ -192,7 +193,8 @@ Use the **Component Catalogue** tables above to find matching components. When i
 | Collapsible single section | `IgrExpansionPanel` | `IgrAccordion` |
 | Multiple collapsible sections | `IgrAccordion` | `IgrExpansionPanel` |
 | Stepped wizard UI | `IgrStepper` | `IgrTabs` |
-| Content tabs / view switching | `IgrTabs` | `IgrStepper` |
+| Content tabs / view switching (inline content) | `IgrTabs` + `IgrTabPanel` | `IgrStepper` |
+| Tab-based navigation (with React Router) | `IgrTabs` (no `IgrTabPanel`) | `IgrTabs` + `IgrTabPanel` |
 
 ### Step 3 — Check the package
 
@@ -302,6 +304,17 @@ function Dashboard() {
 - `IgrDataGrid` or `IgrPivotGrid` — detailed data tables
 - `IgrCategoryChart` — charts (from `igniteui-react-charts`)
 - `IgrLinearProgress` / `IgrCircularProgress` — loading indicators
+
+### Master-Detail with Tab Navigation (React Router)
+
+- `IgrNavbar` — top bar
+- `IgrTabs` — **navigation only** (no `IgrTabPanel`); each `IgrTab` triggers a route change
+- React Router `<Outlet />` — renders the routed child view below the tabs
+- Active tab synced to the current route via `selected` prop
+
+> **⚠️ Important — Tabs for navigation vs. tabs for content:**
+> - **Tabs as content panels** (`IgrTabs` + `IgrTabPanel`): Content is rendered inside tab panels. Use when the tab content is inline and does not require routing.
+> - **Tabs as navigation** (`IgrTabs` only, no `IgrTabPanel`): Tabs act as route links. The routing outlet (`<Outlet />`) renders the content. **Do NOT add `IgrTabPanel` in this case** — it will create an empty panel that fills the view. See the [use-components skill](../igniteui-react-use-components/SKILL.md) for a full React Router example.
 
 ---
 
