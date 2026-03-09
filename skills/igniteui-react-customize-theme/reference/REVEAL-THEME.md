@@ -48,4 +48,4 @@ function setRevealTheme() {
 
 > **Tip:** When switching between light and dark Ignite UI themes, call `setRevealTheme()` again after the theme change so Reveal dashboards stay in sync.
 
-See the [use-components skill](../igniteui-react-use-components/SKILL.md) for full Reveal SDK setup instructions including installation and `RvRevealView` usage.
+See the [use-components skill](../../igniteui-react-use-components/SKILL.md) for full Reveal SDK setup instructions including installation and `RvRevealView` usage.

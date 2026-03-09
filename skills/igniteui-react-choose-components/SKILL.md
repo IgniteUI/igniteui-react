@@ -1,6 +1,6 @@
 ---
 name: igniteui-react-choose-components
-description: Identify and select the right Ignite UI for React components for your app UI, then navigate to official docs, usage examples, and API references
+description: This skill identifies and selects the right Ignite UI for React components for any UI requirement and should be used when mapping UI needs to components, exploring available components, or finding official docs and API references
 user-invocable: true
 ---
 

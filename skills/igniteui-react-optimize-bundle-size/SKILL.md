@@ -1,6 +1,6 @@
 ---
 name: igniteui-react-optimize-bundle-size
-description: Optimize application bundle size when using Ignite UI for React by importing only needed components, using tree-shaking, and lazy loading
+description: This skill optimizes application bundle size when using Ignite UI for React and should be used when the bundle is too large, when setting up tree-shaking, or when lazy loading heavy components like grids and charts
 user-invocable: true
 ---
 

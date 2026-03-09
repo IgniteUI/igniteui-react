@@ -103,4 +103,4 @@ export default function DashboardView() {
 
 > **Tip:** When switching between light and dark Ignite UI themes, call `setRevealTheme()` again after the theme change so Reveal dashboards stay in sync.
 
-See the [customize-theme skill](../igniteui-react-customize-theme/SKILL.md) for more details on Ignite UI CSS custom properties and theme switching.
+See the [customize-theme skill](../../igniteui-react-customize-theme/SKILL.md) for more details on Ignite UI CSS custom properties and theme switching.

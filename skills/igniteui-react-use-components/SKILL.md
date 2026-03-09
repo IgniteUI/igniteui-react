@@ -1,6 +1,6 @@
 ---
 name: igniteui-react-use-components
-description: Install, import, and use Ignite UI for React components — covers JSX patterns, event handling, refs, forms, and TypeScript usage
+description: This skill installs, imports, and uses Ignite UI for React components covering JSX patterns, event handling, refs, forms, and TypeScript and should be used when setting up a React project, writing component JSX, handling events, or integrating with React state and form libraries
 user-invocable: true
 ---
 
@@ -41,13 +41,13 @@ This skill is organized into focused sections. Refer to the appropriate file for
 
 | Topic | File | When to Use |
 |---|---|---|
-| Installation & Setup | [INSTALLATION.md](./INSTALLATION.md) | Setting up packages, importing theme CSS, Next.js setup |
-| JSX Patterns | [JSX-PATTERNS.md](./JSX-PATTERNS.md) | Props, children, slots, IgrTabs content vs navigation |
-| Event Handling | [EVENT-HANDLING.md](./EVENT-HANDLING.md) | Event props, CustomEvent types, common events |
-| Refs & Forms | [REFS-FORMS.md](./REFS-FORMS.md) | useRef, controlled/uncontrolled forms, React Hook Form |
-| Charts, Gauges, Maps & Grid Lite | [CHARTS-GRIDS.md](./CHARTS-GRIDS.md) | Module registration, container sizing |
-| Reveal SDK | [REVEAL-SDK.md](./REVEAL-SDK.md) | Embedded BI dashboards, theme sync |
-| Troubleshooting | [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | Common issues and solutions |
+| Installation & Setup | [INSTALLATION.md](./reference/INSTALLATION.md) | Setting up packages, importing theme CSS, Next.js setup |
+| JSX Patterns | [JSX-PATTERNS.md](./reference/JSX-PATTERNS.md) | Props, children, slots, IgrTabs content vs navigation |
+| Event Handling | [EVENT-HANDLING.md](./reference/EVENT-HANDLING.md) | Event props, CustomEvent types, common events |
+| Refs & Forms | [REFS-FORMS.md](./reference/REFS-FORMS.md) | useRef, controlled/uncontrolled forms, React Hook Form |
+| Charts, Gauges, Maps & Grid Lite | [CHARTS-GRIDS.md](./reference/CHARTS-GRIDS.md) | Module registration, container sizing |
+| Reveal SDK | [REVEAL-SDK.md](./reference/REVEAL-SDK.md) | Embedded BI dashboards, theme sync |
+| Troubleshooting | [TROUBLESHOOTING.md](./reference/TROUBLESHOOTING.md) | Common issues and solutions |
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: igniteui-react-customize-theme
-description: Customize Ignite UI for React component styling using CSS custom properties, Sass, and the theming system in a React application context
+description: This skill customizes Ignite UI for React component styling using CSS custom properties, Sass, and the full theming system and should be used when applying brand colors, dark mode, component-level overrides, or scoped themes in a React application
 user-invocable: true
 ---
 
@@ -52,11 +52,11 @@ This skill is organized into focused sections. Refer to the appropriate file for
 
 | Topic | File | When to Use |
 |---|---|---|
-| CSS Theming | [CSS-THEMING.md](./CSS-THEMING.md) | Pre-built themes, CSS custom properties, scoped overrides, layout controls, light/dark switching |
-| Sass Theming | [SASS-THEMING.md](./SASS-THEMING.md) | Sass-based theming with palette(), component theme functions |
-| MCP Server | [MCP-SERVER.md](./MCP-SERVER.md) | AI-assisted theming code generation |
-| Reveal Theme Sync | [REVEAL-THEME.md](./REVEAL-THEME.md) | Syncing Reveal SDK dashboards with Ignite UI theme |
-| Troubleshooting | [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | Common issues and solutions |
+| CSS Theming | [CSS-THEMING.md](./reference/CSS-THEMING.md) | Pre-built themes, CSS custom properties, scoped overrides, layout controls, light/dark switching |
+| Sass Theming | [SASS-THEMING.md](./reference/SASS-THEMING.md) | Sass-based theming with palette(), component theme functions |
+| MCP Server | [MCP-SERVER.md](./reference/MCP-SERVER.md) | AI-assisted theming code generation |
+| Reveal Theme Sync | [REVEAL-THEME.md](./reference/REVEAL-THEME.md) | Syncing Reveal SDK dashboards with Ignite UI theme |
+| Troubleshooting | [TROUBLESHOOTING.md](./reference/TROUBLESHOOTING.md) | Common issues and solutions |
 
 ---
 
@@ -149,7 +149,7 @@ igc-input::part(input) { font-size: 1.1rem; }
 
 ### Light/Dark Switching
 
-See [CSS-THEMING.md](./CSS-THEMING.md) for approaches: class toggle, media query, or stylesheet swap.
+See [CSS-THEMING.md](./reference/CSS-THEMING.md) for approaches: class toggle, media query, or stylesheet swap.
 
 ---
 
