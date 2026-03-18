@@ -2,16 +2,28 @@
 
 When the project includes Reveal SDK (`reveal-sdk-wrappers-react`) alongside Ignite UI for React, the Reveal dashboard theme should be synced with the active Ignite UI theme.
 
+> **⚠️ IMPORTANT:** Reveal SDK requires client runtime scripts (jQuery, Day.js, infragistics.reveal.js) to be loaded and initialization must happen in `useEffect` after mount. See [REVEAL-SDK.md](../../igniteui-react-use-components/reference/REVEAL-SDK.md) for full setup instructions.
+
 ## How It Works
 
 Ignite UI themes expose CSS custom properties (`--ig-font-family`, `--ig-surface-500`, `--ig-gray-100`, etc.) on the page. The Reveal SDK has its own `$.ig.RevealTheme` object that controls dashboard appearance. The sync function reads the Ignite UI tokens from computed styles and maps them to Reveal's theme properties.
 
 ## Reveal Theme Sync Function
 
-Call this function when initializing a component that uses `RvRevealView`:
+Call this function in `useEffect` when initializing a component that uses Reveal. Always guard against missing `$` and `$.ig`:
 
 ```tsx
+import { useEffect } from 'react';
+
+declare const $: any;
+
 function setRevealTheme() {
+  // Guard: Ensure Reveal runtime is loaded
+  if (typeof $ === 'undefined' || !$.ig) {
+    console.error('Reveal SDK runtime not loaded.');
+    return;
+  }
+
   const style = window.getComputedStyle(document.body);
   const theme = new $.ig.RevealTheme();
 
@@ -34,6 +46,16 @@ function setRevealTheme() {
 
   $.ig.RevealSdkSettings.theme = theme;
 }
+
+// Example usage in a component
+function DashboardView() {
+  useEffect(() => {
+    // Initialize theme sync after mount
+    setRevealTheme();
+  }, []);
+
+  // ... component implementation
+}
 ```
 
 ## Token Mapping Reference
@@ -46,6 +68,19 @@ function setRevealTheme() {
 | `dashboardBackgroundColor` | `--ig-gray-100` | Dashboard background |
 | `visualizationBackgroundColor` | `--ig-surface-500` | Individual visualization card background |
 
-> **Tip:** When switching between light and dark Ignite UI themes, call `setRevealTheme()` again after the theme change so Reveal dashboards stay in sync.
+## Re-syncing After Theme Switch
 
-See the [use-components skill](../../igniteui-react-use-components/SKILL.md) for full Reveal SDK setup instructions including installation and `RvRevealView` usage.
+When the user switches between light and dark Ignite UI themes, call `setRevealTheme()` again to update the Reveal dashboard:
+
+```tsx
+function handleThemeToggle() {
+  // ... toggle Ignite UI theme (e.g., swap CSS imports)
+  
+  // Re-sync Reveal theme after DOM updates
+  requestAnimationFrame(() => {
+    setRevealTheme();
+  });
+}
+```
+
+See the [use-components skill](../../igniteui-react-use-components/reference/REVEAL-SDK.md) for full Reveal SDK setup instructions including installation, runtime scripts, and `$.ig.RevealView` initialization.
