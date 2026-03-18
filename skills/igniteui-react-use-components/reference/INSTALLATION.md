@@ -78,7 +78,7 @@ import { IgrGrid, IgrColumn, IgrPaginator } from 'igniteui-react-grids';
 
 export default function DataTable({ data }: { data: any[] }) {
   return (
-    <IgrGrid dataSource={data} autoGenerate={false}>
+    <IgrGrid data={data} autoGenerate={false}>
       <IgrColumn field="name" header="Name" />
       <IgrColumn field="email" header="Email" />
       <IgrPaginator perPage={10} />
