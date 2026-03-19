@@ -1,0 +1,14 @@
+{
+  "extends": "./typedoc.json",
+  "name": "igniteui-react-dockmanager",
+  "entryPoints": ["./src/dock-manager", "./node_modules/typescript/lib/lib.dom.d.ts"],
+  "plugin": [
+    "typedoc-plugin-localization",
+    "ig-typedoc-theme",
+    "./plugins/typedoc-plugin-react-components/dist/main.js",
+    "typedoc-plugin-merge-modules"
+  ],
+  "outputs": [{ "name": "json", "path": "./typedocs/igniteui-react-dockmanager.json" }],
+  "mergeModulesRenameDefaults": true,
+  "mergeModulesMergeMode": "project"
+}
