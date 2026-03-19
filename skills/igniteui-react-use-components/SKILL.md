@@ -120,10 +120,10 @@ function App() {
 
 ### Charts, Gauges, Maps & Grid Lite
 
-- **Require explicit registration**: `IgrCategoryChartModule.register()`, `IgcGridLite.register()`
-- **Require sized container**: `min-width`, `min-height`, or `flex-grow`
-- **Grid Lite** uses `Igc` prefix (web component, not React wrapper)
-- See [CHARTS-GRIDS.md](./CHARTS-GRIDS.md)
+- **Charts/Gauges/Maps require explicit registration**: `IgrCategoryChartModule.register()`
+- **All require sized container**: `min-width`, `min-height`, or `flex-grow`
+- **Grid Lite** requires both `igniteui-react` and `igniteui-grid-lite` packages, import from `igniteui-react/grid-lite`
+- See [CHARTS-GRIDS.md](./reference/CHARTS-GRIDS.md)
 
 ---
 
@@ -131,9 +131,9 @@ function App() {
 
 1. **Import theme CSS first** — components need it to render correctly
 2. **Don't call `defineComponents()`** — React wrappers auto-register
-3. **Register chart/gauge/map/Grid Lite modules** — call `.register()` at module level
+3. **Register chart/gauge/map modules** — call `.register()` at module level (Grid Lite doesn't need registration)
 4. **Wrap charts/gauges/maps/Grid Lite in sized containers** — they need explicit dimensions
-5. **Grid Lite uses `Igc` prefix** — `IgcGridLite` from `igniteui-grid-lite`
+5. **Grid Lite requires both packages** — `IgrGridLite` from `igniteui-react/grid-lite` requires installing both `igniteui-react` and `igniteui-grid-lite` packages
 6. **Use named imports** — enables tree-shaking
 7. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
 8. **Use refs sparingly** — prefer declarative props

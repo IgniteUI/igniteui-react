@@ -97,17 +97,17 @@ import { IgrTabs, IgrTab, IgrTabPanel } from 'igniteui-react';
 function SettingsPage() {
   return (
     <IgrTabs>
-      <IgrTab panel="profile" selected>Profile</IgrTab>
-      <IgrTab panel="security">Security</IgrTab>
-      <IgrTab panel="notifications">Notifications</IgrTab>
+      <IgrTab selected>Profile</IgrTab>
+      <IgrTab>Security</IgrTab>
+      <IgrTab>Notifications</IgrTab>
 
-      <IgrTabPanel id="profile">
+      <IgrTabPanel>
         <p>Profile settings content here</p>
       </IgrTabPanel>
-      <IgrTabPanel id="security">
+      <IgrTabPanel>
         <p>Security settings content here</p>
       </IgrTabPanel>
-      <IgrTabPanel id="notifications">
+      <IgrTabPanel>
         <p>Notification preferences content here</p>
       </IgrTabPanel>
     </IgrTabs>

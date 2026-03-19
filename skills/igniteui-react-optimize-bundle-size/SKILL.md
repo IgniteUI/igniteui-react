@@ -51,7 +51,7 @@ Only install the packages you actually use:
 | Package | Contains | Install only if you need… |
 |---|---|---|
 | `igniteui-react` | Buttons, inputs, dialogs, calendars, lists, etc. | Core UI components |
-| `igniteui-grid-lite` | Lightweight grid (web component) | Simple tabular data (MIT, requires `.register()`) |
+| `igniteui-react` + `igniteui-grid-lite` | Lightweight grid (`IgrGridLite` from `igniteui-react/grid-lite`) | Simple tabular data (MIT, requires both packages) |
 | `igniteui-react-grids` | DataGrid, TreeGrid, PivotGrid, HierarchicalGrid | Advanced data grids (commercial) |
 | `igniteui-react-charts` | Category, Pie, Financial, Scatter charts | Charts and data visualization (commercial) |
 | `igniteui-react-maps` | Geographic maps | Map visualizations (commercial) |

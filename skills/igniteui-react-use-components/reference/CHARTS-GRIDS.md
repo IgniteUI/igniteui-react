@@ -4,7 +4,7 @@
 
 > **⚠️ IMPORTANT:** Unlike core UI components (from `igniteui-react`), chart, gauge, and map components from `igniteui-react-charts`, `igniteui-react-gauges`, and `igniteui-react-maps` **require explicit module registration** before use. You must import the corresponding `*Module` class and call `.register()` at the module level (outside the component function).
 >
-> **Grid Lite** (`IgcGridLite` from `igniteui-grid-lite`) is a **web component** — not a React wrapper. It also requires `IgcGridLite.register()` and a sized container.
+> **Grid Lite** (`IgrGridLite` from `igniteui-react/grid-lite`) is a React wrapper component that works like any other React component — no `.register()` needed, but requires both `igniteui-react` and `igniteui-grid-lite` packages installed.
 
 ### Registration Syntax
 
@@ -25,7 +25,7 @@ IgrCategoryChartModule.register();
 | `IgrRadialGauge` | `IgrRadialGaugeModule` | `IgrRadialGaugeModule.register()` |
 | `IgrLinearGauge` | `IgrLinearGaugeModule` | `IgrLinearGaugeModule.register()` |
 | `IgrGeographicMap` | `IgrGeographicMapModule` | `IgrGeographicMapModule.register()` |
-| `IgcGridLite` | (self-registering) | `IgcGridLite.register()` |
+| `IgrGridLite` | (no registration needed) | N/A — works like standard React component |
 
 ## Container Sizing (REQUIRED)
 
@@ -90,26 +90,29 @@ export default function DashboardView() {
 }
 ```
 
-> **Note:** Core UI components from `igniteui-react` (e.g., `IgrButton`, `IgrInput`) do NOT require module registration — they auto-register when imported. Charts, gauges, maps, and Grid Lite all need explicit `.register()` calls.
+> **Note:** Core UI components from `igniteui-react` (e.g., `IgrButton`, `IgrInput`) do NOT require module registration — they auto-register when imported. Charts, gauges, and maps need explicit `.register()` calls.
 
 ## Complete Grid Lite Example
 
-> **⚠️ IMPORTANT:** Grid Lite (`IgcGridLite`) is a **web component** from `igniteui-grid-lite` — it uses the `Igc` prefix (not `Igr`). It requires `IgcGridLite.register()` and a sized container.
+> **⚠️ IMPORTANT:** Grid Lite (`IgrGridLite` from `igniteui-react/grid-lite`) requires installing both `igniteui-react` and `igniteui-grid-lite` packages. It's a React wrapper component (uses `Igr` prefix) and works like any standard React component — no `.register()` needed.
 
+**Installation:**
+```bash
+npm install igniteui-react igniteui-grid-lite
+```
+
+**Usage:**
 ```tsx
-import { IgcGridLite } from 'igniteui-grid-lite';
+import { IgrGridLite } from 'igniteui-react/grid-lite';
 import { useGetCustomers } from '../hooks/northwind-hooks';
 import styles from './master-view.module.css';
-
-// ⚠️ REQUIRED — register the web component before use
-IgcGridLite.register();
 
 export default function MasterView() {
   const { northwindCustomers } = useGetCustomers();
 
   return (
     <div className={styles['grid-lite']}>
-      <IgcGridLite data={northwindCustomers} />
+      <IgrGridLite data={northwindCustomers} />
     </div>
   );
 }

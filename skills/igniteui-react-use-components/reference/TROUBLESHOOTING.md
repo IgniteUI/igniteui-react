@@ -110,10 +110,10 @@ const dialogRef = useRef<HTMLElement>(null);
 (dialogRef.current as any)?.show();
 ```
 
-## Issue: Chart / gauge / map / Grid Lite does not render or is invisible
+## Issue: Chart / gauge / map does not render or is invisible
 
 **Cause:** Two common causes:
-1. The corresponding module was not registered (e.g., `IgrCategoryChartModule.register()` or `IgcGridLite.register()` was not called)
+1. The corresponding module was not registered (e.g., `IgrCategoryChartModule.register()` was not called)
 2. The parent container has no explicit dimensions — these components inherit size from their container and will be invisible if the container has zero height/width
 
 **Solution:**

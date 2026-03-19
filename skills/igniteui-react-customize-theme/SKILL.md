@@ -107,7 +107,7 @@ The Ignite UI theming system is built on four pillars:
 
 ### Design Systems
 
-- **Material** (default), **Bootstrap**, **Fluent**, **Indigo**
+- **Bootstrap** (default), **Material**, **Fluent**, **Indigo**
 - Each has light and dark variants
 
 ---

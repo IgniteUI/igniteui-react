@@ -6,8 +6,9 @@
 # Core UI components (MIT)
 npm install igniteui-react
 
-# If you need the lightweight grid (MIT, web component)
-npm install igniteui-grid-lite
+# If you need the lightweight grid (MIT)
+# Requires BOTH packages - igniteui-react and igniteui-grid-lite
+npm install igniteui-react igniteui-grid-lite
 
 # If you need advanced grids (commercial)
 npm install igniteui-react-grids
@@ -137,4 +138,4 @@ export default App;
 
 > **No `defineComponents()` needed.** Unlike the underlying web components library, the React wrappers automatically register the web component when you import and render them. You never need to call `defineComponents()`.
 >
-> **Exception — Charts, Gauges, Maps & Grid Lite:** Components from `igniteui-react-charts`, `igniteui-react-gauges`, `igniteui-react-maps`, and `igniteui-grid-lite` **do** require explicit registration. See [CHARTS-GRIDS.md](./CHARTS-GRIDS.md).
+> **Exception — Charts, Gauges & Maps:** Components from `igniteui-react-charts`, `igniteui-react-gauges`, and `igniteui-react-maps` **do** require explicit registration. Grid Lite (`IgrGridLite` from `igniteui-react/grid-lite`) works like a standard React component but requires both `igniteui-react` and `igniteui-grid-lite` packages. See [CHARTS-GRIDS.md](./CHARTS-GRIDS.md).
