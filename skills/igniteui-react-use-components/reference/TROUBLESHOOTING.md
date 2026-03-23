@@ -143,25 +143,27 @@ IgrCategoryChartModule.register();
 </div>
 ```
 
-## Issue: IgrTabs used for navigation fills the entire view with an empty panel
+## Issue: IgrTabs used for navigation fills the entire view with content
 
-**Cause:** `IgrTabPanel` elements were included alongside `IgrTab` elements when using tabs for navigation with React Router. The tab panels create empty content areas that take up space and push the routed content out of view.
+**Cause:** Inline content was included in `IgrTab` elements when using tabs for navigation with React Router. The tab content areas take up space and push the routed content out of view.
 
-**Solution:** When using `IgrTabs` for navigation, use **only `IgrTab`** — do NOT include `IgrTabPanel`. Let the router's `<Outlet />` render the content:
+**Solution:** When using `IgrTabs` for navigation, use **only the label** (via `label` prop or `slot="label"`) — do NOT include inline content. Let the router's `<Outlet />` render the content:
 
 ```tsx
-// ✅ Correct — navigation tabs without panels
+// ✅ Correct — navigation tabs with label-only (no inline content)
 <IgrTabs onChange={handleTabChange}>
-  <IgrTab selected={location.pathname === '/dashboard'}>Dashboard</IgrTab>
-  <IgrTab selected={location.pathname === '/orders'}>Orders</IgrTab>
+  <IgrTab label="Dashboard" selected={location.pathname === '/dashboard'} />
+  <IgrTab label="Orders" selected={location.pathname === '/orders'} />
 </IgrTabs>
 <Outlet />
 
-// ❌ Wrong — panels create empty space when used for navigation
+// ❌ Wrong — inline content creates unwanted space when used for navigation
 <IgrTabs>
-  <IgrTab panel="dashboard">Dashboard</IgrTab>
-  <IgrTab panel="orders">Orders</IgrTab>
-  <IgrTabPanel id="dashboard">...</IgrTabPanel>  {/* Don't do this for navigation */}
-  <IgrTabPanel id="orders">...</IgrTabPanel>      {/* Don't do this for navigation */}
+  <IgrTab label="Dashboard">
+    <p>This content will show and take up space!</p>  {/* Don't do this for navigation */}
+  </IgrTab>
+  <IgrTab label="Orders">
+    <p>This content will show and take up space!</p>  {/* Don't do this for navigation */}
+  </IgrTab>
 </IgrTabs>
 ```

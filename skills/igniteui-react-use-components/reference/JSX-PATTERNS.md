@@ -89,35 +89,66 @@ function UserGrid({ users }: { users: User[] }) {
 
 ### Pattern 1: Tabs with Content Panels (inline content)
 
-Use `IgrTab` + `IgrTabPanel` when the tabbed content is rendered inline — no routing involved:
+Use `IgrTab` with inline content when the tabbed content is rendered inline — no routing involved. The tab label can be set via a `label` prop or via a `slot="label"` element:
 
 ```tsx
-import { IgrTabs, IgrTab, IgrTabPanel } from 'igniteui-react';
+import { IgrTabs, IgrTab } from 'igniteui-react';
 
+// Simple text labels using the label prop
 function SettingsPage() {
   return (
     <IgrTabs>
-      <IgrTab selected>Profile</IgrTab>
-      <IgrTab>Security</IgrTab>
-      <IgrTab>Notifications</IgrTab>
-
-      <IgrTabPanel>
+      <IgrTab label="Profile" selected>
         <p>Profile settings content here</p>
-      </IgrTabPanel>
-      <IgrTabPanel>
+      </IgrTab>
+      <IgrTab label="Security">
         <p>Security settings content here</p>
-      </IgrTabPanel>
-      <IgrTabPanel>
+      </IgrTab>
+      <IgrTab label="Notifications">
         <p>Notification preferences content here</p>
-      </IgrTabPanel>
+      </IgrTab>
     </IgrTabs>
   );
 }
 ```
 
-### Pattern 2: Tabs as Navigation (with React Router — NO `IgrTabPanel`)
+**Alternative: Using slot="label" for complex headers (e.g., with icons):**
 
-> **⚠️ CRITICAL:** When using `IgrTabs` for navigation with React Router (or any router), **do NOT include `IgrTabPanel`**. Adding tab panels creates empty content areas that fill the view and push the routed content out of sight. Only render `IgrTab` elements and let the router's `<Outlet />` handle the content below the tabs.
+```tsx
+import { IgrTabs, IgrTab, IgrIcon } from 'igniteui-react';
+
+function SettingsPage() {
+  return (
+    <IgrTabs>
+      <IgrTab selected>
+        <span slot="label">
+          <IgrIcon name="home" collection="material" />
+          Profile
+        </span>
+        <p>Profile settings content here</p>
+      </IgrTab>
+      <IgrTab>
+        <span slot="label">
+          <IgrIcon name="security" collection="material" />
+          Security
+        </span>
+        <p>Security settings content here</p>
+      </IgrTab>
+      <IgrTab>
+        <span slot="label">
+          <IgrIcon name="notifications" collection="material" />
+          Notifications
+        </span>
+        <p>Notification preferences content here</p>
+      </IgrTab>
+    </IgrTabs>
+  );
+}
+```
+
+### Pattern 2: Tabs as Navigation (with React Router — NO inline content)
+
+> **⚠️ CRITICAL:** When using `IgrTabs` for navigation with React Router (or any router), **do NOT include inline content in `IgrTab`**. Only render tab labels (via `label` prop or `slot="label"`), and let the router's `<Outlet />` handle the content below the tabs.
 
 ```tsx
 import { IgrTabs, IgrTab } from 'igniteui-react';
@@ -142,15 +173,14 @@ function MainLayout() {
 
   return (
     <div>
-      {/* Tabs for navigation — NO IgrTabPanel */}
+      {/* Tabs for navigation — label prop only, no inline content */}
       <IgrTabs onChange={handleTabChange}>
         {tabs.map((tab) => (
           <IgrTab
             key={tab.path}
+            label={tab.label}
             selected={location.pathname === tab.path}
-          >
-            {tab.label}
-          </IgrTab>
+          />
         ))}
       </IgrTabs>
 
@@ -164,8 +194,8 @@ function MainLayout() {
 ```
 
 **Key rules for tabs-as-navigation:**
-- ✅ Use only `IgrTab` inside `IgrTabs` — no `IgrTabPanel`
+- ✅ Use only `IgrTab` with label prop or `slot="label"` — no inline content
 - ✅ Sync the active tab to the current route using the `selected` prop
 - ✅ Handle `onChange` to call `navigate()` for route changes
 - ✅ Use `<Outlet />` (or the equivalent in your router) for content rendering
-- ❌ Do NOT add `IgrTabPanel` — it creates an empty panel body that fills the viewport
+- ❌ Do NOT add inline content in `IgrTab` — it creates unwanted content areas that fill the viewport

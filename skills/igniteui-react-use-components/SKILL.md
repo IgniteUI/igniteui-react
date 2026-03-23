@@ -103,9 +103,9 @@ function App() {
 
 ### IgrTabs: Content vs Navigation
 
-- **Content panels**: Use `IgrTab` + `IgrTabPanel` together
-- **Navigation (router)**: Use **only `IgrTab`** — no `IgrTabPanel`
-- See [JSX-PATTERNS.md](./JSX-PATTERNS.md)
+- **Content panels**: Use `IgrTab` with inline content (label via `label` prop or `slot="label"`)
+- **Navigation (router)**: Use **only `IgrTab`** with label-only (no inline content)
+- See [JSX-PATTERNS.md](./reference/JSX-PATTERNS.md)
 
 ### Events
 
@@ -139,7 +139,7 @@ function App() {
 8. **Use refs sparingly** — prefer declarative props
 9. **Prefer controlled components** for forms
 10. **Check slot names** in the docs
-11. **Tabs for navigation** — do NOT include `IgrTabPanel` when using with router
+11. **Tabs for navigation** — use label-only `IgrTab` (no inline content) when using with router
 
 ## Additional Resources
 
