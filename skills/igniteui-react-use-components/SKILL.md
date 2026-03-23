@@ -143,7 +143,7 @@ function App() {
 
 ## Additional Resources
 
-- [Ignite UI for React — Getting Started](https://www.infragistics.com/reactsite/components/general-getting-started)
+- [Ignite UI for React — Getting Started](https://www.infragistics.com/products/ignite-ui-react/react/components/general-getting-started)
 - [React Examples Repository](https://github.com/IgniteUI/igniteui-react-examples)
 - [npm: igniteui-react](https://www.npmjs.com/package/igniteui-react)
 - [@lit/react Documentation](https://lit.dev/docs/frameworks/react/)

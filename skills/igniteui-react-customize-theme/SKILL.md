@@ -177,7 +177,7 @@ See [CSS-THEMING.md](./reference/CSS-THEMING.md) for approaches: class toggle, m
 
 ## Additional Resources
 
-- [Ignite UI for React — Themes Overview](https://www.infragistics.com/reactsite/components/themes/overview)
+- [Ignite UI for React — Themes Overview](https://www.infragistics.com/products/ignite-ui-react/react/components/themes/overview)
 - [igniteui-theming npm package](https://www.npmjs.com/package/igniteui-theming)
 - [CSS Custom Properties on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
 - [CSS ::part() on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/::part)
