@@ -62,91 +62,91 @@ Use the tables below to map a UI need to the right React component. All componen
 
 | UI Need | Component | Import | Docs |
 |---|---|---|---|
-| Text field / text input | `IgrInput` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/input) |
-| Multi-line text | `IgrTextarea` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/text-area) |
-| Checkbox | `IgrCheckbox` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/checkbox) |
-| On/off toggle | `IgrSwitch` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/switch) |
-| Single choice from a list | `IgrRadio` / `IgrRadioGroup` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/radio) |
-| Star / score rating | `IgrRating` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/rating) |
-| Formatted / masked text input | `IgrMaskInput` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/input) |
-| Date and time input | `IgrDateTimeInput` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/date-time-input) |
-| File upload | `IgrFileInput` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/file-input) |
-| Simple dropdown / select | `IgrSelect` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/select) |
-| Searchable dropdown, single or multi-select | `IgrCombo` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/combo/overview) |
-| Grouped toggle buttons | `IgrButtonGroup` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/button-group) |
-| Range / numeric slider | `IgrSlider` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/slider) |
-| Range slider (two handles) | `IgrRangeSlider` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/slider) |
+| Text field / text input | `IgrInput` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/input) |
+| Multi-line text | `IgrTextarea` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/text-area) |
+| Checkbox | `IgrCheckbox` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/checkbox) |
+| On/off toggle | `IgrSwitch` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/switch) |
+| Single choice from a list | `IgrRadio` / `IgrRadioGroup` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/radio) |
+| Star / score rating | `IgrRating` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/rating) |
+| Formatted / masked text input | `IgrMaskInput` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/mask-input) |
+| Date and time input | `IgrDateTimeInput` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/date-time-input) |
+| File upload | `IgrFileInput` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/file-input) |
+| Simple dropdown / select | `IgrSelect` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/select) |
+| Searchable dropdown, single or multi-select | `IgrCombo` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/combo/overview) |
+| Grouped toggle buttons | `IgrButtonGroup` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/button-group) |
+| Range / numeric slider | `IgrSlider` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/slider) |
+| Range slider (two handles) | `IgrRangeSlider` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/slider) |
 
 ### Buttons & Actions
 
 | UI Need | Component | Import | Docs |
 |---|---|---|---|
-| Standard clickable button | `IgrButton` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/button) |
-| Icon-only button | `IgrIconButton` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/icon-button) |
-| Click ripple effect | `IgrRipple` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/ripple) |
-| Removable tag / filter chip | `IgrChip` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/chip) |
+| Standard clickable button | `IgrButton` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/button) |
+| Icon-only button | `IgrIconButton` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/icon-button) |
+| Click ripple effect | `IgrRipple` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/ripple) |
+| Removable tag / filter chip | `IgrChip` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/chip) |
 
 ### Scheduling & Date Pickers
 
 | UI Need | Component | Import | Docs |
 |---|---|---|---|
-| Full calendar view | `IgrCalendar` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/scheduling/calendar) |
-| Date picker (popup calendar) | `IgrDatepicker` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/scheduling/date-picker) |
-| Date range selection | `IgrDateRangePicker` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/scheduling/date-range-picker) |
+| Full calendar view | `IgrCalendar` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/calendar) |
+| Date picker (popup calendar) | `IgrDatepicker` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/date-picker) |
+| Date range selection | `IgrDateRangePicker` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/date-range-picker) |
 
 ### Notifications & Feedback
 
 | UI Need | Component | Import | Docs |
 |---|---|---|---|
-| Brief auto-dismiss notification | `IgrToast` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/notifications/toast) |
-| Actionable dismissible notification bar | `IgrSnackbar` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/notifications/snackbar) |
-| Persistent status banner | `IgrBanner` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/notifications/banner) |
-| Modal confirmation or content dialog | `IgrDialog` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/notifications/dialog) |
-| Tooltip on hover | `IgrTooltip` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/tooltip) |
-| Small count / status indicator | `IgrBadge` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/badge) |
+| Brief auto-dismiss notification | `IgrToast` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/notifications/toast) |
+| Actionable dismissible notification bar | `IgrSnackbar` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/notifications/snackbar) |
+| Persistent status banner | `IgrBanner` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/notifications/banner) |
+| Modal confirmation or content dialog | `IgrDialog` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/notifications/dialog) |
+| Tooltip on hover | `IgrTooltip` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/tooltip) |
+| Small count / status indicator | `IgrBadge` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/badge) |
 
 ### Progress Indicators
 
 | UI Need | Component | Import | Docs |
 |---|---|---|---|
-| Horizontal progress bar | `IgrLinearProgress` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/linear-progress) |
-| Circular / spinner progress | `IgrCircularProgress` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/circular-progress) |
+| Horizontal progress bar | `IgrLinearProgress` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/linear-progress) |
+| Circular / spinner progress | `IgrCircularProgress` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/circular-progress) |
 
 ### Layouts & Containers
 
 | UI Need | Component | Import | Docs |
 |---|---|---|---|
-| Generic content card | `IgrCard` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/card) |
-| User avatar / profile image | `IgrAvatar` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/avatar) |
-| Icon display | `IgrIcon` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/icon) |
-| Horizontal or vertical divider | `IgrDivider` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/divider) |
-| Collapsible section | `IgrExpansionPanel` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/expansion-panel) |
-| Multiple collapsible sections | `IgrAccordion` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/accordion) |
-| Tabbed content panels (with inline content) | `IgrTabs` (content in `IgrTab`) | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/tabs) |
-| Image / content slideshow | `IgrCarousel` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/carousel) |
-| Multi-step wizard / onboarding flow | `IgrStepper` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/stepper) |
-| Resizable, draggable dashboard tiles | `IgrTileManager` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/tile-manager) |
+| Generic content card | `IgrCard` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/card) |
+| User avatar / profile image | `IgrAvatar` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/avatar) |
+| Icon display | `IgrIcon` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/icon) |
+| Horizontal or vertical divider | `IgrDivider` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/divider) |
+| Collapsible section | `IgrExpansionPanel` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/expansion-panel) |
+| Multiple collapsible sections | `IgrAccordion` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/accordion) |
+| Tabbed content panels (with inline content) | `IgrTabs` (content in `IgrTab`) | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/tabs) |
+| Image / content slideshow | `IgrCarousel` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/carousel) |
+| Multi-step wizard / onboarding flow | `IgrStepper` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/stepper) |
+| Resizable, draggable dashboard tiles | `IgrTileManager` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/tile-manager) |
 
 ### Navigation
 
 | UI Need | Component | Import | Docs |
 |---|---|---|---|
-| Top application bar / toolbar | `IgrNavbar` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/menus/navbar) |
-| Side navigation drawer | `IgrNavDrawer` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/menus/navigation-drawer) |
-| Tab-based navigation (with router) | `IgrTabs` (label-only, no content) | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/layouts/tabs) |
-| Context menu / actions dropdown | `IgrDropdown` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/dropdown) |
+| Top application bar / toolbar | `IgrNavbar` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/menus/navbar) |
+| Side navigation drawer | `IgrNavDrawer` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/menus/navigation-drawer) |
+| Tab-based navigation (with router) | `IgrTabs` (label-only, no content) | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/tabs) |
+| Context menu / actions dropdown | `IgrDropdown` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/dropdown) |
 
 ### Lists & Data Display
 
 | UI Need | Component | Import | Docs |
 |---|---|---|---|
-| Simple scrollable list | `IgrList` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/grids/list) |
-| Hierarchical / tree data | `IgrTree` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/grids/tree) |
-| Tabular data (MIT, lightweight) | `IgrGridLite` | `igniteui-react/grid-lite` (requires both `igniteui-react` and `igniteui-grid-lite` packages) | [Docs](https://www.infragistics.com/reactsite/components/grid-lite/overview) |
-| Full-featured tabular data grid | `IgrDataGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/reactsite/components/grids/grid/overview) |
-| Nested / master-detail grid | `IgrHierarchicalGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/reactsite/components/grids/hierarchical-grid/overview) |
-| Parent-child relational tree grid | `IgrTreeGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/reactsite/components/grids/tree-grid/overview) |
-| Cross-tabulation / BI pivot table | `IgrPivotGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/reactsite/components/grids/pivot-grid/overview) |
+| Simple scrollable list | `IgrList` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/list) |
+| Hierarchical / tree data | `IgrTree` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/tree) |
+| Tabular data (MIT, lightweight) | `IgrGridLite` | `igniteui-react/grid-lite` (requires both `igniteui-react` and `igniteui-grid-lite` packages) | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grid-lite/overview) |
+| Full-featured tabular data grid | `IgrDataGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/grid/overview) |
+| Nested / master-detail grid | `IgrHierarchicalGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/hierarchical-grid/overview) |
+| Parent-child relational tree grid | `IgrTreeGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/tree-grid/overview) |
+| Cross-tabulation / BI pivot table | `IgrPivotGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/pivot-grid/overview) |
 
 ### Charts & Data Visualization
 
@@ -154,18 +154,18 @@ Use the tables below to map a UI need to the right React component. All componen
 
 | UI Need | Component | Module Registration | Import | Docs |
 |---|---|---|---|---|
-| Category / bar / line chart | `IgrCategoryChart` | `IgrCategoryChartModule.register()` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/reactsite/components/charts/chart-overview) |
-| Pie / doughnut chart | `IgrPieChart` | `IgrPieChartModule.register()` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/reactsite/components/charts/chart-overview) |
-| Financial / stock chart | `IgrFinancialChart` | `IgrFinancialChartModule.register()` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/reactsite/components/charts/chart-overview) |
-| Radial gauge | `IgrRadialGauge` | `IgrRadialGaugeModule.register()` | `igniteui-react-gauges` | [Docs](https://www.infragistics.com/reactsite/components/gauges/radial-gauge) |
-| Linear gauge | `IgrLinearGauge` | `IgrLinearGaugeModule.register()` | `igniteui-react-gauges` | [Docs](https://www.infragistics.com/reactsite/components/gauges/linear-gauge) |
-| Geographic map | `IgrGeographicMap` | `IgrGeographicMapModule.register()` | `igniteui-react-maps` | [Docs](https://www.infragistics.com/reactsite/components/maps/geographic-map) |
+| Category / bar / line chart | `IgrCategoryChart` | `IgrCategoryChartModule.register()` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/charts/chart-overview) |
+| Pie / doughnut chart | `IgrPieChart` | `IgrPieChartModule.register()` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/charts/chart-overview) |
+| Financial / stock chart | `IgrFinancialChart` | `IgrFinancialChartModule.register()` | `igniteui-react-charts` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/charts/chart-overview) |
+| Radial gauge | `IgrRadialGauge` | `IgrRadialGaugeModule.register()` | `igniteui-react-gauges` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/gauges/radial-gauge) |
+| Linear gauge | `IgrLinearGauge` | `IgrLinearGaugeModule.register()` | `igniteui-react-gauges` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/gauges/linear-gauge) |
+| Geographic map | `IgrGeographicMap` | `IgrGeographicMapModule.register()` | `igniteui-react-maps` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/maps/geographic-map) |
 
 ### Conversational / AI
 
 | UI Need | Component | Import | Docs |
 |---|---|---|---|
-| Chat / AI assistant message thread | `IgrChat` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/interactivity/chat) |
+| Chat / AI assistant message thread | `IgrChat` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/interactivity/chat) |
 
 ### Embedded Analytics / BI Dashboards (Reveal SDK)
 
@@ -223,7 +223,7 @@ Confirm which package provides the component:
 
 Always direct the user to the official documentation linked in the tables above. Key entry points:
 
-- **Getting started**: [Ignite UI for React Docs](https://www.infragistics.com/reactsite/components/general-getting-started)
+- **Getting started**: [Ignite UI for React Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/general-getting-started)
 - **React examples**: [https://github.com/IgniteUI/igniteui-react-examples](https://github.com/IgniteUI/igniteui-react-examples)
 - **npm package**: [https://www.npmjs.com/package/igniteui-react](https://www.npmjs.com/package/igniteui-react)
 - **GitHub repository**: [https://github.com/IgniteUI/igniteui-react](https://github.com/IgniteUI/igniteui-react)
@@ -334,7 +334,7 @@ function Dashboard() {
 
 If you are unsure about a component or need more information:
 
-1. **Browse the docs** at `https://www.infragistics.com/reactsite/components/` — the left sidebar groups components by category
+1. **Browse the docs** at `https://www.infragistics.com/products/ignite-ui-react/react/components/` — the left sidebar groups components by category
 2. **Use the naming convention**: React components use the `Igr` prefix followed by PascalCase name (e.g., `IgrDateRangePicker`, `IgrNavDrawer`). The docs URL typically uses kebab-case: `components/scheduling/date-range-picker`
 3. **Check the examples repo** at [igniteui-react-examples](https://github.com/IgniteUI/igniteui-react-examples) for working sample applications
 
@@ -347,7 +347,7 @@ If you are unsure about a component or need more information:
 
 ## Additional Resources
 
-- [Ignite UI for React Documentation](https://www.infragistics.com/reactsite/components/general-getting-started)
+- [Ignite UI for React Documentation](https://www.infragistics.com/products/ignite-ui-react/react/components/general-getting-started)
 - [React Examples Repository](https://github.com/IgniteUI/igniteui-react-examples)
 - [npm: igniteui-react](https://www.npmjs.com/package/igniteui-react)
 - [GitHub Repository](https://github.com/IgniteUI/igniteui-react)

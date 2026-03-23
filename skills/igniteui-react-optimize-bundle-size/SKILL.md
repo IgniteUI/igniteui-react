@@ -177,22 +177,24 @@ function App() {
 
 ```tsx
 // pages/Dashboard.tsx — only loaded when navigating to /dashboard
-import { IgrDataGrid, IgrColumn } from 'igniteui-react-grids';
-import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+import { IgrGrid, IgrColumn } from 'igniteui-react-grids';
+import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
 
 export default function Dashboard() {
   return (
-    <IgrDataGrid dataSource={data} autoGenerate={false}>
+    <IgrGrid data={data} autoGenerate={false}>
       <IgrColumn field="name" header="Name" />
       <IgrColumn field="value" header="Value" />
-    </IgrDataGrid>
+    </IgrGrid>
   );
 }
 ```
 
 ```tsx
 // pages/Analytics.tsx — only loaded when navigating to /analytics
-import { IgrCategoryChart } from 'igniteui-react-charts';
+import { IgrCategoryChart, IgrCategoryChartModule } from 'igniteui-react-charts';
+
+IgrCategoryChartModule.register();
 
 export default function Analytics() {
   return <IgrCategoryChart dataSource={data} width="100%" height="500px" />;

@@ -59,10 +59,8 @@ Available themes:
 
 ```tsx
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
-import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
 ```
-
-> **Note:** The theme CSS is imported from the underlying `igniteui-webcomponents` and `igniteui-webcomponents-grids` packages (dependencies of `igniteui-react` and `igniteui-react-grids`), not from `igniteui-react` itself.
 
 ## Next.js Setup
 
@@ -73,7 +71,7 @@ In Next.js, there is no single `main.tsx` entry point. Import the theme CSS **in
 'use client';
 
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
-import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
 
 import { IgrGrid, IgrColumn, IgrPaginator } from 'igniteui-react-grids';
 
@@ -93,7 +91,7 @@ Alternatively, import themes once in a root layout:
 ```tsx
 // app/layout.tsx
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
-import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

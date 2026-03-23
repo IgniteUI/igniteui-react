@@ -83,7 +83,7 @@ function App() {
 }
 ```
 
-> **No `defineComponents()` needed.** React wrappers auto-register. See [CHARTS-GRIDS.md](./CHARTS-GRIDS.md) for exceptions (charts, gauges, maps, Grid Lite).
+> **No `defineComponents()` needed.** React wrappers auto-register. See [CHARTS-GRIDS.md](./reference/CHARTS-GRIDS.md) for exceptions (charts, gauges, maps, Grid Lite).
 
 ---
 
@@ -91,15 +91,15 @@ function App() {
 
 ### Theme CSS Import
 
-- **Always import theme CSS** before using components — see [INSTALLATION.md](./INSTALLATION.md)
-- **For grids**, also import `igniteui-webcomponents-grids/grids/themes/...`
+- **Always import theme CSS** before using components — see [INSTALLATION.md](./reference/INSTALLATION.md)
+- **For grids**, also import `igniteui-react-grids/grids/themes/...`
 - **In Next.js**, import in each client component file or root layout
 
 ### JSX Patterns
 
 - Use `slot` attribute for named slots: `<span slot="icon">📊</span>`
 - Boolean props: `<IgrInput disabled />` is shorthand for `disabled={true}`
-- See [JSX-PATTERNS.md](./JSX-PATTERNS.md)
+- See [JSX-PATTERNS.md](./reference/JSX-PATTERNS.md)
 
 ### IgrTabs: Content vs Navigation
 
@@ -111,12 +111,12 @@ function App() {
 
 - Events are `CustomEvent` objects, not React `SyntheticEvent`
 - Access data via `e.target` or `e.detail`
-- See [EVENT-HANDLING.md](./EVENT-HANDLING.md)
+- See [EVENT-HANDLING.md](./reference/EVENT-HANDLING.md)
 
 ### Refs
 
 - Use `useRef<HTMLElement>(null)` and cast to access imperative API
-- See [REFS-FORMS.md](./REFS-FORMS.md)
+- See [REFS-FORMS.md](./reference/REFS-FORMS.md)
 
 ### Charts, Gauges, Maps & Grid Lite
 
@@ -143,7 +143,7 @@ function App() {
 
 ## Additional Resources
 
-- [Ignite UI for React — Getting Started](https://www.infragistics.com/reactsite/components/general-getting-started)
+- [Ignite UI for React — Getting Started](https://www.infragistics.com/products/ignite-ui-react/react/components/general-getting-started)
 - [React Examples Repository](https://github.com/IgniteUI/igniteui-react-examples)
 - [npm: igniteui-react](https://www.npmjs.com/package/igniteui-react)
 - [@lit/react Documentation](https://lit.dev/docs/frameworks/react/)

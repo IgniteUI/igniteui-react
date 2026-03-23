@@ -120,7 +120,7 @@ If you identify gaps in the skills or have suggestions for improvements:
 
 ## Additional Resources
 
-- [Ignite UI for React Documentation](https://www.infragistics.com/reactsite/components/general-getting-started)
+- [Ignite UI for React Documentation](https://www.infragistics.com/products/ignite-ui-react/react/components/general-getting-started)
 - [React Examples Repository](https://github.com/IgniteUI/igniteui-react-examples)
 - [npm: igniteui-react](https://www.npmjs.com/package/igniteui-react)
 - [GitHub Repository](https://github.com/IgniteUI/igniteui-react)
