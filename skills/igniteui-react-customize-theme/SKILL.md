@@ -75,6 +75,8 @@ import 'igniteui-webcomponents/themes/light/bootstrap.css';
 import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
 ```
 
+### 2. Override with CSS Custom Properties
+
 ```css
 /* src/index.css */
 :root {
