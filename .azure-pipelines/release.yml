@@ -77,6 +77,12 @@ jobs:
         script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_MIT" -Destination "dist/LICENSE"
 
     - task: PowerShell@2
+      displayName: 'Copy skills folder'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path "skills" -Destination "dist/skills" -Recurse
+
+    - task: PowerShell@2
       displayName: 'Copy components README'
       inputs:
         targetType: inline
@@ -99,6 +105,12 @@ jobs:
         workingDir: '$(Build.SourcesDirectory)/dist'
         customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
         verbose: ${{ parameters.verbose }}
+
+    - task: PowerShell@2
+      displayName: 'Remove skills folder'
+      inputs:
+        targetType: inline
+        script: Remove-Item -Path "dist/skills" -Recurse -Force
 
     # dock-manager trial release:
     - task: PowerShell@2
