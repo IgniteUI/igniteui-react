@@ -19,6 +19,8 @@ import {
 } from 'typedoc';
 import ts, { ModifierFlags, SymbolFlags } from 'typescript';
 
+const excludeBaseTypes = ['LitElement', 'HTMLElement'];
+
 export function load(app: Application) {
   app.converter.on(
     Converter.EVENT_CREATE_DECLARATION,
@@ -153,10 +155,11 @@ export function load(app: Application) {
 }
 
 function parseTypeProperties(type: any, context: any) {
-  if (type.symbol?.name === 'LitElement') {
+  if (excludeBaseTypes.includes(type.symbol?.name)) {
     return;
   }
-  type.declaredProperties?.forEach((value: ts.Symbol, key: ts.__String) => {
+  const props = type.declaredProperties || type.symbol?.members;
+  props?.forEach((value: ts.Symbol, key: ts.__String) => {
     const memberDeclaration = value?.declarations?.length ? (value.declarations[0] as any) : null;
     const modifiers = ts.getCombinedModifierFlags(memberDeclaration);
     if (
