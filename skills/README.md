@@ -47,67 +47,68 @@ Each skill contains:
 
 ## Editor / Agent Setup
 
-### GitHub Copilot
+Most modern AI assistants (GitHub Copilot, Cursor, Windsurf, etc.) should auto-discover these skills from your `node_modules/igniteui-react/skills/` directory after you install the package. No additional configuration is typically needed.
 
-Add a `.github/copilot-instructions.md` file to your project root:
+If your AI assistant doesn't auto-discover the skills, or you want to provide additional context, you can reference them manually:
+
+### GitHub Copilot (Optional)
+
+If you want to provide explicit instructions to GitHub Copilot, you can add a `.github/copilot-instructions.md` file to **your project root**:
 
 ```markdown
 ## Ignite UI for React
 
 This project uses Ignite UI for React. When answering questions about UI components,
-refer to the skills in the `skills/` directory (or the `node_modules/igniteui-react/skills/` directory if using the npm package):
+refer to the skills in node_modules/igniteui-react/skills/:
 
-- **Choosing components**: skills/igniteui-react-choose-components/SKILL.md
-- **Using components in React**: skills/igniteui-react-use-components/SKILL.md
-- **Theming & styling**: skills/igniteui-react-customize-theme/SKILL.md
-- **Bundle optimization**: skills/igniteui-react-optimize-bundle-size/SKILL.md
+- **Choosing components**: node_modules/igniteui-react/skills/igniteui-react-choose-components/SKILL.md
+- **Using components in React**: node_modules/igniteui-react/skills/igniteui-react-use-components/SKILL.md
+- **Theming & styling**: node_modules/igniteui-react/skills/igniteui-react-customize-theme/SKILL.md
+- **Bundle optimization**: node_modules/igniteui-react/skills/igniteui-react-optimize-bundle-size/SKILL.md
 
 All components use the `Igr` prefix (e.g. `IgrButton`, `IgrGrid`).
-Packages: `igniteui-react`, `igniteui-react-grids`, `igniteui-react-charts`, `igniteui-react-maps`, `igniteui-react-gauges`.
 ```
 
-### Cursor
+### Cursor / Windsurf (Optional)
 
-Create or edit `.cursorrules` in your project root:
+If you want to provide explicit instructions, create or edit `.cursorrules` in **your project root**:
 
 ```
 This project uses Ignite UI for React.
-When working with UI components, consult the skills in skills/ (or node_modules/igniteui-react/skills/):
+When working with UI components, consult the skills in node_modules/igniteui-react/skills/:
 
-- skills/igniteui-react-choose-components/SKILL.md — pick the right component
-- skills/igniteui-react-use-components/SKILL.md — React usage patterns
-- skills/igniteui-react-customize-theme/SKILL.md — theming and styling
-- skills/igniteui-react-optimize-bundle-size/SKILL.md — bundle optimization
+- node_modules/igniteui-react/skills/igniteui-react-choose-components/SKILL.md — pick the right component
+- node_modules/igniteui-react/skills/igniteui-react-use-components/SKILL.md — React usage patterns
+- node_modules/igniteui-react/skills/igniteui-react-customize-theme/SKILL.md — theming and styling
+- node_modules/igniteui-react/skills/igniteui-react-optimize-bundle-size/SKILL.md — bundle optimization
 
 Components use the Igr prefix (IgrButton, IgrGrid, IgrCombo, etc.).
-Packages: igniteui-react, igniteui-react-grids, igniteui-react-charts, igniteui-react-maps, igniteui-react-gauges.
 ```
 
-### Claude Code / Claude Desktop
+### Claude Desktop / Claude Code (Optional)
 
-Add to your `CLAUDE.md` project instructions:
+Add to your `CLAUDE.md` project instructions if needed:
 
 ```markdown
 ## Ignite UI for React
 
 This project uses Ignite UI for React. Refer to these skills for guidance:
 
-- skills/igniteui-react-choose-components/SKILL.md
-- skills/igniteui-react-use-components/SKILL.md
-- skills/igniteui-react-customize-theme/SKILL.md
-- skills/igniteui-react-optimize-bundle-size/SKILL.md
+- node_modules/igniteui-react/skills/igniteui-react-choose-components/SKILL.md
+- node_modules/igniteui-react/skills/igniteui-react-use-components/SKILL.md
+- node_modules/igniteui-react/skills/igniteui-react-customize-theme/SKILL.md
+- node_modules/igniteui-react/skills/igniteui-react-optimize-bundle-size/SKILL.md
 
 All React wrapper components use the `Igr` prefix (e.g. `IgrButton`, `IgrGrid`).
-Import from: `igniteui-react`, `igniteui-react-grids`, `igniteui-react-charts`, `igniteui-react-maps`, `igniteui-react-gauges`.
 ```
 
-### VS Code / JetBrains — Manual Attachment
+### Manual Attachment (All Editors)
 
 You can also attach individual skill files to your AI chat context manually:
 
-1. Open the AI chat panel (Copilot Chat, Cody, etc.)
+1. Open the AI chat panel (Copilot Chat, Cursor Chat, etc.)
 2. Use the "Attach file" or "Add context" action
-3. Select the relevant `SKILL.md` file from the `skills/` directory
+3. Navigate to `node_modules/igniteui-react/skills/` and select the relevant `SKILL.md` file
 
 ## Contributing
 
