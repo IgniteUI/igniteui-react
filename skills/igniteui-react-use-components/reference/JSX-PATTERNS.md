@@ -64,11 +64,11 @@ Ignite UI components use the web component **slot** mechanism under the hood. In
 Some components like the Data Grid support **render props** for custom cell rendering:
 
 ```tsx
-import { IgrDataGrid, IgrColumn } from 'igniteui-react-grids';
+import { IgrGrid, IgrColumn } from 'igniteui-react-grids';
 
 function UserGrid({ users }: { users: User[] }) {
   return (
-    <IgrDataGrid dataSource={users} autoGenerate={false}>
+    <IgrGrid data={users} autoGenerate={false}>
       <IgrColumn field="name" header="Name" />
       <IgrColumn field="email" header="Email" />
       <IgrColumn
@@ -78,7 +78,7 @@ function UserGrid({ users }: { users: User[] }) {
           <IgrBadge>{ctx.cell.value}</IgrBadge>
         )}
       />
-    </IgrDataGrid>
+    </IgrGrid>
   );
 }
 ```

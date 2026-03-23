@@ -17,7 +17,7 @@ import 'igniteui-webcomponents/themes/light/bootstrap.css';
 
 ```tsx
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
-import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
 ```
 
 ### Available Pre-built CSS Files
@@ -33,7 +33,7 @@ import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
 | `igniteui-webcomponents/themes/light/indigo.css` | Indigo Light |
 | `igniteui-webcomponents/themes/dark/indigo.css` | Indigo Dark |
 
-Grid theme CSS files follow the same pattern under `igniteui-webcomponents-grids/grids/themes/`.
+Grid theme CSS files follow the same pattern under `igniteui-react-grids/grids/themes/`.
 
 ### Next.js
 
@@ -42,7 +42,7 @@ In Next.js, import the theme CSS in each client component file or in a shared ro
 ```tsx
 // app/layout.tsx
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
-import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

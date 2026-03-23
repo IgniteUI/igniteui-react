@@ -68,7 +68,7 @@ Use the tables below to map a UI need to the right React component. All componen
 | On/off toggle | `IgrSwitch` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/switch) |
 | Single choice from a list | `IgrRadio` / `IgrRadioGroup` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/radio) |
 | Star / score rating | `IgrRating` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/rating) |
-| Formatted / masked text input | `IgrMaskInput` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/input) |
+| Formatted / masked text input | `IgrMaskInput` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/mask-input) |
 | Date and time input | `IgrDateTimeInput` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/date-time-input) |
 | File upload | `IgrFileInput` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/file-input) |
 | Simple dropdown / select | `IgrSelect` | `igniteui-react` | [Docs](https://www.infragistics.com/reactsite/components/inputs/select) |

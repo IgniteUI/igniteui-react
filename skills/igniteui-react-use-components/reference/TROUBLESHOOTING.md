@@ -10,8 +10,8 @@
 // Always required for core components
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
 
-// Also required when using grids (IgrGrid, IgrDataGrid, IgrTreeGrid, etc.)
-import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+// Also required when using grids (IgrGrid, IgrTreeGrid, etc.)
+import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
 ```
 
 **Next.js example:**
@@ -20,7 +20,7 @@ import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
 'use client';
 
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
-import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css';
+import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
 
 import { IgrNavbar, IgrButton } from 'igniteui-react';
 import { IgrGrid, IgrColumn, IgrPaginator } from 'igniteui-react-grids';
@@ -28,34 +28,31 @@ import { IgrGrid, IgrColumn, IgrPaginator } from 'igniteui-react-grids';
 
 ## Issue: Grid renders but icons show as placeholders and styles are missing
 
-**Cause:** The grid theme CSS (`igniteui-webcomponents-grids/grids/themes/...`) is not imported. The base theme CSS alone is not enough for grids.
+**Cause:** The grid theme CSS (`igniteui-react-grids/grids/themes/...`) is not imported. The base theme CSS alone is not enough for grids.
 
 **Solution:** Import **both** theme CSS files:
 
 ```tsx
-import 'igniteui-webcomponents/themes/light/bootstrap.css';           // Base theme
-import 'igniteui-webcomponents-grids/grids/themes/light/bootstrap.css'; // Grid theme
+import 'igniteui-webcomponents/themes/light/bootstrap.css';    // Base theme
+import 'igniteui-react-grids/grids/themes/light/bootstrap.css'; // Grid theme
 ```
 
 ## Issue: Grid Lite does not render or compilation error
 
-**Cause:** Grid Lite (`IgcGridLite`) is a **web component** from `igniteui-grid-lite` — not a React wrapper from `igniteui-react`. It uses the `Igc` prefix and requires explicit registration.
+**Cause:** `IgrGridLite` is a React wrapper component from `igniteui-react/grid-lite`. It requires **both** `igniteui-react` and `igniteui-grid-lite` packages to be installed. It uses the `Igr` prefix (like all other Ignite UI React wrappers) and does **not** require any `.register()` call.
 
 **Solution:**
 
-1. Install the correct package: `npm install igniteui-grid-lite`
-2. Import `IgcGridLite` from `igniteui-grid-lite` (not from `igniteui-react`)
-3. Call `IgcGridLite.register()` at module level
-4. Wrap in a sized container
+1. Install both required packages: `npm install igniteui-react igniteui-grid-lite`
+2. Import `IgrGridLite` from `igniteui-react/grid-lite`
+3. Wrap in a sized container
 
 ```tsx
-import { IgcGridLite } from 'igniteui-grid-lite';
-
-IgcGridLite.register();
+import { IgrGridLite } from 'igniteui-react/grid-lite';
 
 // Use in JSX with a sized container:
 <div className={styles['grid-lite']}>
-  <IgcGridLite data={data} />
+  <IgrGridLite data={data} />
 </div>
 ```
 
@@ -68,21 +65,20 @@ IgcGridLite.register();
 }
 ```
 
-## Issue: `IgcGridLite` from `igniteui-grid-lite` is confused with `IgrDataGrid` from `igniteui-react-grids`
+## Issue: `IgrGridLite` is confused with `IgrGrid` from `igniteui-react-grids`
 
 **Solution:** These are different components:
-- `igniteui-grid-lite` → lightweight MIT grid (`IgcGridLite`, web component — requires `.register()`)
-- `igniteui-react-grids` → full-featured commercial grids (`IgrDataGrid`, `IgrTreeGrid`, etc. — React wrappers)
+- `igniteui-react/grid-lite` → lightweight MIT grid (`IgrGridLite`, React wrapper — no `.register()` needed, requires both `igniteui-react` and `igniteui-grid-lite` packages)
+- `igniteui-react-grids` → full-featured commercial grids (`IgrGrid`, `IgrTreeGrid`, etc. — React wrappers)
 
 Import from the correct package for your needs:
 
 ```tsx
-// Lightweight grid (MIT, web component)
-import { IgcGridLite } from 'igniteui-grid-lite';
-IgcGridLite.register();
+// Lightweight grid (MIT, React wrapper, no registration needed)
+import { IgrGridLite } from 'igniteui-react/grid-lite';
 
 // Full-featured grid (commercial, React wrapper)
-import { IgrDataGrid } from 'igniteui-react-grids';
+import { IgrGrid } from 'igniteui-react-grids';
 ```
 
 ## Issue: Events fire but have unexpected shape
