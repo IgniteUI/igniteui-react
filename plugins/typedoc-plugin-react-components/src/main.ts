@@ -11,7 +11,6 @@ import {
   PredicateType,
   ReflectionFlag,
   ReflectionKind,
-  ReflectionSymbolId,
   ReflectionType,
   Renderer,
   SignatureReflection,
@@ -65,46 +64,7 @@ export function load(app: Application) {
 
             if (type.aliasTypeArguments) {
               // The 1st element is the ref to the node of the component it pretty much implements or otherwise `elementClass` prop of `createComponent`.
-              type.aliasTypeArguments[0].symbol?.members?.forEach(
-                (value: ts.Symbol, key: ts.__String) => {
-                  const memberDeclaration = value?.declarations?.length
-                    ? (value.declarations[0] as any)
-                    : null;
-                  const modifiers = ts.getCombinedModifierFlags(memberDeclaration);
-                  if (
-                    !key.toString().startsWith('_') &&
-                    (modifiers === ModifierFlags.None ||
-                      modifiers === ModifierFlags.Public ||
-                      modifiers === ModifierFlags.Static)
-                  ) {
-                    let reflectionKind = ReflectionKind.Property;
-                    let category = 'Other';
-                    switch (value.flags) {
-                      case SymbolFlags.GetAccessor:
-                        category = 'Accessors';
-                        reflectionKind = ReflectionKind.Accessor;
-                        break;
-                      case SymbolFlags.Method:
-                        category = 'Methods';
-                        reflectionKind = ReflectionKind.Method;
-                        break;
-                      case SymbolFlags.Accessor:
-                      case SymbolFlags.Property:
-                        category = 'Properties';
-                    }
-                    if (value.flags.toString() === '16777220') {
-                      // For some reason optional properties get flagged to this number, even though the optional is 16777216
-                      category = 'Properties';
-                    }
-                    if (category === 'Other') {
-                      // Other types we just ignore creating.
-                      return;
-                    }
-
-                    createMemberDeclaration(context, value, reflectionKind, category);
-                  }
-                },
-              );
+              parseTypeProperties(type.aliasTypeArguments[0], context);
               // The 2nd element is the `events` prop of the `createComponent` method.
               type.aliasTypeArguments[1].symbol?.members?.forEach(
                 (value: ts.Symbol, key: ts.__String) => {
@@ -190,6 +150,54 @@ export function load(app: Application) {
       }
     }
   });
+}
+
+function parseTypeProperties(type: any, context: any) {
+  if (type.symbol?.name === 'LitElement') {
+    return;
+  }
+  type.declaredProperties?.forEach((value: ts.Symbol, key: ts.__String) => {
+    const memberDeclaration = value?.declarations?.length ? (value.declarations[0] as any) : null;
+    const modifiers = ts.getCombinedModifierFlags(memberDeclaration);
+    if (
+      !key.toString().startsWith('_') &&
+      (modifiers === ModifierFlags.None ||
+        modifiers === ModifierFlags.Public ||
+        modifiers === ModifierFlags.Static)
+    ) {
+      let reflectionKind = ReflectionKind.Property;
+      let category = 'Other';
+      switch (value.flags) {
+        case SymbolFlags.GetAccessor:
+          category = 'Accessors';
+          reflectionKind = ReflectionKind.Accessor;
+          break;
+        case SymbolFlags.Method:
+          category = 'Methods';
+          reflectionKind = ReflectionKind.Method;
+          break;
+        case SymbolFlags.Accessor:
+        case SymbolFlags.Property:
+          category = 'Properties';
+      }
+      if (value.flags.toString() === '16777220') {
+        // For some reason optional properties get flagged to this number, even though the optional is 16777216
+        category = 'Properties';
+      }
+      if (category === 'Other') {
+        // Other types we just ignore creating.
+        return;
+      }
+
+      createMemberDeclaration(context, value, reflectionKind, category);
+    }
+  });
+
+  if (type.resolvedBaseTypes) {
+    for (const baseType of type.resolvedBaseTypes) {
+      parseTypeProperties(baseType, context);
+    }
+  }
 }
 
 function clearProps(inObj: any, propName: string) {
