@@ -130,7 +130,7 @@ Use [COMPONENT-CATALOGUE.md](./reference/COMPONENT-CATALOGUE.md) to map any UI n
 
 ### Refs
 
-- Use `useRef<HTMLElement>(null)` and cast to access imperative API
+- Use `useRef<IgrDialog>(null)` with the component type:
 - See [REFS-FORMS.md](./reference/REFS-FORMS.md)
 
 ### Charts, Gauges, Maps & Grid Lite

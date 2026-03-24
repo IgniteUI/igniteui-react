@@ -2,19 +2,20 @@
 
 ## Refs & Imperative API
 
-Use `useRef` to access the underlying web component element and call imperative methods (e.g., showing/hiding a dialog, focusing an input):
+Use `useRef` to access the underlying web component element and call imperative methods (e.g., showing/hiding a dialog, focusing an input).
+Components from `igniteui-react`, `igniteui-react-grids` and `igniteui-react-dockmanager` are React Function Components forward the native element to `useRef` and expose alias with the same name for accessing the custom element API:
 
 ```tsx
 import { useRef } from 'react';
 import { IgrDialog, IgrButton, IgrInput } from 'igniteui-react';
 
 function MyPage() {
-  const dialogRef = useRef<HTMLElement>(null);
-  const inputRef = useRef<HTMLElement>(null);
+  const dialogRef = useRef<IgrDialog>(null);
+  const inputRef = useRef<IgrInput>(null);
 
   const openDialog = () => {
     // Access the underlying web component and call its methods
-    (dialogRef.current as any)?.show();
+    dialogRef.current?.show();
   };
 
   const focusInput = () => {
@@ -29,7 +30,7 @@ function MyPage() {
 
       <IgrDialog ref={dialogRef} title="Confirmation">
         <p>Are you sure?</p>
-        <IgrButton slot="footer" onClick={() => (dialogRef.current as any)?.hide()}>
+        <IgrButton slot="footer" onClick={() => dialogRef.current?.hide()}>
           <span>Close</span>
         </IgrButton>
       </IgrDialog>
@@ -44,6 +45,35 @@ function MyPage() {
 ```
 
 > **Tip:** The ref gives you direct access to the web component's DOM element. You can call any method documented in the web component API.
+
+
+## Uncontrolled Components
+
+`igniteui-react` Inputs integrate with the native form handling through Element internals, allowing to take advantage of the native state management adn validation to create intuitive, straight-forward forms:
+
+```tsx
+import { useRef } from 'react';
+import { IgrInput, IgrButton } from 'igniteui-react';
+
+function SimpleForm() {
+  const nameRef = useRef<IgrInput>(null);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    // e.preventDefault(); // optionally prevent default submit form custom handling
+    const formData = new FormData(e.target);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <IgrInput name="name" label="Name" required={true} />
+      <IgrInput name="description" label="description" minLength={0}>
+      <IgrButton type="submit">
+        <span>Submit</span>
+      </IgrButton>
+    </form>
+  );
+}
+```
 
 ## Controlled Components with `useState`
 
@@ -63,15 +93,13 @@ function ProfileForm() {
       <IgrInput
         label="Name"
         value={name}
-        onInput={(e: CustomEvent) =>
-          setName((e.target as HTMLInputElement).value)
-        }
+        onInput={(e: CustomEvent<string>) => setName(e.detail) }
       />
 
       <IgrCheckbox
         checked={newsletter}
-        onChange={(e: CustomEvent) =>
-          setNewsletter((e.target as any).checked)
+        onChange={(e: CustomEvent<IgcCheckboxChangeEventArgs>) =>
+          setNewsletter(e.detail.checked)
         }
       >
         Subscribe to newsletter
@@ -80,41 +108,14 @@ function ProfileForm() {
       <IgrSelect
         label="Role"
         value={role}
-        onChange={(e: CustomEvent) =>
-          setRole((e.detail as any).value)
+        onChange={(e: CustomEvent<IgcSelectItemComponent>) =>
+          setRole(e.detail.value)
         }
       >
         <IgrSelectItem value="user">User</IgrSelectItem>
         <IgrSelectItem value="admin">Admin</IgrSelectItem>
         <IgrSelectItem value="editor">Editor</IgrSelectItem>
       </IgrSelect>
-    </form>
-  );
-}
-```
-
-## Uncontrolled Components
-
-For simpler scenarios, omit state and read the value on submit:
-
-```tsx
-import { useRef } from 'react';
-import { IgrInput, IgrButton } from 'igniteui-react';
-
-function SimpleForm() {
-  const nameRef = useRef<HTMLElement>(null);
-
-  const handleSubmit = () => {
-    const value = (nameRef.current as any)?.value;
-    console.log('Name:', value);
-  };
-
-  return (
-    <form>
-      <IgrInput ref={nameRef} label="Name" />
-      <IgrButton onClick={handleSubmit}>
-        <span>Submit</span>
-      </IgrButton>
     </form>
   );
 }
@@ -151,8 +152,8 @@ function SignUpForm() {
             label="Email"
             type="email"
             value={field.value || ''}
-            onInput={(e: CustomEvent) =>
-              field.onChange((e.target as HTMLInputElement).value)
+            onInput={(e: CustomEvent<string>) =>
+              field.onChange(e.detail)
             }
             onBlur={() => field.onBlur()}
             invalid={!!errors.email}
@@ -168,8 +169,8 @@ function SignUpForm() {
         render={({ field }) => (
           <IgrCheckbox
             checked={field.value || false}
-            onChange={(e: CustomEvent) =>
-              field.onChange((e.target as any).checked)
+            onChange={(e: CustomEvent<IgcCheckboxChangeEventArgs>) =>
+              field.onChange(e.detail.checked)
             }
           >
             I accept the terms and conditions

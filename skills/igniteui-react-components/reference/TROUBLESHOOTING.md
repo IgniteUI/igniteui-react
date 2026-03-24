@@ -79,13 +79,13 @@ const handleChange = (e: CustomEvent) => {
 
 ## Issue: Component methods not accessible
 
-**Solution:** Use `useRef` and cast to the underlying web component type:
+**Solution:** Use `useRef` with the component type:
 
 ```tsx
-const dialogRef = useRef<HTMLElement>(null);
+const dialogRef = useRef<IgrDialog>(null);
 
 // Call imperative method
-(dialogRef.current as any)?.show();
+dialogRef.current?.show();
 ```
 
 ## Issue: Chart / gauge / map does not render or is invisible
