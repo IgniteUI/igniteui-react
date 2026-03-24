@@ -14,19 +14,6 @@ Ignite UI React components accept props just like any React component. Use JSX e
 <IgrSlider value="50" />
 ```
 
-## Boolean Props
-
-Pass `true` / `false` explicitly, or use the shorthand (presence = `true`):
-
-```tsx
-// These are equivalent:
-<IgrInput disabled />
-<IgrInput disabled={true} />
-
-// Explicitly false:
-<IgrInput disabled={false} />
-```
-
 ## Children vs Slots
 
 Ignite UI components use the web component **slot** mechanism under the hood. In JSX, pass children to the default slot and use the `slot` attribute to target named slots:
@@ -198,4 +185,3 @@ function MainLayout() {
 - ✅ Sync the active tab to the current route using the `selected` prop
 - ✅ Handle `onChange` to call `navigate()` for route changes
 - ✅ Use `<Outlet />` (or the equivalent in your router) for content rendering
-- ❌ Do NOT add inline content in `IgrTab` — it creates unwanted content areas that fill the viewport

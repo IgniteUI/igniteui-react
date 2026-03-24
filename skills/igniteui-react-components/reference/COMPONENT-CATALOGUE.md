@@ -231,8 +231,6 @@ function Dashboard() {
 }
 ```
 
-> **No `defineComponents()` call is needed** — React wrappers handle component registration automatically when you import them.
-
 ---
 
 ## Common UI Scenarios → Recommended Component Sets

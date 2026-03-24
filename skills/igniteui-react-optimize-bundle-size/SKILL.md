@@ -39,7 +39,6 @@ This skill helps users minimize their React application's bundle size when using
 2. **Use named imports** — enable tree-shaking by importing specific components
 3. **Lazy load heavy components** — use `React.lazy` + `Suspense` for grids, charts, and other large components
 4. **Analyze your bundle** — use tools to identify what's being included
-5. **No `defineComponents()` needed** — the React wrappers handle registration automatically per-component
 
 ---
 
@@ -98,19 +97,6 @@ function App() {
 ```
 
 **Impact:** Bundle includes only the three components and their dependencies. Tree-shaking removes everything else.
-
-### About `defineComponents()`
-
-The React wrappers handle web component registration automatically when you import and render a component. **You never need to call `defineComponents()`** — doing so would be redundant and could pull in unnecessary code if you imported the function from `igniteui-webcomponents` directly.
-
-```tsx
-// ❌ Don't do this — unnecessary and bypasses tree-shaking
-import { defineComponents, IgcButtonComponent } from 'igniteui-webcomponents';
-defineComponents(IgcButtonComponent);
-
-// ✅ Just import the React wrapper
-import { IgrButton } from 'igniteui-react';
-```
 
 ---
 
@@ -383,7 +369,6 @@ module.exports = {
 - [ ] **Install only the packages you need** — don't install `igniteui-react-grids` if you only use buttons and inputs
 - [ ] **Use named imports** — `import { IgrButton } from 'igniteui-react'`, not `import * as`
 - [ ] **Don't import from `igniteui-webcomponents` directly** — use the `igniteui-react` wrappers
-- [ ] **Don't call `defineComponents()`** — the React wrappers handle this automatically
 - [ ] **Lazy load heavy components** — use `React.lazy` + `Suspense` for grids, charts, and dialogs
 - [ ] **Split by routes** — load component-heavy pages only when navigated to
 - [ ] **Audit your imports regularly** — remove unused components

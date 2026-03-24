@@ -45,25 +45,7 @@ import 'igniteui-react-grids/grids/themes/light/bootstrap.css'; // Grid theme
 
 1. Install both required packages: `npm install igniteui-react igniteui-grid-lite`
 2. Import `IgrGridLite` from `igniteui-react/grid-lite`
-3. Wrap in a sized container
-
-```tsx
-import { IgrGridLite } from 'igniteui-react/grid-lite';
-
-// Use in JSX with a sized container:
-<div className={styles['grid-lite']}>
-  <IgrGridLite data={data} />
-</div>
-```
-
-```css
-.grid-lite {
-  min-width: 400px;
-  min-height: 220px;
-  flex-grow: 1;
-  flex-basis: 0;
-}
-```
+3. Wrap in a sized container (see [CHARTS-GRIDS.md](./CHARTS-GRIDS.md) for a full example)
 
 ## Issue: `IgrGridLite` is confused with `IgrGrid` from `igniteui-react-grids`
 

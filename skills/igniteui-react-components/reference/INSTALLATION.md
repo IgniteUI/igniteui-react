@@ -55,6 +55,8 @@ Available themes:
 | `igniteui-webcomponents/themes/light/indigo.css` | Indigo Light |
 | `igniteui-webcomponents/themes/dark/indigo.css` | Indigo Dark |
 
+Grid theme CSS files follow the same pattern under `igniteui-react-grids/grids/themes/`.
+
 **For grids**, you **must also** import the grid theme CSS. Without it, the grid will be missing styles and icons will show as placeholders:
 
 ```tsx
@@ -134,6 +136,4 @@ function App() {
 export default App;
 ```
 
-> **No `defineComponents()` needed.** Unlike the underlying web components library, the React wrappers automatically register the web component when you import and render them. You never need to call `defineComponents()`.
->
-> **Exception — Charts, Gauges & Maps:** Components from `igniteui-react-charts`, `igniteui-react-gauges`, and `igniteui-react-maps` **do** require explicit registration. Grid Lite (`IgrGridLite` from `igniteui-react/grid-lite`) works like a standard React component but requires both `igniteui-react` and `igniteui-grid-lite` packages. See [CHARTS-GRIDS.md](./CHARTS-GRIDS.md).
+> **No `defineComponents()` needed.** React wrappers auto-register. See [CHARTS-GRIDS.md](./reference/CHARTS-GRIDS.md) for exceptions (charts, gauges, maps).

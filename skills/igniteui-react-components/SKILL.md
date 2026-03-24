@@ -74,7 +74,7 @@ npm install igniteui-react
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
 ```
 
-> **CRITICAL:** Without the theme CSS, components will render without styles and icons will be broken.
+> **CRITICAL:** Without the theme CSS, components will render without styles and icons will be broken. See [INSTALLATION.md](./reference/INSTALLATION.md) for all available themes and setup.
 
 ### 3. Use Components
 
@@ -107,14 +107,13 @@ Use [COMPONENT-CATALOGUE.md](./reference/COMPONENT-CATALOGUE.md) to map any UI n
 
 ### Theme CSS Import
 
-- **Always import theme CSS** before using components — see [INSTALLATION.md](./reference/INSTALLATION.md)
-- **For grids**, also import `igniteui-react-grids/grids/themes/...`
-- **In Next.js**, import in each client component file or root layout
+- **Always import theme CSS** before using components. **For grids**, also import `igniteui-react-grids/grids/themes/...`
+- see [INSTALLATION.md](./reference/INSTALLATION.md)
 
 ### JSX Patterns
 
+- Use props just like any React component
 - Use `slot` attribute for named slots: `<span slot="icon">📊</span>`
-- Boolean props: `<IgrInput disabled />` is shorthand for `disabled={true}`
 - See [JSX-PATTERNS.md](./reference/JSX-PATTERNS.md)
 
 ### IgrTabs: Content vs Navigation
@@ -147,13 +146,12 @@ Use [COMPONENT-CATALOGUE.md](./reference/COMPONENT-CATALOGUE.md) to map any UI n
 
 1. **Start with the MIT package** (`igniteui-react`) — it covers most common UI needs
 2. **Import theme CSS first** — components need it to render correctly
-3. **Don't call `defineComponents()`** — React wrappers auto-register
-4. **Register chart/gauge/map modules** — call `.register()` at module level
-5. **Wrap charts/gauges/maps in sized containers** — they need explicit dimensions
-6. **Use named imports** — enables tree-shaking
-7. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
-8. **Use refs sparingly** — prefer declarative props
-9. **Check slot names** in the docs
+3. **Register chart/gauge/map modules** — call `.register()` at module level
+4. **Wrap charts/gauges/maps in sized containers** — they need explicit dimensions
+5. **Use named imports** — enables tree-shaking
+6. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
+7. **Use refs sparingly** — prefer declarative props
+8. **Check slot names** in the docs
 
 ## Additional Resources
 

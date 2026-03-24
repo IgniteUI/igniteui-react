@@ -46,81 +46,44 @@ Each skill contains:
 
 ## Editor / Agent Setup
 
-Most modern AI assistants (GitHub Copilot, Cursor, Windsurf, etc.) should auto-discover these skills from your `node_modules/igniteui-react/skills/` directory after you install the package. No additional configuration is typically needed.
+Most modern AI assistants (GitHub Copilot, Cursor, Windsurf, Claude Code, etc.) should auto-discover these skills from a specified location in the workspace or global profile.
 
-If your AI assistant doesn't auto-discover the skills, or you want to provide additional context, you can reference them manually:
+For example, you can copy them into the agent-specific skills folder for your editor:
 
-### GitHub Copilot (Optional)
+### GitHub Copilot
 
-If you want to provide explicit instructions to GitHub Copilot, you can add a `.github/copilot-instructions.md` file to **your project root**:
-
-```markdown
-## Ignite UI for React
-
-This project uses Ignite UI for React. When answering questions about UI components,
-refer to the skills in node_modules/igniteui-react/skills/:
-
-- **Components (choosing & using)**: node_modules/igniteui-react/skills/igniteui-react-components/SKILL.md
-- **Theming & styling**: node_modules/igniteui-react/skills/igniteui-react-customize-theme/SKILL.md
-- **Bundle optimization**: node_modules/igniteui-react/skills/igniteui-react-optimize-bundle-size/SKILL.md
-
-All components use the `Igr` prefix (e.g. `IgrButton`, `IgrGrid`).
-```
-
-### Cursor / Windsurf (Optional)
-
-If you want to provide explicit instructions, create or edit `.cursorrules` in **your project root**:
+Copy the skill files into your project's `.agents/skills/` directory:
 
 ```
-This project uses Ignite UI for React.
-When working with UI components, consult the skills in node_modules/igniteui-react/skills/:
-
-- node_modules/igniteui-react/skills/igniteui-react-components/SKILL.md — pick components and use them in React
-- node_modules/igniteui-react/skills/igniteui-react-customize-theme/SKILL.md — theming and styling
-- node_modules/igniteui-react/skills/igniteui-react-optimize-bundle-size/SKILL.md — bundle optimization
-
-Components use the Igr prefix (IgrButton, IgrGrid, IgrCombo, etc.).
+.agents/
+  skills/
+    igniteui-react-components/
+      SKILL.md
+      reference/
+    igniteui-react-customize-theme/
+      SKILL.md
+      reference/
+    igniteui-react-optimize-bundle-size/
+      SKILL.md
 ```
 
-### Claude Desktop / Claude Code (Optional)
+### Claude Code
 
-Add to your `CLAUDE.md` project instructions if needed:
+Copy the skill files into your project's `.claude/skills/` directory:
 
-```markdown
-## Ignite UI for React
-
-This project uses Ignite UI for React. Refer to these skills for guidance:
-
-- node_modules/igniteui-react/skills/igniteui-react-components/SKILL.md
-- node_modules/igniteui-react/skills/igniteui-react-customize-theme/SKILL.md
-- node_modules/igniteui-react/skills/igniteui-react-optimize-bundle-size/SKILL.md
-
-All React wrapper components use the `Igr` prefix (e.g. `IgrButton`, `IgrGrid`).
+```
+.claude/
+  skills/
+    igniteui-react-components/
+      SKILL.md
+      reference/
+    igniteui-react-customize-theme/
+      SKILL.md
+      reference/
+    igniteui-react-optimize-bundle-size/
+      SKILL.md
 ```
 
-### Manual Attachment (All Editors)
+### Other Agents (Cursor, Windsurf, etc.)
 
-You can also attach individual skill files to your AI chat context manually:
-
-1. Open the AI chat panel (Copilot Chat, Cursor Chat, etc.)
-2. Use the "Attach file" or "Add context" action
-3. Navigate to `node_modules/igniteui-react/skills/` and select the relevant `SKILL.md` file
-
-## Contributing
-
-If you identify gaps in the skills or have suggestions for improvements:
-
-1. [Open an issue](https://github.com/IgniteUI/igniteui-react/issues) describing the improvement
-2. Submit a pull request with the proposed changes
-3. Follow the skill format and structure of existing skills
-
-## Additional Resources
-
-- [Ignite UI for React Documentation](https://www.infragistics.com/products/ignite-ui-react/react/components/general-getting-started)
-- [React Examples Repository](https://github.com/IgniteUI/igniteui-react-examples)
-- [npm: igniteui-react](https://www.npmjs.com/package/igniteui-react)
-- [GitHub Repository](https://github.com/IgniteUI/igniteui-react)
-
-## License
-
-These skills are provided under the same license as the Ignite UI for React library. See [LICENSE](../LICENSE) for details.
+Consult your agent's documentation for the correct skills directory path and copy the skill files there. The skill structure is agent-agnostic — any assistant that supports skill files can use them directly.

@@ -90,8 +90,6 @@ export default function DashboardView() {
 }
 ```
 
-> **Note:** Core UI components from `igniteui-react` (e.g., `IgrButton`, `IgrInput`) do NOT require module registration — they auto-register when imported. Charts, gauges, and maps need explicit `.register()` calls.
-
 ## Complete Grid Lite Example
 
 > **⚠️ IMPORTANT:** Grid Lite (`IgrGridLite` from `igniteui-react/grid-lite`) requires installing both `igniteui-react` and `igniteui-grid-lite` packages. It's a React wrapper component (uses `Igr` prefix) and works like any standard React component — no `.register()` needed.
