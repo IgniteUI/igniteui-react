@@ -1,40 +1,4 @@
----
-name: igniteui-react-choose-components
-description: This skill identifies and selects the right Ignite UI for React components for any UI requirement and should be used when mapping UI needs to components, exploring available components, or finding official docs and API references
-user-invocable: true
----
-
-# Choose the Right Ignite UI for React Components
-
-This skill helps AI agents and developers identify the best Ignite UI for React components for any UI requirement, then provides direct links to official documentation, usage examples, and API references.
-
-## Example Usage
-
-- "What component should I use to display a list of items with actions?"
-- "I need a date picker for a booking form in React"
-- "How do I show file upload progress?"
-- "What's the best component for a navigation sidebar?"
-- "I need a searchable dropdown with multi-select"
-- "Build a dashboard layout with cards and a data grid"
-- "I want to display hierarchical/tree data"
-- "Show me components for notifications and alerts"
-
-## Related Skills
-
-- [igniteui-react-use-components](../igniteui-react-use-components/SKILL.md) — Install, import, and use chosen components in React
-- [igniteui-react-customize-theme](../igniteui-react-customize-theme/SKILL.md) — Style and theme the components you select
-- [igniteui-react-optimize-bundle-size](../igniteui-react-optimize-bundle-size/SKILL.md) — Import only the components you actually use
-
-## When to Use
-
-- Agent or user needs to decide which component fits a UI requirement
-- User describes a UI pattern and needs a matching component name
-- User wants to explore what components are available
-- User needs links to official docs or live examples for a specific component
-- Starting a new feature and mapping requirements to components
-- Reworking existing UI with new or different component requirements
-
----
+# Component Catalogue
 
 ## Available Packages
 
@@ -50,7 +14,7 @@ Ignite UI for React is distributed across several packages depending on your nee
 | [`igniteui-react-gauges`](https://www.npmjs.com/package/igniteui-react-gauges) | Commercial | `npm install igniteui-react-gauges` (trial) | Radial and linear gauges |
 | [`reveal-sdk-wrappers-react`](https://www.npmjs.com/package/reveal-sdk-wrappers-react) | Commercial | `npm install reveal-sdk-wrappers-react` | Embedded BI dashboards (Reveal SDK) |
 
-> **Note:** The lightweight Grid Lite (`IgrGridLite` from `igniteui-react/grid-lite`) requires installing both `igniteui-react` and `igniteui-grid-lite` packages. It's a React wrapper component (uses `Igr` prefix) that works like any other React component — no `.register()` needed. See the [use-components skill](../igniteui-react-use-components/SKILL.md) for setup details.
+> **Note:** The lightweight Grid Lite (`IgrGridLite` from `igniteui-react/grid-lite`) requires installing both `igniteui-react` and `igniteui-grid-lite` packages. It's a React wrapper component (uses `Igr` prefix) that works like any other React component — no `.register()` needed. See [CHARTS-GRIDS.md](./CHARTS-GRIDS.md) for setup details.
 
 ---
 
@@ -150,7 +114,7 @@ Use the tables below to map a UI need to the right React component. All componen
 
 ### Charts & Data Visualization
 
-> **⚠️ IMPORTANT:** Chart, gauge, and map components require **explicit module registration** and a **sized container**. Import the `*Module` class and call `.register()` at module level, and wrap the component in a container with explicit `min-width`/`min-height` or `flex-grow`. See the [use-components skill](../igniteui-react-use-components/SKILL.md) for details.
+> **⚠️ IMPORTANT:** Chart, gauge, and map components require **explicit module registration** and a **sized container**. Import the `*Module` class and call `.register()` at module level, and wrap the component in a container with explicit `min-width`/`min-height` or `flex-grow`. See [CHARTS-GRIDS.md](./CHARTS-GRIDS.md) for details.
 
 | UI Need | Component | Module Registration | Import | Docs |
 |---|---|---|---|---|
@@ -173,13 +137,13 @@ Use the tables below to map a UI need to the right React component. All componen
 |---|---|---|---|
 | Embedded BI dashboard viewer | `RvRevealView` | `reveal-sdk-wrappers-react` | [Docs](https://help.revealbi.io/web/getting-started-react/) |
 
-> **Note:** Reveal SDK is a companion product for embedding interactive dashboards and data visualizations. It uses separate packages (`reveal-sdk-wrappers-react`, `reveal-sdk-wrappers`) and requires a backend Reveal server URL. See the [use-components skill](../igniteui-react-use-components/SKILL.md) for setup instructions and the [customize-theme skill](../igniteui-react-customize-theme/SKILL.md) for syncing Reveal's theme with Ignite UI theming tokens.
+> **Note:** Reveal SDK is a companion product for embedding interactive dashboards and data visualizations. It uses separate packages (`reveal-sdk-wrappers-react`, `reveal-sdk-wrappers`) and requires a backend Reveal server URL. See [REVEAL-SDK.md](./REVEAL-SDK.md) for setup instructions and [../igniteui-react-customize-theme/SKILL.md](../igniteui-react-customize-theme/SKILL.md) for syncing Reveal's theme with Ignite UI theming tokens.
 
 ---
 
 ## Step-by-Step: Choosing Components for a UI
 
-Follow these steps when an agent or user describes a UI requirement:
+Follow these steps when a user describes a UI requirement:
 
 ### Step 1 — Identify UI patterns
 
@@ -233,7 +197,7 @@ Always direct the user to the official documentation linked in the tables above.
 Once components are identified, give the user a minimal working React snippet. Example for an admin dashboard shell:
 
 ```tsx
-import { IgrNavbar, IgrNavDrawer, IgrNavDrawerItem, IgrCard, IgrCardHeader, IgrCardContent, IgrIcon } from 'igniteui-react';
+import { IgrNavbar, IgrNavDrawer, IgrNavDrawerItem, IgrCard, IgrCardHeader, IgrCardContent } from 'igniteui-react';
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
 
 function Dashboard() {
@@ -267,7 +231,7 @@ function Dashboard() {
 }
 ```
 
-> **Note:** No `defineComponents()` call is needed — React wrappers handle component registration automatically when you import them.
+> **No `defineComponents()` call is needed** — React wrappers handle component registration automatically when you import them.
 
 ---
 
@@ -326,7 +290,7 @@ function Dashboard() {
 
 > **⚠️ Important — Tabs for navigation vs. tabs for content:**
 > - **Tabs as content panels** (`IgrTabs` with content in `IgrTab`): Content is rendered inside each tab. Use when the tab content is inline and does not require routing.
-> - **Tabs as navigation** (`IgrTabs` with label-only tabs): Tabs act as route links. The routing outlet (`<Outlet />`) renders the content. **Do NOT add inline content in `IgrTab` in this case** — use only the `label` prop or `slot="label"`. See the [use-components skill](../igniteui-react-use-components/SKILL.md) for a full React Router example.
+> - **Tabs as navigation** (`IgrTabs` with label-only tabs): Tabs act as route links. The routing outlet (`<Outlet />`) renders the content. **Do NOT add inline content in `IgrTab` in this case** — use only the `label` prop or `slot="label"`. See [JSX-PATTERNS.md](./JSX-PATTERNS.md) for a full React Router example.
 
 ---
 
@@ -337,17 +301,3 @@ If you are unsure about a component or need more information:
 1. **Browse the docs** at `https://www.infragistics.com/products/ignite-ui-react/react/components/` — the left sidebar groups components by category
 2. **Use the naming convention**: React components use the `Igr` prefix followed by PascalCase name (e.g., `IgrDateRangePicker`, `IgrNavDrawer`). The docs URL typically uses kebab-case: `components/scheduling/date-range-picker`
 3. **Check the examples repo** at [igniteui-react-examples](https://github.com/IgniteUI/igniteui-react-examples) for working sample applications
-
-## Best Practices
-
-1. **Start with the MIT package** (`igniteui-react`) — it covers most common UI needs
-2. **Only add commercial packages** (`igniteui-react-grids`, `igniteui-react-charts`, etc.) when you need their specific capabilities
-3. **Combine components** to build complex UIs — e.g., `IgrTabs` + `IgrDataGrid` for a multi-view data explorer
-4. **Always import the theme CSS** — components need a theme to render correctly (see [igniteui-react-customize-theme](../igniteui-react-customize-theme/SKILL.md))
-
-## Additional Resources
-
-- [Ignite UI for React Documentation](https://www.infragistics.com/products/ignite-ui-react/react/components/general-getting-started)
-- [React Examples Repository](https://github.com/IgniteUI/igniteui-react-examples)
-- [npm: igniteui-react](https://www.npmjs.com/package/igniteui-react)
-- [GitHub Repository](https://github.com/IgniteUI/igniteui-react)

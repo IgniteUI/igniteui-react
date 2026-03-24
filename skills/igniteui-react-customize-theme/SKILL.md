@@ -26,14 +26,13 @@ The skill also covers component-level theming, layout controls (spacing, sizing,
 ## Prerequisites
 
 - A React project with `igniteui-react` installed
-- A theme CSS file imported in your entry point (see [igniteui-react-use-components](../igniteui-react-use-components/SKILL.md))
+- A theme CSS file imported in your entry point (see [igniteui-react-components](../igniteui-react-components/SKILL.md))
 - **Optional**: Sass configured in the project (enables the Sass-based theming API)
 - **Optional**: The **Ignite UI Theming MCP server** (`igniteui-theming`) for AI-assisted code generation
 
 ## Related Skills
 
-- [igniteui-react-choose-components](../igniteui-react-choose-components/SKILL.md) — Choose the right components first
-- [igniteui-react-use-components](../igniteui-react-use-components/SKILL.md) — Set up your React project
+- [igniteui-react-components](../igniteui-react-components/SKILL.md) — Choose the right components and set up your React project
 - [igniteui-react-optimize-bundle-size](../igniteui-react-optimize-bundle-size/SKILL.md) — Optimize after theming
 
 ## When to Use

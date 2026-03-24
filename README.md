@@ -22,8 +22,7 @@ This repository ships with **LLM Agent Skills** — structured knowledge files t
 
 | Skill | Description |
 |:------|:------------|
-| **[choose-components](skills/igniteui-react-choose-components/SKILL.md)** | Identify the right React components (`Igr*`) for a UI pattern and navigate to official docs/demos |
-| **[use-components](skills/igniteui-react-use-components/SKILL.md)** | Install, import, and use components in React — JSX patterns, events, refs, forms, Next.js setup |
+| **[components](skills/igniteui-react-components/SKILL.md)** | Identify the right React components (`Igr*`) for a UI pattern, then install, import, and use them — JSX patterns, events, refs, forms, Next.js setup |
 | **[customize-theme](skills/igniteui-react-customize-theme/SKILL.md)** | Customize styling using CSS custom properties, Sass, and the theming system in React |
 | **[optimize-bundle-size](skills/igniteui-react-optimize-bundle-size/SKILL.md)** | Reduce bundle size with granular imports, tree-shaking, and lazy loading |
 

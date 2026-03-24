@@ -10,8 +10,7 @@ Skills are structured instructions that help AI agents understand and execute co
 
 | Skill | Description | Use When |
 | --- | --- | --- |
-| [igniteui-react-choose-components](./igniteui-react-choose-components/SKILL.md) | Identify the right React components (`Igr*`) for a UI pattern and navigate to official docs/demos | Deciding which components to use |
-| [igniteui-react-use-components](./igniteui-react-use-components/SKILL.md) | Install, import, and use components in a React application — JSX patterns, events, refs, forms | Setting up and using components in React |
+| [igniteui-react-components](./igniteui-react-components/SKILL.md) | Identify the right React components (`Igr*`) for a UI pattern, then install, import, and use them — JSX patterns, events, refs, forms | Choosing components or setting up and using them in React |
 | [igniteui-react-customize-theme](./igniteui-react-customize-theme/SKILL.md) | Customize styling using CSS custom properties, Sass, and the theming system in a React context | Applying custom brand colors/styles |
 | [igniteui-react-optimize-bundle-size](./igniteui-react-optimize-bundle-size/SKILL.md) | Reduce bundle size with granular imports, tree-shaking, and lazy loading | Optimizing production performance |
 
@@ -29,7 +28,7 @@ When working with an AI agent like GitHub Copilot, reference skills by name or a
 
 ### Direct Skill Reference
 
-- "Follow the igniteui-react-use-components skill for setting up my project"
+- "Follow the igniteui-react-components skill for setting up my project"
 - "Use the igniteui-react-customize-theme skill to help me style components"
 - "Apply the igniteui-react-optimize-bundle-size skill to reduce my bundle"
 
@@ -61,8 +60,7 @@ If you want to provide explicit instructions to GitHub Copilot, you can add a `.
 This project uses Ignite UI for React. When answering questions about UI components,
 refer to the skills in node_modules/igniteui-react/skills/:
 
-- **Choosing components**: node_modules/igniteui-react/skills/igniteui-react-choose-components/SKILL.md
-- **Using components in React**: node_modules/igniteui-react/skills/igniteui-react-use-components/SKILL.md
+- **Components (choosing & using)**: node_modules/igniteui-react/skills/igniteui-react-components/SKILL.md
 - **Theming & styling**: node_modules/igniteui-react/skills/igniteui-react-customize-theme/SKILL.md
 - **Bundle optimization**: node_modules/igniteui-react/skills/igniteui-react-optimize-bundle-size/SKILL.md
 
@@ -77,8 +75,7 @@ If you want to provide explicit instructions, create or edit `.cursorrules` in *
 This project uses Ignite UI for React.
 When working with UI components, consult the skills in node_modules/igniteui-react/skills/:
 
-- node_modules/igniteui-react/skills/igniteui-react-choose-components/SKILL.md — pick the right component
-- node_modules/igniteui-react/skills/igniteui-react-use-components/SKILL.md — React usage patterns
+- node_modules/igniteui-react/skills/igniteui-react-components/SKILL.md — pick components and use them in React
 - node_modules/igniteui-react/skills/igniteui-react-customize-theme/SKILL.md — theming and styling
 - node_modules/igniteui-react/skills/igniteui-react-optimize-bundle-size/SKILL.md — bundle optimization
 
@@ -94,8 +91,7 @@ Add to your `CLAUDE.md` project instructions if needed:
 
 This project uses Ignite UI for React. Refer to these skills for guidance:
 
-- node_modules/igniteui-react/skills/igniteui-react-choose-components/SKILL.md
-- node_modules/igniteui-react/skills/igniteui-react-use-components/SKILL.md
+- node_modules/igniteui-react/skills/igniteui-react-components/SKILL.md
 - node_modules/igniteui-react/skills/igniteui-react-customize-theme/SKILL.md
 - node_modules/igniteui-react/skills/igniteui-react-optimize-bundle-size/SKILL.md
 

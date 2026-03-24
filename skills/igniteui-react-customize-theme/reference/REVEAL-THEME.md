@@ -2,7 +2,7 @@
 
 When the project includes Reveal SDK (`reveal-sdk-wrappers-react`) alongside Ignite UI for React, the Reveal dashboard theme should be synced with the active Ignite UI theme.
 
-> **⚠️ IMPORTANT:** Reveal SDK requires client runtime scripts (jQuery, Day.js, infragistics.reveal.js) to be loaded and initialization must happen in `useEffect` after mount. See [REVEAL-SDK.md](../../igniteui-react-use-components/reference/REVEAL-SDK.md) for full setup instructions.
+> **⚠️ IMPORTANT:** Reveal SDK requires client runtime scripts (jQuery, Day.js, infragistics.reveal.js) to be loaded and initialization must happen in `useEffect` after mount. See [REVEAL-SDK.md](../../igniteui-react-components/reference/REVEAL-SDK.md) for full setup instructions.
 
 ## How It Works
 
@@ -83,4 +83,4 @@ function handleThemeToggle() {
 }
 ```
 
-See the [use-components skill](../../igniteui-react-use-components/reference/REVEAL-SDK.md) for full Reveal SDK setup instructions including installation, runtime scripts, and `$.ig.RevealView` initialization.
+See the [components skill](../../igniteui-react-components/reference/REVEAL-SDK.md) for full Reveal SDK setup instructions including installation, runtime scripts, and `$.ig.RevealView` initialization.

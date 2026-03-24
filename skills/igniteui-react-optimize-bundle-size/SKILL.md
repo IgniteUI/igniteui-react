@@ -19,8 +19,7 @@ This skill helps users minimize their React application's bundle size when using
 
 ## Related Skills
 
-- [igniteui-react-use-components](../igniteui-react-use-components/SKILL.md) — Proper React setup
-- [igniteui-react-choose-components](../igniteui-react-choose-components/SKILL.md) — Choose only the components you need
+- [igniteui-react-components](../igniteui-react-components/SKILL.md) — Choose only the components you need and set up your React project
 - [igniteui-react-customize-theme](../igniteui-react-customize-theme/SKILL.md) — Theming after optimization
 
 ## When to Use
