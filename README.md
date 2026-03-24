@@ -16,6 +16,28 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 ## About this repository
 This repository contains the base logic and build process for generating the React wrappers published for the `igniteui-react`, `igniteui-react-dockmanager` and `igniteui-react-grids` packages.
 
+## AI-Assisted Development
+
+This repository ships with **LLM Agent Skills** — structured knowledge files that teach AI coding assistants (GitHub Copilot, Cursor, Windsurf, Claude, JetBrains AI, etc.) how to work with Ignite UI for React. The skill files are included in the published npm packages and also live in the [`skills/`](skills/) directory:
+
+| Skill | Description |
+|:------|:------------|
+| **[components](skills/igniteui-react-components/SKILL.md)** | Identify the right React components (`Igr*`) for a UI pattern, then install, import, and use them — JSX patterns, events, refs, forms, Next.js setup |
+| **[customize-theme](skills/igniteui-react-customize-theme/SKILL.md)** | Customize styling using CSS custom properties, Sass, and the theming system in React |
+| **[optimize-bundle-size](skills/igniteui-react-optimize-bundle-size/SKILL.md)** | Reduce bundle size with granular imports, tree-shaking, and lazy loading |
+
+### How It Works
+
+- **GitHub Copilot** — Skills should be discovered automatically when you add the `igniteui-react` package to your project. No extra setup typically needed.
+- **Cursor / Windsurf** — Skills should be auto-discovered from your `node_modules/igniteui-react/skills/` directory.
+- **Other AI assistants** — You can reference the skills manually by attaching the `SKILL.md` files from `node_modules/igniteui-react/skills/` to your AI chat context, or by copying their contents into your IDE's AI configuration.
+
+For detailed setup instructions and usage examples, see the **[skills/README.md](skills/README.md)** file.
+
+### Theming MCP Server
+
+The **customize-theme** skill includes setup instructions for the `igniteui-theming` MCP server, which gives AI assistants access to live theming tools (palette generation, component theme scaffolding, etc.). See [`skills/igniteui-react-customize-theme/SKILL.md`](skills/igniteui-react-customize-theme/SKILL.md) for configuration steps for VS Code, Cursor, Claude Desktop, and JetBrains IDEs.
+
 ## Overview
 
 ### Components in [igniteui-react]
