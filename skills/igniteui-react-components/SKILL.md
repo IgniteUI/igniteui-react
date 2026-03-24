@@ -146,17 +146,14 @@ Use [COMPONENT-CATALOGUE.md](./reference/COMPONENT-CATALOGUE.md) to map any UI n
 ## Best Practices
 
 1. **Start with the MIT package** (`igniteui-react`) — it covers most common UI needs
-2. **Only add commercial packages** when you need their specific capabilities
-3. **Import theme CSS first** — components need it to render correctly
-4. **Don't call `defineComponents()`** — React wrappers auto-register
-5. **Register chart/gauge/map modules** — call `.register()` at module level (Grid Lite doesn't need registration)
-6. **Wrap charts/gauges/maps/Grid Lite in sized containers** — they need explicit dimensions
-7. **Use named imports** — enables tree-shaking
-8. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
-9. **Use refs sparingly** — prefer declarative props
-10. **Prefer controlled components** for forms
-11. **Check slot names** in the docs
-12. **Tabs for navigation** — use label-only `IgrTab` (no inline content) when using with router
+2. **Import theme CSS first** — components need it to render correctly
+3. **Don't call `defineComponents()`** — React wrappers auto-register
+4. **Register chart/gauge/map modules** — call `.register()` at module level
+5. **Wrap charts/gauges/maps in sized containers** — they need explicit dimensions
+6. **Use named imports** — enables tree-shaking
+7. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
+8. **Use refs sparingly** — prefer declarative props
+9. **Check slot names** in the docs
 
 ## Additional Resources
 
