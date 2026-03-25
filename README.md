@@ -26,13 +26,7 @@ This repository ships with **LLM Agent Skills** — structured knowledge files t
 | **[customize-theme](skills/igniteui-react-customize-theme/SKILL.md)** | Customize styling using CSS custom properties, Sass, and the theming system in React |
 | **[optimize-bundle-size](skills/igniteui-react-optimize-bundle-size/SKILL.md)** | Reduce bundle size with granular imports, tree-shaking, and lazy loading |
 
-### How It Works
-
-- **GitHub Copilot** — Skills should be discovered automatically when you add the `igniteui-react` package to your project. No extra setup typically needed.
-- **Cursor / Windsurf** — Skills should be auto-discovered from your `node_modules/igniteui-react/skills/` directory.
-- **Other AI assistants** — You can reference the skills manually by attaching the `SKILL.md` files from `node_modules/igniteui-react/skills/` to your AI chat context, or by copying their contents into your IDE's AI configuration.
-
-For detailed setup instructions and usage examples, see the **[skills/README.md](skills/README.md)** file.
+These skills are automatically discovered when placed in the agent's skills path ( e.g. `.agents/skills` or `.claude/skills`). For detailed setup instructions and usage examples, see the **[skills/README.md](skills/README.md#editor--agent-setup)** file.
 
 ### Theming MCP Server
 
