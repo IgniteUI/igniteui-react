@@ -44,6 +44,7 @@ The **customize-theme** skill includes setup instructions for the `igniteui-them
 
 | Components        | Status |         Documentation          | Released Version | License |
 |:----------|:--------|:----|:----|:----:|
+| Grid Lite (requires [igniteui-grid-lite]) | ✅ | [Docs][Grid Lite] | [19.5] | [MIT] |
 |AI Chat|   ✅   |[Docs][Chat Docs]|[19.3]|[MIT]|
 |Date Range Picker|   ✅   |[Docs][Date Range]|[19.1]|[MIT]|
 |Tooltip|   ✅   |[Docs][Tooltip]|[19.1]|[MIT]|
@@ -87,7 +88,7 @@ The **customize-theme** skill includes setup instructions for the `igniteui-them
 | Text Area | ✅ | [Docs][Textarea Docs] | 16.11 |[MIT]|
 | Toast | ✅ | [Docs][Toast Docs] | 16.11 |[MIT]|
 
-### Grids in [igniteui-react-grids] & [igniteui-grid-lite]
+### Grids in [igniteui-react-grids]
 
 The Ignite UI for React Data Grid is both lightweight and developed to handle high data volumes. The React Grid offers powerful data visualization capabilities and superior performance on any device. With interactive features that users expect. Fast rendering. Unbeatable interactions. And the best possible user experience that you wouldn’t otherwise be able to achieve with so little code on your own.
 
@@ -97,7 +98,6 @@ The Ignite UI for React Data Grid is both lightweight and developed to handle hi
 | Tree Grid         |   ✅   |     [Docs][Tree Grid Docs]     |[18.3]| [igniteui-react-grids]| [Commercial] |
 | Pivot Grid        |   ✅   |    [Docs][Pivot Grid Docs]     |[18.3]| [igniteui-react-grids]| [Commercial] |
 | Hierarchical Grid |   ✅   | [Docs][Hierarchical Grid Docs] |[18.6]| [igniteui-react-grids]| [Commercial] |
-| Grid Lite |   ✅   | [Docs][Grid Lite] |0.0.1| [igniteui-grid-lite]| [MIT] |
 
 ### Dock Manager - EXCLUSIVE FEATURE - [igniteui-react-dockmanager](https://www.npmjs.com/package/igniteui-react-dockmanager)
 
@@ -366,7 +366,8 @@ For development of the plugin you can use the `npm run build:plugin:watch` and r
 [Tile Manager]: https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/tile-manager
 [Tooltip]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/tooltip
 [Date Range]: https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/date-range-picker
-[19.3]: https://www.infragistics.com/products/ignite-ui-react/react/components/interactivity/chat
+[19.5]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1951-february-2026
+[19.3]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1930-october-2025
 [19.1]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1910-july-2025
 [19.0]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1900-april-2025
 [18.9]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1890-april-2025
