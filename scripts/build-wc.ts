@@ -12,7 +12,11 @@ const config = {
   },
   types: {
     entry: join('node_modules/igniteui-webcomponents', getPackageJsonTypesEntry(pkg)),
-    ignoreExports: new Set(['defineComponents', 'defineAllComponents']),
+    ignoreExports: new Set([
+      'defineComponents',
+      'defineAllComponents',
+      'IgcSplitterResizeEventDetail',
+    ]),
   },
   ignoreEvents: new Set(['igc-step']),
   extraEvents: new Map([
@@ -56,6 +60,7 @@ const config = {
     'igc-chat-input',
     'igc-chat-message',
     'igc-message-attachments',
+    'igc-visually-hidden',
   ]),
   templates: new Map<string, Array<string>>(
     Object.entries({
