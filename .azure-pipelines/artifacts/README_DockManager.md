@@ -29,6 +29,16 @@ Provide a complete windowing experience, splitting complex layouts into smaller,
 - Save and restore layout state
 - Fully customizable appearance and behavior
 
+## AI-Assisted Development
+
+This package ships with **LLM Agent Skills** — structured knowledge files that teach AI coding assistants (GitHub Copilot, Cursor, Windsurf, Claude, JetBrains AI, etc.) how to work with Ignite UI for React. The skill files are included in the [`igniteui-react`](www.npmjs.com/package/igniteui-react) package and also live in the [`skills/`](https://github.com/IgniteUI/igniteui-react/tree/master/skills) directory:
+
+| Skill | Description |
+|:------|:------------|
+| **components** | Identify the right React components (`Igr*`) for a UI pattern, then install, import, and use them — JSX patterns, events, refs, forms, Next.js setup |
+| **customize-theme** | Customize styling using CSS custom properties, Sass, and the theming system in React |
+| **optimize-bundle-size** | Reduce bundle size with granular imports, tree-shaking, and lazy loading |
+
 ## License
 
 This is a commercial product, requiring a valid paid-for license for use. License details can be found [here](https://www.infragistics.com/legal/license).
