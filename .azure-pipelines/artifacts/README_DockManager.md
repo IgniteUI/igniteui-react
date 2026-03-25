@@ -31,7 +31,7 @@ Provide a complete windowing experience, splitting complex layouts into smaller,
 
 ## AI-Assisted Development
 
-This package ships with **LLM Agent Skills** — structured knowledge files that teach AI coding assistants (GitHub Copilot, Cursor, Windsurf, Claude, JetBrains AI, etc.) how to work with Ignite UI for React. The skill files are included in the [`igniteui-react`](www.npmjs.com/package/igniteui-react) package and also live in the [`skills/`](https://github.com/IgniteUI/igniteui-react/tree/master/skills) directory:
+This package ships with **LLM Agent Skills** — structured knowledge files that teach AI coding assistants (GitHub Copilot, Cursor, Windsurf, Claude, JetBrains AI, etc.) how to work with Ignite UI for React. The skill files are included in the [`igniteui-react`](https://www.npmjs.com/package/igniteui-react) package and also live in the [`skills/`](https://github.com/IgniteUI/igniteui-react/tree/master/skills) directory:
 
 | Skill | Description |
 |:------|:------------|
