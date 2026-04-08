@@ -56,7 +56,7 @@
     "typedoc": "^0.27.9",
     "typedoc-plugin-localization": "^3.0.6",
     "typescript": "^5.8.3",
-    "vite": "^7.3.1",
+    "vite": "^7.3.2",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.0.18",
     "vitest-browser-react": "^2.0.5"
