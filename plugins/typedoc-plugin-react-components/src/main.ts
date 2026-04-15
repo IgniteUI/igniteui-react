@@ -160,8 +160,12 @@ function parseTypeProperties(type: any, context: any) {
   }
   const props = type.declaredProperties || type.symbol?.members;
   props?.forEach((value: ts.Symbol, key: ts.__String) => {
-    const memberDeclaration = value?.declarations?.length ? (value.declarations[0] as any) : null;
-    const modifiers = ts.getCombinedModifierFlags(memberDeclaration);
+    const memberDeclaration = value?.declarations?.length
+      ? (value.declarations[0] as any)
+      : ((value.valueDeclaration as any) ?? null);
+    const modifiers = memberDeclaration
+      ? ts.getCombinedModifierFlags(memberDeclaration)
+      : ModifierFlags.None;
     if (
       !key.toString().startsWith('_') &&
       (modifiers === ModifierFlags.None ||
