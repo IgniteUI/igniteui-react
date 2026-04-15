@@ -49,7 +49,7 @@ function MyPage() {
 
 ## Uncontrolled Components
 
-`igniteui-react` Form elements like Inputs, Select, Checkbox, etc., integrate with the native form handling through Element internals, allowing to take advantage of the native state management and validation to create intuitive, straight-forward forms. Use the `name` attribute to register the field value with `FormData`:
+`igniteui-react` Form elements like Inputs, Select, Checkbox, etc., integrate with the native form handling through Element internals, allowing to take advantage of the native state management and validation to create intuitive, straightforward forms. Use the `name` attribute to register the field value with `FormData`:
 
 ```tsx
 import { IgrInput, IgrSelect, IgrSelectItem, IgrButton } from 'igniteui-react';
