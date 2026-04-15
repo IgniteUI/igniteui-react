@@ -57,7 +57,7 @@ import { IgrInput, IgrSelect, IgrSelectItem, IgrButton } from 'igniteui-react';
 function SimpleForm() {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     // e.preventDefault(); // optionally prevent default submit for custom handling
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(e.target);
     console.log(formData.get('name'));       // input value
     console.log(formData.get('role'));       // selected option value
   };
