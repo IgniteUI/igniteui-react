@@ -110,7 +110,7 @@ export default function MasterView() {
 
   return (
     <div className={styles['grid-lite']}>
-      <IgrGridLite data={northwindCustomers} />
+      <IgrGridLite data={northwindCustomers} autoGenerate={true} />
     </div>
   );
 }
@@ -120,8 +120,76 @@ export default function MasterView() {
 /* master-view.module.css */
 .grid-lite {
   min-width: 400px;
-  min-height: 220px;
+  height: 600px;
   flex-grow: 1;
   flex-basis: 0;
 }
 ```
+
+## Grid Lite Example with Column Configurations and Templates
+
+Use `IgrGridLiteColumn` to define columns explicitly with typed `dataType` and optional `cellTemplate` for custom rendering. Set `autoGenerate={false}` (or omit it) when providing explicit columns.
+
+```tsx
+import { IgrGridLite, IgrGridLiteColumn, type IgrCellContext } from 'igniteui-react/grid-lite';
+import styles from './order-list.module.css';
+
+interface Order {
+  id: number;
+  customer: string;
+  total: number;
+  date: string;
+  status: 'pending' | 'shipped' | 'delivered';
+}
+
+const orders: Order[] = [
+  { id: 1, customer: 'Alice', total: 149.99, date: '2024-03-01', status: 'delivered' },
+  { id: 2, customer: 'Bob', total: 89.50, date: '2024-03-10', status: 'shipped' },
+  { id: 3, customer: 'Carol', total: 220.00, date: '2024-03-15', status: 'pending' },
+];
+
+// Simple cell templates — render JSX based on the cell value or row data
+const currencyTemplate = (ctx: IgrCellContext<Order>) => (
+  <span>${(ctx.value as number).toFixed(2)}</span>
+);
+
+const statusTemplate = (ctx: IgrCellContext<Order>) => {
+  const colors: Record<Order['status'], string> = {
+    pending: 'orange',
+    shipped: 'blue',
+    delivered: 'green',
+  };
+  return <span style={{ color: colors[ctx.value as Order['status']] }}>{ctx.value}</span>;
+};
+
+export default function OrderList() {
+  return (
+    <div className={styles['grid-lite']}>
+      <IgrGridLite data={orders}>
+        {/* dataType ensures correct sorting and filtering behavior */}
+        <IgrGridLiteColumn field="id" dataType="number" />
+        <IgrGridLiteColumn field="customer" dataType="string" />
+        <IgrGridLiteColumn field="date" dataType="date" />
+        {/* Columns with custom cell templates */}
+        <IgrGridLiteColumn field="total" dataType="number" cellTemplate={currencyTemplate} />
+        <IgrGridLiteColumn field="status" dataType="string" cellTemplate={statusTemplate} />
+      </IgrGridLite>
+    </div>
+  );
+}
+```
+
+```css
+/* order-list.module.css */
+.grid-lite {
+  min-width: 400px;
+  height: 600px;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+```
+
+> **Column configuration notes:**
+> - `dataType` accepts `"string"`, `"number"`, `"boolean"`, or `"date"` — set it explicitly so sorting and filtering work correctly for each column type.
+> - `cellTemplate` receives an `IgrCellContext<T>` where `ctx.value` is the cell value and `ctx.row.data` is the full row object.
+> - When using `cellTemplate`, define the function outside the component (or memoize it) to avoid unnecessary re-renders.
