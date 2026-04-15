@@ -55,7 +55,7 @@ function MyPage() {
 import { IgrInput, IgrSelect, IgrSelectItem, IgrButton } from 'igniteui-react';
 
 function SimpleForm() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     // e.preventDefault(); // optionally prevent default submit for custom handling
     const formData = new FormData(e.currentTarget);
     console.log(formData.get('name'));       // input value

@@ -138,19 +138,23 @@ interface Order {
   id: number;
   customer: string;
   total: number;
-  date: string;
+  date: Date;
   status: 'pending' | 'shipped' | 'delivered';
 }
 
 const orders: Order[] = [
-  { id: 1, customer: 'Alice', total: 149.99, date: '2024-03-01', status: 'delivered' },
-  { id: 2, customer: 'Bob', total: 89.50, date: '2024-03-10', status: 'shipped' },
-  { id: 3, customer: 'Carol', total: 220.00, date: '2024-03-15', status: 'pending' },
+  { id: 1, customer: 'Alice', total: 149.99, date: new Date('2024-03-01'), status: 'delivered' },
+  { id: 2, customer: 'Bob', total: 89.50, date: new Date('2024-03-10'), status: 'shipped' },
+  { id: 3, customer: 'Carol', total: 220.00, date: new Date('2024-03-15'), status: 'pending' },
 ];
 
 // Simple cell templates — render JSX based on the cell value or row data
 const currencyTemplate = (ctx: IgrCellContext<Order>) => (
   <span>${(ctx.value as number).toFixed(2)}</span>
+);
+
+const dateTemplate = (ctx: IgrCellContext<Order>) => (
+  <span>${(ctx.value as Date).toLocaleDateString()}</span>
 );
 
 const statusTemplate = (ctx: IgrCellContext<Order>) => {
@@ -169,8 +173,8 @@ export default function OrderList() {
         {/* dataType ensures correct sorting and filtering behavior */}
         <IgrGridLiteColumn field="id" dataType="number" />
         <IgrGridLiteColumn field="customer" dataType="string" />
-        <IgrGridLiteColumn field="date" dataType="date" />
         {/* Columns with custom cell templates */}
+        <IgrGridLiteColumn field="date" cellTemplate={dateTemplate} />
         <IgrGridLiteColumn field="total" dataType="number" cellTemplate={currencyTemplate} />
         <IgrGridLiteColumn field="status" dataType="string" cellTemplate={statusTemplate} />
       </IgrGridLite>
@@ -190,6 +194,6 @@ export default function OrderList() {
 ```
 
 > **Column configuration notes:**
-> - `dataType` accepts `"string"`, `"number"`, `"boolean"`, or `"date"` — set it explicitly so sorting and filtering work correctly for each column type.
+> - `dataType` accepts `"string"` (default), `"number"`, `"boolean"` — set it explicitly so sorting and filtering work correctly for each column type.
 > - `cellTemplate` receives an `IgrCellContext<T>` where `ctx.value` is the cell value and `ctx.row.data` is the full row object.
 > - When using `cellTemplate`, define the function outside the component (or memoize it) to avoid unnecessary re-renders.
