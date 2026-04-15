@@ -16,12 +16,29 @@ You can build amazing experiences with Ignite UI for React.  Ignite UI for React
 ## About this repository
 This repository contains the base logic and build process for generating the React wrappers published for the `igniteui-react`, `igniteui-react-dockmanager` and `igniteui-react-grids` packages.
 
+## AI-Assisted Development
+
+This repository ships with **LLM Agent Skills** — structured knowledge files that teach AI coding assistants (GitHub Copilot, Cursor, Windsurf, Claude, JetBrains AI, etc.) how to work with Ignite UI for React. The skill files are included in the published npm packages and also live in the [`skills/`](skills/) directory:
+
+| Skill | Description |
+|:------|:------------|
+| **[components](skills/igniteui-react-components/SKILL.md)** | Identify the right React components (`Igr*`) for a UI pattern, then install, import, and use them — JSX patterns, events, refs, forms, Next.js setup |
+| **[customize-theme](skills/igniteui-react-customize-theme/SKILL.md)** | Customize styling using CSS custom properties, Sass, and the theming system in React |
+| **[optimize-bundle-size](skills/igniteui-react-optimize-bundle-size/SKILL.md)** | Reduce bundle size with granular imports, tree-shaking, and lazy loading |
+
+These skills are automatically discovered when placed in the agent's skills path ( e.g. `.agents/skills` or `.claude/skills`). For detailed setup instructions and usage examples, see the **[skills/README.md](skills/README.md#editor--agent-setup)** file.
+
+### Theming MCP Server
+
+The **customize-theme** skill includes setup instructions for the `igniteui-theming` MCP server, which gives AI assistants access to live theming tools (palette generation, component theme scaffolding, etc.). See [`skills/igniteui-react-customize-theme/SKILL.md`](skills/igniteui-react-customize-theme/SKILL.md) for configuration steps for VS Code, Cursor, Claude Desktop, and JetBrains IDEs.
+
 ## Overview
 
 ### Components in [igniteui-react]
 
 | Components        | Status |         Documentation          | Released Version | License |
 |:----------|:--------|:----|:----|:----:|
+| Grid Lite (requires [igniteui-grid-lite]) | ✅ | [Docs][Grid Lite] | [19.5] | [MIT] |
 |AI Chat|   ✅   |[Docs][Chat Docs]|[19.3]|[MIT]|
 |Date Range Picker|   ✅   |[Docs][Date Range]|[19.1]|[MIT]|
 |Tooltip|   ✅   |[Docs][Tooltip]|[19.1]|[MIT]|
@@ -65,7 +82,7 @@ This repository contains the base logic and build process for generating the Rea
 | Text Area | ✅ | [Docs][Textarea Docs] | 16.11 |[MIT]|
 | Toast | ✅ | [Docs][Toast Docs] | 16.11 |[MIT]|
 
-### Grids in [igniteui-react-grids] & [igniteui-grid-lite]
+### Grids in [igniteui-react-grids]
 
 The Ignite UI for React Data Grid is both lightweight and developed to handle high data volumes. The React Grid offers powerful data visualization capabilities and superior performance on any device. With interactive features that users expect. Fast rendering. Unbeatable interactions. And the best possible user experience that you wouldn’t otherwise be able to achieve with so little code on your own.
 
@@ -75,7 +92,6 @@ The Ignite UI for React Data Grid is both lightweight and developed to handle hi
 | Tree Grid         |   ✅   |     [Docs][Tree Grid Docs]     |[18.3]| [igniteui-react-grids]| [Commercial] |
 | Pivot Grid        |   ✅   |    [Docs][Pivot Grid Docs]     |[18.3]| [igniteui-react-grids]| [Commercial] |
 | Hierarchical Grid |   ✅   | [Docs][Hierarchical Grid Docs] |[18.6]| [igniteui-react-grids]| [Commercial] |
-| Grid Lite |   ✅   | [Docs][Grid Lite] |0.0.1| [igniteui-grid-lite]| [MIT] |
 
 ### Dock Manager - EXCLUSIVE FEATURE - [igniteui-react-dockmanager](https://www.npmjs.com/package/igniteui-react-dockmanager)
 
@@ -344,7 +360,8 @@ For development of the plugin you can use the `npm run build:plugin:watch` and r
 [Tile Manager]: https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/tile-manager
 [Tooltip]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/tooltip
 [Date Range]: https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/date-range-picker
-[19.3]: https://www.infragistics.com/products/ignite-ui-react/react/components/interactivity/chat
+[19.5]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1951-february-2026
+[19.3]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1930-october-2025
 [19.1]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1910-july-2025
 [19.0]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1900-april-2025
 [18.9]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1890-april-2025
