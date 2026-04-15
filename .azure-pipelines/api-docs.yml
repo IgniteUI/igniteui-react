@@ -83,7 +83,7 @@ steps:
     displayName: 'Archive Production TypeDoc'
     condition: eq(variables['npmBuildTag'], 'prod')
     inputs:
-      rootFolder: '$(build.sourcesDirectory)/typedocs'
+      rootFolder: '$(build.sourcesDirectory)/typedocs/legacy'
       includeRootFolder: false
       archiveType: zip
       archiveFile: '$(Build.ArtifactStagingDirectory)/TypeDocOutputProduction.zip'
