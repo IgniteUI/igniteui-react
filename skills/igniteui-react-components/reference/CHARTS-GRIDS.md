@@ -93,7 +93,7 @@ export default function DashboardView() {
 
 ## Complete Data Chart Example
 
-> **⚠️ IMPORTANT:** `IgrDataChart` requires registering **multiple modules** depending on the series type used. For bar charts, register the modules shown below. Miss any module and the chart or axis types will silently fail to render.
+> **⚠️ IMPORTANT:** `IgrDataChart` requires registering **multiple modules** depending on the series type used. For bar charts, register the modules shown below. If you miss any module, the chart or axis types will silently fail to render.
 
 ### Module Registration for Bar Charts
 
