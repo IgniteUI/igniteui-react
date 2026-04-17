@@ -54,7 +54,6 @@ This skill is organized into focused reference files. Load the appropriate file 
 | Event Handling | [EVENT-HANDLING.md](./reference/EVENT-HANDLING.md) | Event props, CustomEvent types, common events |
 | Refs & Forms | [REFS-FORMS.md](./reference/REFS-FORMS.md) | useRef, controlled/uncontrolled forms, React Hook Form |
 | Charts, Gauges, Maps & Grid Lite | [CHARTS-GRIDS.md](./reference/CHARTS-GRIDS.md) | Module registration, container sizing |
-| Reveal SDK | [REVEAL-SDK.md](./reference/REVEAL-SDK.md) | Embedded BI dashboards, theme sync |
 | Troubleshooting | [TROUBLESHOOTING.md](./reference/TROUBLESHOOTING.md) | Common issues and solutions |
 
 ---
