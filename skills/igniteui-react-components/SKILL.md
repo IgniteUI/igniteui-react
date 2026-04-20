@@ -19,7 +19,7 @@ This skill covers everything from identifying the right component for a UI requi
 | Component family | Install packages | Import from |
 |---|---|---|
 | Core UI components | `igniteui-react` | `igniteui-react` |
-| Advanced grids | `igniteui-react-grids` / `@infragistics/igniteui-react-grids` | `igniteui-react-grids` |
+| Advanced grids | `igniteui-react-grids` (trial) `@infragistics/igniteui-react-grids` (licensed) | `igniteui-react-grids` |
 | Grid Lite | `igniteui-react`, `igniteui-grid-lite` | `igniteui-react`, `igniteui-grid-lite` |
 | Charts | `igniteui-react-charts` / `@infragistics/igniteui-react-charts` | `igniteui-react-charts` |
 | Gauges | `igniteui-react-gauges` / `@infragistics/igniteui-react-gauges` | `igniteui-react-gauges` |
