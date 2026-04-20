@@ -45,7 +45,7 @@
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
     "cross-env": "^7.0.3",
-    "dompurify": "^3.3.3",
+    "dompurify": "^3.4.0",
     "ig-typedoc-theme": "^7.0.1",
     "lefthook": "^2.1.1",
     "marked": "^17.0.3",
