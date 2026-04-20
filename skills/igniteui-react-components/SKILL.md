@@ -21,9 +21,9 @@ This skill covers everything from identifying the right component for a UI requi
 | Core UI components | `igniteui-react` | `igniteui-react` |
 | Advanced grids | `igniteui-react-grids` (trial) `@infragistics/igniteui-react-grids` (licensed) | `igniteui-react-grids` |
 | Grid Lite | `igniteui-react`, `igniteui-grid-lite` | `igniteui-react`, `igniteui-grid-lite` |
-| Charts | `igniteui-react-charts` / `@infragistics/igniteui-react-charts` | `igniteui-react-charts` |
-| Gauges | `igniteui-react-gauges` / `@infragistics/igniteui-react-gauges` | `igniteui-react-gauges` |
-| Maps | `igniteui-react-maps` / `@infragistics/igniteui-react-maps` | `igniteui-react-maps` |
+| Charts | `igniteui-react-charts` (trial) `@infragistics/igniteui-react-charts` (licensed) | `igniteui-react-charts` |
+| Gauges | `igniteui-react-gauges` (trial) `@infragistics/igniteui-react-gauges` (licensed) | `igniteui-react-gauges` |
+| Maps | `igniteui-react-maps` (trial) `@infragistics/igniteui-react-maps` (licensed) | `igniteui-react-maps` |
 
 ## Example Usage
 
