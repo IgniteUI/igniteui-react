@@ -13,6 +13,7 @@ This skill covers everything from identifying the right component for a UI requi
 - Do not guess package names or import paths from memory.
 - First identify the component family, then read the relevant reference files from the Content Guide below.
 - Check `package.json` and keep public or licensed package names consistent.
+- If the required package is not present in `package.json`, add or install the correct Ignite UI dependency first. Absence from `package.json` does not mean the package is invalid.
 
 ### Package Routing
 
