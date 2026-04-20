@@ -8,6 +8,23 @@ user-invocable: true
 
 This skill covers everything from identifying the right component for a UI requirement to installing, setting up, and using Ignite UI for React components — including JSX patterns, event handling, refs, controlled/uncontrolled form components, and TypeScript.
 
+## Before You Answer
+
+- Do not guess package names or import paths from memory.
+- First identify the component family, then read the relevant reference files from the Content Guide below.
+- Check `package.json` and keep public or licensed package names consistent.
+
+### Package Routing
+
+| Component family | Package |
+|---|---|
+| Core UI components | `igniteui-react` / `@infragistics/igniteui-react` |
+| Advanced grids | `igniteui-react-grids` / `@infragistics/igniteui-react-grids` |
+| Grid Lite | `igniteui-react/grid-lite` + `igniteui-grid-lite` |
+| Charts | `igniteui-react-charts` / `@infragistics/igniteui-react-charts` |
+| Gauges | `igniteui-react-gauges` / `@infragistics/igniteui-react-gauges` |
+| Maps | `igniteui-react-maps` / `@infragistics/igniteui-react-maps` |
+
 ## Example Usage
 
 - "What component should I use to display a list of items with actions?"
@@ -58,9 +75,11 @@ This skill is organized into focused reference files. Load the appropriate file 
 
 ---
 
-## Quick Start
+## Quick Start (Core UI Example)
 
-### 1. Install
+This example uses the core UI package `igniteui-react`. For grids, Grid Lite, charts, gauges, and maps, use the package routing table above first.
+
+### 1. Install Core UI Package
 
 ```bash
 npm install igniteui-react
@@ -143,7 +162,7 @@ Use [COMPONENT-CATALOGUE.md](./reference/COMPONENT-CATALOGUE.md) to map any UI n
 
 ## Best Practices
 
-1. **Start with the MIT package** (`igniteui-react`) — it covers most common UI needs
+1. **Use the package routing table first**
 2. **Import theme CSS first** — components need it to render correctly
 3. **Register chart/gauge/map modules** — call `.register()` at module level
 4. **Wrap charts/gauges/maps in sized containers** — they need explicit dimensions
