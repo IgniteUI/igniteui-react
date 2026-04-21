@@ -10,9 +10,10 @@ Skills are structured instructions that help AI agents understand and execute co
 
 | Skill | Description | Use When |
 | --- | --- | --- |
-| [igniteui-react-components](./igniteui-react-components/SKILL.md) | Identify the right React components (`Igr*`) for a UI pattern, then install, import, and use them — JSX patterns, events, refs, forms | Choosing components or setting up and using them in React |
+| [igniteui-react-components](./igniteui-react-components/SKILL.md) | Identify the right React components (`Igr*`) for a UI pattern, then install, import, and use them - JSX patterns, events, refs, forms | Choosing components or setting up and using them in React |
 | [igniteui-react-customize-theme](./igniteui-react-customize-theme/SKILL.md) | Customize styling using CSS custom properties, Sass, and the theming system in a React context | Applying custom brand colors/styles |
 | [igniteui-react-optimize-bundle-size](./igniteui-react-optimize-bundle-size/SKILL.md) | Reduce bundle size with granular imports, tree-shaking, and lazy loading | Optimizing production performance |
+| [igniteui-react-generate-from-image-design](./igniteui-react-generate-from-image-design/SKILL.md) | Build a React view from a screenshot or mockup using Ignite UI components plus MCP-first theming and token mapping | Converting a design image into a working Ignite UI React page or dashboard |
 
 ## How to Use
 
@@ -22,6 +23,7 @@ When working with an AI agent like GitHub Copilot, reference skills by name or a
 
 - "How do I add a data grid to my React app?"
 - "What Ignite UI component should I use for a date picker?"
+- "Build this dashboard screenshot in Ignite UI React"
 - "Help me customize the button colors to match my brand"
 - "My bundle size is too large, how can I reduce it?"
 - "How do I handle events on IgrCombo?"
@@ -29,6 +31,7 @@ When working with an AI agent like GitHub Copilot, reference skills by name or a
 ### Direct Skill Reference
 
 - "Follow the igniteui-react-components skill for setting up my project"
+- "Use the igniteui-react-generate-from-image-design skill for this mockup"
 - "Use the igniteui-react-customize-theme skill to help me style components"
 - "Apply the igniteui-react-optimize-bundle-size skill to reduce my bundle"
 
@@ -65,6 +68,9 @@ Copy the skill files into your project's `.agents/skills/` directory:
       reference/
     igniteui-react-optimize-bundle-size/
       SKILL.md
+    igniteui-react-generate-from-image-design/
+      SKILL.md
+      references/
 ```
 
 ### Claude Code
@@ -82,6 +88,9 @@ Copy the skill files into your project's `.claude/skills/` directory:
       reference/
     igniteui-react-optimize-bundle-size/
       SKILL.md
+    igniteui-react-generate-from-image-design/
+      SKILL.md
+      references/
 ```
 
 ### Other Agents (Cursor, Windsurf, etc.)
