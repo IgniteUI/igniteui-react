@@ -110,7 +110,7 @@ For smooth-looking area charts where the data should appear continuous rather th
 In a flexible CSS Grid track, set `min-height: 0` on the grid cell and make the chart fill its container:
 ```scss
 .chart-panel {
-  min-height: <resolved-grid-track-min-height>;
+  min-height: 0;
 }
 
 .chart-panel > * {
