@@ -38,6 +38,7 @@ The **customize-theme** skill includes setup instructions for the `igniteui-them
 
 | Components        | Status |         Documentation          | Released Version | License |
 |:----------|:--------|:----|:----|:----:|
+|Splitter|   ✅   | |[19.6]|[MIT]|
 | Grid Lite (requires [igniteui-grid-lite]) | ✅ | [Docs][Grid Lite] | [19.5] | [MIT] |
 |AI Chat|   ✅   |[Docs][Chat Docs]|[19.3]|[MIT]|
 |Date Range Picker|   ✅   |[Docs][Date Range]|[19.1]|[MIT]|
@@ -360,6 +361,7 @@ For development of the plugin you can use the `npm run build:plugin:watch` and r
 [Tile Manager]: https://www.infragistics.com/products/ignite-ui-react/react/components/layouts/tile-manager
 [Tooltip]: https://www.infragistics.com/products/ignite-ui-react/react/components/inputs/tooltip
 [Date Range]: https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/date-range-picker
+[19.6]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1960-march-2026
 [19.5]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1951-february-2026
 [19.3]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1930-october-2025
 [19.1]: https://www.infragistics.com/products/ignite-ui-react/react/components/general-changelog-dv-react#1910-july-2025
