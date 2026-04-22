@@ -1,37 +1,12 @@
 # Ignite UI React Gotchas & Pitfalls
 
 ## Table of Contents
-- [Sass Conflicts](#sass-conflicts)
 - [React Wrappers & CSS Selectors](#react-wrappers--css-selectors)
 - [Chart Properties](#chart-properties)
 - [Component Properties](#component-properties)
 - [Theming Pitfalls](#theming-pitfalls)
 - [Map Component](#map-component)
 - [Dark Theme Specifics](#dark-theme-specifics)
-
-## Sass Conflicts
-
-### `contrast()` function collision
-The CSS `contrast()` filter function can collide with `igniteui-theming`'s `contrast()` Sass function. When you need the native CSS function, call it explicitly via `sass:meta`:
-```scss
-@use "sass:meta";
-
-.uses-css-contrast {
-  filter: meta.call(meta.get-function("contrast", $css: true), <contrast-value>);
-}
-```
-Prefer this approach over string escaping when a native CSS function name collides with a Sass function.
-
-### Font family in typography mixin
-Comma-separated font families are parsed as multiple Sass arguments. Wrap in parentheses:
-```scss
-// BAD
-@include typography($font-family: "Primary Font", "Fallback Font", sans-serif);
-
-// GOOD
-@include typography($font-family: ("Primary Font", "Fallback Font", sans-serif));
-```
-Replace `"Primary Font"` and `"Fallback Font"` with the font families extracted from the design image.
 
 ## React Wrappers & CSS Selectors
 
@@ -108,7 +83,7 @@ For smooth-looking area charts where the data should appear continuous rather th
 
 ### Charts inside CSS Grid can collapse
 In a flexible CSS Grid track, set `min-height: 0` on the grid cell and make the chart fill its container:
-```scss
+```css
 .chart-panel {
   min-height: 0;
 }
@@ -146,8 +121,8 @@ import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
 
 Do not remove or replace those imports unless the user explicitly wants a theme variant change.
 
-### DV components do NOT inherit Sass theme colors
-Charts, maps, gauges, and sparklines ignore the global Sass theme. Set their visual properties explicitly via component props. After a palette exists, prefer palette tokens or local semantic CSS variables over leaving raw color literals in the final JSX:
+### DV components require explicit visual props
+Charts, maps, gauges, and sparklines do not use the component-token theme generation flow from this skill. Set their visual properties explicitly via component props. After a palette exists, prefer palette tokens or local semantic CSS variables over leaving raw color literals in the final JSX:
 ```tsx
 <IgrCategoryChart
   brushes="<resolved-series-brush>"
@@ -162,7 +137,7 @@ For core UI component theming, prefer `create_component_theme` and apply the ret
 
 ### Nav drawer width
 Override the drawer width using the nav drawer CSS custom properties measured from the design image:
-```scss
+```css
 igc-nav-drawer {
   --ig-nav-drawer-size: <extracted-sidebar-width>;
   --ig-nav-drawer-size--mini: <extracted-mini-drawer-width>;
@@ -170,7 +145,7 @@ igc-nav-drawer {
 ```
 
 ### Read luminance warnings from theme generation
-If `create_theme` returns a luminance warning for a generated surface, do not ignore it. If the design needs multiple surface depths, use `create_custom_palette` or define semantic CSS variables such as `--surface-1` and `--surface-2` in `styles.scss` instead of relying on a single generated surface color.
+If `create_theme` returns a luminance warning for a generated surface, do not ignore it. If the design needs multiple surface depths, use `create_custom_palette` or define semantic CSS variables such as `--surface-1` and `--surface-2` in a shared CSS file instead of relying on a single generated surface color.
 
 ## Map Component
 
@@ -197,7 +172,7 @@ useEffect(() => {
 
 ### Dark map styling
 OpenStreetMap tiles are light by default. For dark themes, apply a CSS filter to the container. Adjust the values to match the map tone in the design image:
-```scss
+```css
 .map-container {
   /* tune grayscale (0-1) and brightness (0-1) to match the design */
   filter: grayscale(<0-1>) brightness(<0-1>);
@@ -206,18 +181,10 @@ OpenStreetMap tiles are light by default. For dark themes, apply a CSS filter to
 
 ## Dark Theme Specifics
 
-### Use the resolved dark schema for dark themes
-```scss
-@include palette(
-  $resolved-palette,
-  $schema: <resolved-dark-schema>
-);
-```
-
 ### CSS custom properties for dark panels
 When the design uses multiple dark surface depths (panels, sidebars, cards on a dark background), define reusable semantic tokens using palette references or values derived from the design intent:
 
-```scss
+```css
 :root {
   --surface-primary: <resolved-surface-token>;
   --surface-secondary: <resolved-surface-token>;
