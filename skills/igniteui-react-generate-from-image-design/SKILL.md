@@ -11,7 +11,7 @@ user-invocable: true
 Before writing any implementation code, you must complete these steps in order:
 
 1. Analyze the image and identify all visible regions and UI patterns.
-2. Read [references/component-mapping.md](references/component-mapping.md) and [references/gotchas.md](references/gotchas.md).
+2. Read [reference/component-mapping.md](reference/component-mapping.md) and [reference/gotchas.md](reference/gotchas.md).
 3. This skill is React-only. Check package routing, theme CSS imports, or licensing only when imports, packages, or theming depend on it.
 4. To apply a theme, use the theming workflow from this skill and the dedicated `igniteui-react-customize-theme` skill; use the `igniteui-theming` MCP tools instead of styling from memory. This skill is React-only, so hardcode `platform: "react"` in theme-generation calls.
 5. Call `get_doc` for every chosen component family before using it.
@@ -49,7 +49,7 @@ Before writing code, create a decomposition table with one row per visible regio
 | Example: top bar | brand + tabs + search | `IgrNavbar` | yes - multi-zone flex layout | n/a |
 | Example: side panel | always-visible navigation | `IgrNavDrawer` | yes - width, item styling | n/a |
 
-Start every region with the most appropriate Ignite UI component from [references/component-mapping.md](references/component-mapping.md). Only fall back to plain semantic HTML when the component DOM structure is fundamentally incompatible with the design after CSS overrides are considered. Document the reason for any plain-HTML fallback in a code comment.
+Start every region with the most appropriate Ignite UI component from [reference/component-mapping.md](reference/component-mapping.md). Only fall back to plain semantic HTML when the component DOM structure is fundamentally incompatible with the design after CSS overrides are considered. Document the reason for any plain-HTML fallback in a code comment.
 
 Before writing code, produce a compact implementation brief that captures:
 
@@ -76,7 +76,7 @@ Then call `list_components` with `framework: "react"` and relevant filters to fi
 
 Use narrow search terms to reduce noisy MCP results. Search for the specific UI pattern you need, such as `list view` instead of `list`.
 
-For component-to-Ignite-UI mapping, see [references/component-mapping.md](references/component-mapping.md).
+For component-to-Ignite-UI mapping, see [reference/component-mapping.md](reference/component-mapping.md).
 
 ## Step 4: Look Up Component API
 
@@ -90,11 +90,11 @@ Use this skill for the image-to-view theming workflow only. The dedicated [`igni
 
 ### 5a - Existing app guard (always run first)
 
-Before generating any theme code, inspect the app entry points and shared global styles. Typical files include `main.tsx`, `index.tsx`, `App.tsx`, `app/layout.tsx`, `src/index.css`, and `src/styles.scss`. Look for:
+Before generating any theme code, inspect the app entry points and shared global styles. Typical files include `main.tsx`, `index.tsx`, `App.tsx`, `app/layout.tsx`, `src/index.css`, and other shared CSS files. Look for:
 
 - existing theme CSS imports such as `igniteui-webcomponents/themes/...`
 - grid theme imports such as `igniteui-react-grids/grids/themes/...`
-- existing `igniteui-theming` Sass usage such as `@use 'igniteui-theming'`
+- existing palette-token overrides or semantic CSS variables already used by the app
 
 Treat a plain stock theme CSS import as required baseline setup, not as evidence of an already customized design system.
 
@@ -132,7 +132,7 @@ Use `create_palette` for straightforward designs with a small, coherent color sy
 
 ### 5c - Per-component token discovery and mapping (always run)
 
-> **Scope:** this step applies only to **core Ignite UI React components** (grid, grid lite, list, navbar, nav drawer, card, inputs, chips, avatar, etc.). DV components - charts, maps, gauges, and sparklines - have no Sass design tokens. Skip this step for them and set their visual properties exclusively via component props as described in [references/gotchas.md](references/gotchas.md) and in Step 7.
+> **Scope:** this step applies only to **core Ignite UI React components** (grid, grid lite, list, navbar, nav drawer, card, inputs, chips, avatar, etc.). DV components - charts, maps, gauges, and sparklines - do not use the component-token theme generation flow in this skill. Skip this step for them and set their visual properties exclusively via component props as described in [reference/gotchas.md](reference/gotchas.md) and in Step 7.
 
 For **every** core Ignite UI component chosen in Steps 3-4, follow this MCP-first loop - query MCP before touching the image:
 
@@ -146,7 +146,7 @@ For **every** core Ignite UI component chosen in Steps 3-4, follow this MCP-firs
 - Resolve each value to a palette token or local semantic CSS variable
 - Call `create_component_theme("grid", ...)` with only `{ "header-background": "<resolved token>", "content-background": "<resolved token>", "row-hover-background": "<resolved token>" }`
 
-Apply the generated theme blocks in CSS or SCSS using a scoped wrapper and the underlying web component selectors shown in the MCP output. In selectors, use the rendered `igc-*` tags or `::part()` hooks where applicable.
+Apply the generated theme blocks in CSS using a scoped wrapper and the underlying web component selectors shown in the MCP output. In selectors, use the rendered `igc-*` tags or `::part()` hooks where applicable.
 
 Do not run `create_component_theme` for regions built with custom HTML/CSS only.
 
@@ -159,11 +159,9 @@ Apply in this exact order:
 3. For each Ignite UI component: `get_component_design_tokens` -> map image design tokens -> resolve values to design tokens or semantic CSS variables -> `create_component_theme` (Step 5c)
 4. Use `get_color` after palette generation whenever a palette token can represent the final color intent
 
-If you use typography mixins with a comma-separated font family list, wrap the font families in parentheses as described in [references/gotchas.md](references/gotchas.md).
-
 ## Step 6: Install Additional Packages
 
-Core UI components ship with `igniteui-react`. Grid Lite requires both `igniteui-react` and `igniteui-grid-lite`. Advanced grids, charts, maps, and gauges use separate React package families and may also appear under `@infragistics/igniteui-react-*` in licensed workspaces. These packages are version-sensitive: determine the installed Ignite UI version, resolve the compatible published package version, and install only the package set required by the selected components. See [references/component-mapping.md](references/component-mapping.md) for package names and import patterns.
+Core UI components ship with `igniteui-react`. Grid Lite requires both `igniteui-react` and `igniteui-grid-lite`. Advanced grids, charts, maps, and gauges use separate React package families and may also appear under `@infragistics/igniteui-react-*` in licensed workspaces. These packages are version-sensitive: determine the installed Ignite UI version, resolve the compatible published package version, and install only the package set required by the selected components. See [reference/component-mapping.md](reference/component-mapping.md) for package names and import patterns.
 
 Theme CSS imports are also required:
 
@@ -180,14 +178,14 @@ Charts, maps, and gauges also require explicit `*.register()` calls at module le
 
 - **Layout**: use Ignite UI layout and data-display components as the starting point for standard regions, then apply CSS Grid/Flexbox and component overrides to match the screenshot. Only substitute plain semantic HTML when an Ignite UI component remains structurally incompatible after a genuine attempt.
 - **Data**: use typed mock data that matches the design's density and domain; add models, helpers, or hooks only when they help the implementation.
-- **View**: keep layout, spacing, typography, and surface styling in CSS modules, SCSS, or shared CSS rather than inline styles wherever practical.
+- **View**: keep layout, spacing, typography, and surface styling in CSS modules or shared CSS rather than inline styles wherever practical.
 - **Theming**: apply the resolved design system and theme variant from Step 5, and keep color usage aligned with palette tokens, or local semantic CSS variables.
 
 ### Implementation Checks
 
 - Follow the surrounding repo conventions and the existing React skills in this repo, especially [`igniteui-react-components`](../igniteui-react-components/SKILL.md) and [`igniteui-react-customize-theme`](../igniteui-react-customize-theme/SKILL.md)
-- Use [references/component-mapping.md](references/component-mapping.md) for component-choice and semantic-fallback rules
-- Use [references/gotchas.md](references/gotchas.md) for components, theming, and API edge cases instead of re-encoding those rules inline
+- Use [reference/component-mapping.md](reference/component-mapping.md) for component-choice and semantic-fallback rules
+- Use [reference/gotchas.md](reference/gotchas.md) for components, theming, and API edge cases instead of re-encoding those rules inline
 - Favor Ignite UI components over custom HTML when both approaches can reach similar visual fidelity
 - Ensure the required theme CSS imports are present before component usage
 - Preserve spacing, hierarchy, and data density before adding extra interactivity
@@ -220,7 +218,7 @@ Use this checklist during the first visual comparison:
 - row heights
 - spacing between regions
 
-Fix TypeScript, JSX, styling, or runtime errors immediately during the build/test steps. Use the build output, component docs, [references/gotchas.md](references/gotchas.md), and the user's visual feedback to close the remaining gaps. Typical adjustments include:
+Fix TypeScript, JSX, styling, or runtime errors immediately during the build/test steps. Use the build output, component docs, [reference/gotchas.md](reference/gotchas.md), and the user's visual feedback to close the remaining gaps. Typical adjustments include:
 
 - revisiting chart data density, smoothing, marker visibility, or missing module registration
 - adjusting layout ratios, region spacing, or row heights
