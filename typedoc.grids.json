@@ -1,0 +1,15 @@
+{
+  "extends": "./typedoc.json",
+  "name": "igniteui-react-grids",
+  "entryPoints": ["./src/grids", "./node_modules/typescript/lib/lib.dom.d.ts"],
+  "entryPointStrategy": "resolve",
+  "plugin": [
+    "typedoc-plugin-localization",
+    "ig-typedoc-theme",
+    "./plugins/typedoc-plugin-react-components/dist/main.js",
+    "typedoc-plugin-merge-modules"
+  ],
+  "outputs": [{ "name": "json", "path": "./typedocs/igniteui-react-grids.json" }],
+  "mergeModulesRenameDefaults": true,
+  "mergeModulesMergeMode": "project"
+}
