@@ -25,8 +25,9 @@ This repository ships with **LLM Agent Skills** — structured knowledge files t
 | **[components](skills/igniteui-react-components/SKILL.md)** | Identify the right React components (`Igr*`) for a UI pattern, then install, import, and use them — JSX patterns, events, refs, forms, Next.js setup |
 | **[customize-theme](skills/igniteui-react-customize-theme/SKILL.md)** | Customize styling using CSS custom properties, Sass, and the theming system in React |
 | **[optimize-bundle-size](skills/igniteui-react-optimize-bundle-size/SKILL.md)** | Reduce bundle size with granular imports, tree-shaking, and lazy loading |
+| **[generate-from-image-design](skills/igniteui-react-generate-from-image-design/SKILL.md)** | Turn a screenshot, mockup, or wireframe into a React view using Ignite UI components, MCP-guided theming, and screenshot-first layout matching |
 
-These skills are automatically discovered when placed in the agent's skills path ( e.g. `.agents/skills` or `.claude/skills`). For detailed setup instructions and usage examples, see the **[skills/README.md](skills/README.md#editor--agent-setup)** file.
+These skills are automatically discovered when placed in the agent's skills path (e.g. `.agents/skills` or `.claude/skills`). For detailed setup instructions and usage examples, see the **[skills/README.md](skills/README.md#editor--agent-setup)** file.
 
 ### Theming MCP Server
 
