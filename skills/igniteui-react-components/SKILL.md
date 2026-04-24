@@ -23,7 +23,7 @@ user-invocable: true
 
 ## Setting Up the Theming MCP Server
 
-> **Full setup instructions for VS Code, Cursor, Claude Desktop, and JetBrains IDEs are in [`references/MCP-SERVER.md`](./references/MCP-SERVER.md).** Read that file for editor-specific configuration steps and verification.
+> **Full setup instructions for VS Code, Cursor, Claude Desktop, and JetBrains IDEs are in [`reference/MCP-SERVER.md`](./reference/MCP-SERVER.md).** Read that file for editor-specific configuration steps and verification.
 
 ### Package Routing
 
