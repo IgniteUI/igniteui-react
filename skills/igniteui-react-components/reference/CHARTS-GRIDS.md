@@ -1,5 +1,8 @@
 # Charts, Gauges, Maps & Grid Lite
 
+## Overview
+This reference gives high-level guidance on charts and grids, their key features, and common API members. For detailed documentation, call `get_doc` and `get_api_reference` from `igniteui-cli` with the specific chart, or grid component, or feature you're interested in.
+
 ## Module Registration
 
 > **⚠️ IMPORTANT:** Unlike core UI components (from `igniteui-react`), chart, gauge, and map components from `igniteui-react-charts`, `igniteui-react-gauges`, and `igniteui-react-maps` **require explicit module registration** before use. You must import the corresponding `*Module` class and call `.register()` at the module level (outside the component function).

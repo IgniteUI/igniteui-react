@@ -6,14 +6,24 @@ user-invocable: true
 
 # Ignite UI for React Components
 
-This skill covers everything from identifying the right component for a UI requirement to installing, setting up, and using Ignite UI for React components — including JSX patterns, event handling, refs, controlled/uncontrolled form components, and TypeScript.
+## Prerequisites
 
-## Before You Answer
+- The **Ignite UI CLI MCP server** (`igniteui-cli`) available as a tool provider
 
-- Do not guess package names or import paths from memory.
-- First identify the component family, then read the relevant reference files from the Content Guide below.
-- Check `package.json` and keep public or licensed package names consistent.
-- If the required package is not present in `package.json`, add or install the correct Ignite UI dependency first. Absence from `package.json` does not mean the package is invalid.
+> **AGENT INSTRUCTION — MCP Server Setup (REQUIRED)**
+>
+> Before using the Ignite UI CLI MCP tools, you MUST verify the MCP server is available
+> by calling `list_components`. If the tool is not available or the call fails,
+> you MUST automatically configure it by following the setup process steps described below.
+>
+> After writing the file, inform the user that the MCP server has been
+> configured and they may need to reload the editor for the tools to activate.
+> Start the MCP server and wait for that MCP server to start before continuing the component-related work.
+> Do NOT skip this step or ask the user to do it manually.
+
+## Setting Up the Ignite UI CLI MCP Server
+
+> **Full setup instructions for VS Code, Cursor, Claude Desktop, and JetBrains IDEs are in [`reference/MCP-SERVER.md`](./reference/MCP-SERVER.md).** Read that file for editor-specific configuration steps and verification.
 
 ### Package Routing
 
@@ -76,11 +86,9 @@ This skill is organized into focused reference files. Load the appropriate file 
 
 ---
 
-## Quick Start (Core UI Example)
+## Quick Start
 
-This example uses the core UI package `igniteui-react`. For grids, Grid Lite, charts, gauges, and maps, use the package routing table above first.
-
-### 1. Install Core UI Package
+### 1. Install
 
 ```bash
 npm install igniteui-react
@@ -163,7 +171,7 @@ Use [COMPONENT-CATALOGUE.md](./reference/COMPONENT-CATALOGUE.md) to map any UI n
 
 ## Best Practices
 
-1. **Use the package routing table first**
+1. **Start with the MIT package** (`igniteui-react`) — it covers most common UI needs
 2. **Import theme CSS first** — components need it to render correctly
 3. **Register chart/gauge/map modules** — call `.register()` at module level
 4. **Wrap charts/gauges/maps in sized containers** — they need explicit dimensions
