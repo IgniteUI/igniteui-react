@@ -1,7 +1,7 @@
 # Component Catalogue
 
 ## Overview
-This reference give high-level guidance on Ignite UI for React components, their key features, and common use cases. For full list of components, call `list_components` from `igniteui-cli` with the specific chart, or grid component, or feature you're interested in.
+This reference gives high-level guidance on Ignite UI for React components, their key features, and common use cases. For a full list of components, call `list_components` from `igniteui-cli` with the specific chart, or grid component, or feature you're interested in.
 
 ## Available Packages
 
