@@ -6,22 +6,6 @@ user-invocable: true
 
 # Ignite UI for React — Theming Skill
 
-## Description
-
-This skill teaches AI agents how to theme Ignite UI for React applications. One approach is supported:
-
-- **CSS custom properties** — works in any project without additional build tooling
-
-The skill also covers component-level theming, layout controls (spacing, sizing, roundness), and how to use the **Ignite UI Theming MCP server** for AI-assisted code generation — all in a React application context.
-
-## Example Usage
-
-- "How do I change the primary color in my Ignite UI React app?"
-- "Apply a dark theme to my React app"
-- "Customize the grid header colors"
-- "How do I scope a theme to a specific section of my React app?"
-- "Set up Material Design theming for Ignite UI components"
-
 ## Prerequisites
 
 - A React project with `igniteui-react` installed
@@ -38,6 +22,22 @@ The skill also covers component-level theming, layout controls (spacing, sizing,
 > configured and they may need to reload the editor for the tools to activate.
 > Start the MCP server and wait for that MCP server to start before continuing the theming related work.
 > Do NOT skip this step or ask the user to do it manually.
+
+## Description
+
+This skill teaches AI agents how to theme Ignite UI for React applications. One approach is supported:
+
+- **CSS custom properties** — works in any project without additional build tooling
+
+The skill also covers component-level theming, layout controls (spacing, sizing, roundness), and how to use the **Ignite UI Theming MCP server** for AI-assisted code generation — all in a React application context.
+
+## Example Usage
+
+- "How do I change the primary color in my Ignite UI React app?"
+- "Apply a dark theme to my React app"
+- "Customize the grid header colors"
+- "How do I scope a theme to a specific section of my React app?"
+- "Set up Material Design theming for Ignite UI components"
 
 ## Setting Up the Theming MCP Server
 
