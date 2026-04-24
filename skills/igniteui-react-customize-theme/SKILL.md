@@ -26,7 +26,7 @@ The skill also covers component-level theming, layout controls (spacing, sizing,
 
 - A React project with `igniteui-react` installed
 - A theme CSS file imported in your entry point (see [igniteui-react-components](../igniteui-react-components/SKILL.md))
-- **Optional**: The **Ignite UI Theming MCP server** (`igniteui-theming`) for AI-assisted code generation
+- The **Ignite UI Theming MCP server** (`igniteui-theming`)
 
 > **AGENT INSTRUCTION — MCP Server Setup (REQUIRED)**
 >
