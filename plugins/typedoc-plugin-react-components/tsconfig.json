@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": "./",
     "outDir": "./dist",
     "target": "ESNext",
     "module": "ESNext",
@@ -10,13 +11,13 @@
     "useDefineForClassFields": false,
     "esModuleInterop": true,
     "moduleResolution": "bundler",
-    // "noEmit": true,
+    "types": ["node"],
 
     "strict": true,
     //"noUnusedLocals": true,
     //"noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-		"verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": true
   },
-  "include": ["src"],
+  "include": ["src"]
 }

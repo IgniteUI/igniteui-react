@@ -1,19 +1,20 @@
 {
   "compilerOptions": {
+    "rootDir": "./",
     "outDir": "./dist",
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "declaration": true,
     "jsx": "react-jsx",
+    "types": ["node"],
 
     "useDefineForClassFields": false,
     "esModuleInterop": true,
     "moduleResolution": "bundler",
     "emitDeclarationOnly": true,
-    // "noEmit": true,
 
     "paths": {
       "@infragistics/igniteui-dockmanager": ["./node_modules/igniteui-dockmanager"],

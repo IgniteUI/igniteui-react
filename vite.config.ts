@@ -1,8 +1,10 @@
 import { playwright } from '@vitest/browser-playwright';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  resolve: {
+    tsconfigPaths: true,
+  },
   build: {
     emptyOutDir: false,
     outDir: 'dist',
@@ -37,7 +39,6 @@ export default defineConfig({
   optimizeDeps: {
     include: ['react/jsx-dev-runtime'],
   },
-  plugins: [tsconfigPaths()],
   test: {
     browser: {
       enabled: true,
