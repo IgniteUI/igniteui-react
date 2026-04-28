@@ -32,7 +32,7 @@
     "igniteui-dockmanager": "~2.1.1",
     "igniteui-grid-lite": "~0.7.1",
     "igniteui-webcomponents": "~7.1.3",
-    "igniteui-webcomponents-grids": "~7.0.0",
+    "igniteui-webcomponents-grids": "~7.1.0",
     "lit": "^3.3.2"
   },
   "devDependencies": {
