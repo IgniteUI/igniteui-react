@@ -5,15 +5,14 @@
   "type": "module",
   "main": "./dist/main.js",
   "keywords": [
-		"typedoc-plugin"
-	],
+    "typedoc-plugin"
+  ],
   "scripts": {
-    "build": "rm -tf dist/ && tsc",
+    "build": "tsc",
     "watch": "tsc --watch",
     "test": "vitest run"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/react": "^19.1.2",
     "@types/node": "^22.14.1",

@@ -19,7 +19,6 @@
   "excludeInternal": true,
   "name": "Ignite UI for React",
   "readme": "none",
-  "out": "./typedocs",
   "tsconfig": "tsconfig-typedoc.json",
   "localize": "en",
   "versioning": true,
