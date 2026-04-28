@@ -60,13 +60,13 @@ steps:
           Write-Output "Source branch is not a tag. To deploy api please create a tag. For testing purpose use `-alpha.x` or `-beta.x` suffix."
         }
   - task: Npm@1
-    displayName: 'Build $(npmBuildTag) TypeDoc'
+    displayName: 'Build Staging TypeDoc'
     inputs:
       command: 'custom'
       verbose: ${{ parameters.verbose }}
-      customCommand: 'run build:docs:$(npmBuildTag)'
+      customCommand: 'run build:docs:staging'
   - task: ArchiveFiles@1
-    displayName: 'Archive $(npmBuildTag) TypeDoc'
+    displayName: 'Archive Staging TypeDoc'
     inputs:
       rootFolder: '$(build.sourcesDirectory)/typedocs/legacy'
       includeRootFolder: false
