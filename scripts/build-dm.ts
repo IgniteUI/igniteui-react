@@ -38,7 +38,7 @@ const config = {
     'igc-pane-header',
     'igc-resizer',
     'igc-split-pane',
-    'igc-splitter',
+    'igc-splitter-component',
     'igc-unpinned-pane-header',
   ]),
   ignoreEvents: new Set<string>(),
