@@ -13,7 +13,6 @@
     "Plugin",
     "Infragistics"
   ],
-  "sideEffects": false,
   "exports": {
     ".": {
       "default": "./dist/main.js"
