@@ -1,0 +1,43 @@
+name: Build Ignite UI for React TypeDoc plugin
+
+on:
+  workflow_dispatch:
+    inputs:
+      plugin-version:
+        description: 'TypeDoc plugin version'
+        required: true
+        default: '1.0.0'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TYPEDOC_PLUGIN_VERSION: ${{ github.event.inputs.plugin-version || '1.0.0' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6.0.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6.4.0
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./plugins/typedoc-plugin-react-components
+
+      - name: Build TypeDoc plugin
+        run: npm run build:prod
+        working-directory: ./plugins/typedoc-plugin-react-components
+      
+      - name: Set version of the plugin
+        run: npm version ${TYPEDOC_PLUGIN_VERSION} --no-git-tag-version --save --verbose
+        working-directory: ./plugins/typedoc-plugin-react-components
+
+      - name: Publish the plugin on NPM
+        run: npm publish --tag ${TYPEDOC_PLUGIN_VERSION}
+        working-directory: ./plugins/typedoc-plugin-react-components

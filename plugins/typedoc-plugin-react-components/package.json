@@ -1,27 +1,37 @@
 {
   "name": "typedoc-plugin-react-components",
-  "private": true,
-  "version": "0.1.0",
+  "version": "0.0.0",
+  "description": "TypeDoc plugin for generating Ignite UI for React API docs",
+  "author": "Infragistics",
+  "license": "MIT",
+  "homepage": "https://github.com/IgniteUI/igniteui-react/tree/master/plugins/typedoc-plugin-react-components",
   "type": "module",
-  "main": "./dist/main.js",
   "keywords": [
-    "typedoc-plugin"
+    "Ignite UI",
+    "React",
+    "TypeDoc",
+    "Plugin",
+    "Infragistics"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "default": "./dist/main.js"
+    }
+  },
+  "files": [
+    "/dist"
   ],
   "scripts": {
-    "build": "tsc",
     "watch": "tsc --watch",
-    "test": "vitest run"
+    "build": "tsc",
+    "build:prod": "tsc --project tsconfig.prod.json"
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/react": "^19.1.2",
-    "@types/node": "^22.14.1",
-    "@vitejs/plugin-react": "^4.4.1",
-    "@vitest/browser": "^3.1.2",
-    "@vitest/coverage-v8": "^3.1.2",
-    "tsx": "^4.19.3",
-    "typedoc": "^0.27.9",
-    "typescript": "^5.8.3",
-    "vitest": "^3.1.2"
+    "@types/node": "^25.6.0",
+    "tsx": "^4.21.0",
+    "typedoc": "^0.28.19",
+    "typescript": "^6.0.3"
   }
 }
