@@ -35,7 +35,7 @@ jobs:
         working-directory: ./plugins/typedoc-plugin-react-components
       
       - name: Set version of the plugin
-        run: npm version ${TYPEDOC_PLUGIN_VERSION} --no-git-tag-version --save --verbose
+        run: npm version ${TYPEDOC_PLUGIN_VERSION} --no-git-tag-version --verbose
         working-directory: ./plugins/typedoc-plugin-react-components
 
       - name: Publish the plugin on NPM

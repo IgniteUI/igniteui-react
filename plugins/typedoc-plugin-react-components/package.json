@@ -19,14 +19,16 @@
     }
   },
   "files": [
-    "/dist"
+    "dist/"
   ],
   "scripts": {
     "watch": "tsc --watch",
     "build": "tsc",
     "build:prod": "tsc --project tsconfig.prod.json"
   },
-  "dependencies": {},
+  "peerDependencies": {
+    "typedoc": "^0.28.19"
+  },
   "devDependencies": {
     "@types/node": "^25.6.0",
     "tsx": "^4.21.0",
