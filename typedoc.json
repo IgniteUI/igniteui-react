@@ -10,7 +10,8 @@
   "plugin": [
     "typedoc-plugin-localization",
     "ig-typedoc-theme",
-    "./plugins/typedoc-plugin-react-components/dist/main.js"
+    "./plugins/typedoc-plugin-react-components/dist/main.js",
+    "typedoc-plugin-merge-modules"
   ],
   "exclude": ["**/*.spec.ts", "tests"],
   "theme": "igtheme",
@@ -23,5 +24,7 @@
   "localize": "en",
   "versioning": true,
   "product": "ignite-ui-react",
-  "config": "react.oss.config.json"
+  "config": "react.oss.config.json",
+  "mergeModulesRenameDefaults": true,
+  "mergeModulesMergeMode": "project"
 }
