@@ -6,14 +6,5 @@
     "./src/grid-lite",
     "./node_modules/typescript/lib/lib.dom.d.ts"
   ],
-  "entryPointStrategy": "resolve",
-  "plugin": [
-    "typedoc-plugin-localization",
-    "ig-typedoc-theme",
-    "./plugins/typedoc-plugin-react-components/dist/main.js",
-    "typedoc-plugin-merge-modules"
-  ],
-  "outputs": [{ "name": "json", "path": "./typedocs/igniteui-react.json" }],
-  "mergeModulesRenameDefaults": true,
-  "mergeModulesMergeMode": "project"
+  "outputs": [{ "name": "json", "path": "./typedocs/igniteui-react.json" }]
 }
