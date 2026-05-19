@@ -72,7 +72,7 @@ Ignite UI for React provides a toolchain to enhance the AI coding workflow — *
 | **Theming MCP server** (`igniteui-theming`) | Design tokens, palette tools, CSS custom property generation, WCAG AA contrast validation | No |
 | **MAKER MCP server** (`@igniteui/maker-mcp`) | Multi-agent orchestration: decomposes complex tasks into validated, executable step plans | No |
  
-> **Note:** All AI toolchain commands require Ignite UI CLI 16.0.0 or newer.
+> **Note:** All AI toolchain commands require Ignite UI CLI 15.0.0 or newer.
  
 ### Add AI toolchain to an existing project
  
