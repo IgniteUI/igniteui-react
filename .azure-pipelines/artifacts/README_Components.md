@@ -63,7 +63,7 @@ This package provides the following components:
 
 ## AI-Assisted Development
  
-Ignite UI for React provides a complete AI toolchain — **Agent Skills**, the **Ignite UI CLI MCP server**, the **Ignite UI Theming MCP server**, and the **MAKER MCP server** — that grounds AI coding assistants in correct component APIs, import paths, and design tokens.
+Ignite UI for React provides a toolchain to enhance the AI coding workflow — **Agent Skills**, the **Ignite UI CLI MCP server**, the **Ignite UI Theming MCP server**, and the **MAKER MCP server** — that grounds AI coding assistants in correct component APIs, import paths, and design tokens.
  
 | Component | What it provides | Requires Ignite UI installed? |
 |:----------|:----------------|:-----------------------------:|
