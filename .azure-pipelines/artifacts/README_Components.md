@@ -82,7 +82,7 @@ Run this command from the root of your project:
 ig ai-config
 ```
  
-This copies Agent Skills into the agent discovery path and writes MCP server entries to `.vscode/mcp.json`. After the command finishes, start the MCP servers in your AI client — they are configured but not yet running.
+This copies Agent Skills into the agent discovery path and writes MCP server entries to `.vscode/mcp.json`. 
  
 ### Start a new project with AI toolchain
  
