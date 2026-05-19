@@ -65,12 +65,12 @@ This package provides the following components:
  
 Ignite UI for React provides a toolchain to enhance the AI coding workflow — **Agent Skills**, the **Ignite UI CLI MCP server**, the **Ignite UI Theming MCP server**, and the **MAKER MCP server** — that grounds AI coding assistants in correct component APIs, import paths, and design tokens.
  
-| Component | What it provides | Requires Ignite UI installed? |
-|:----------|:----------------|:-----------------------------:|
-| **Agent Skills** | Developer-owned instruction packages: import paths, component patterns, decision flows, project conventions | Yes |
-| **CLI MCP server** (`igniteui-cli`) | Documentation queries, API reference, project scaffolding tools via MCP | No |
-| **Theming MCP server** (`igniteui-theming`) | Design tokens, palette tools, CSS custom property generation, WCAG AA contrast validation | No |
-| **MAKER MCP server** (`@igniteui/maker-mcp`) | Multi-agent orchestration: decomposes complex tasks into validated, executable step plans | No |
+| Component | What it provides |
+|:----------|:----------------|
+| **Agent Skills** | Developer-owned instruction packages: import paths, component patterns, decision flows, project conventions |
+| **CLI MCP server** (`igniteui-cli`) | Documentation queries, API reference, project scaffolding tools via MCP |
+| **Theming MCP server** (`igniteui-theming`) | Design tokens, palette tools, CSS custom property generation, WCAG AA contrast validation |
+| **MAKER MCP server** (`@igniteui/maker-mcp`) | Multi-agent orchestration: decomposes complex tasks into validated, executable step plans |
  
 > **Note:** All AI toolchain commands require Ignite UI CLI 15.0.0 or newer.
  
