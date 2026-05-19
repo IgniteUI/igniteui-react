@@ -92,7 +92,6 @@ Run the Ignite UI CLI to scaffold a new React project with the AI toolchain conf
 ig new
 ```
  
-The CLI prompts for project name and theme, installs dependencies, and configures Agent Skills and MCP servers in a single interactive flow. If the CLI is not installed globally, use `npm install -g igniteui-cli`.
  
 ### Agent Skills
  
