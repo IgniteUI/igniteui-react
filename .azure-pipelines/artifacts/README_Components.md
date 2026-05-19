@@ -74,8 +74,6 @@ Ignite UI for React provides a complete AI toolchain — **Agent Skills**, the *
  
 > **Note:** All AI toolchain commands require Ignite UI CLI 16.0.0 or newer.
  
-You can start evaluating Ignite UI AI assistance with the MCP servers alone — Ignite UI does not need to be installed in your project. Agent Skills become available once you install Ignite UI packages.
- 
 ### Add AI toolchain to an existing project
  
 Run this command from the root of your project:
