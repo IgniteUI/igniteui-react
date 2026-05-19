@@ -105,18 +105,6 @@ This package ships with **Agent Skills** — instructions, developer-owned struc
  
 When a Skill is active in the AI client, the agent follows the Skill instead of relying on general training data — which may reference outdated API signatures or import paths. The Skill package is developer-owned: edit the `SKILL.md` to match your team's conventions, add project-specific patterns, and version the package alongside your codebase.
  
-### Supported AI Clients
- 
-| Client | Configuration method |
-|:-------|:--------------------|
-| VS Code with GitHub Copilot | `.vscode/mcp.json` |
-| Cursor | `.cursor/mcp.json` |
-| Claude Desktop (macOS) | `~/Library/Application Support/Claude/claude_desktop_config.json` |
-| Claude Desktop (Windows) | `%APPDATA%\Claude\claude_desktop_config.json` |
-| Claude Code | `.mcp.json` or the Claude Code MCP CLI command |
-| JetBrains AI Assistant | **Tools → AI Assistant → Model Context Protocol (MCP)** |
- 
-Agent Skills are compatible with GitHub Copilot via `.github/copilot-instructions.md`, Cursor via `.cursorrules` or `.cursor/rules/`, Windsurf via `.windsurfrules`, and JetBrains AI Assistant via project-level prompt settings.
  
 For full setup instructions, see the [AI-Assisted Development documentation](https://www.infragistics.com/products/ignite-ui-react/react/components/ai-assisted-development-overview).
 
