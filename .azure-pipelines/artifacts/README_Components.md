@@ -79,7 +79,7 @@ Ignite UI for React provides a complete AI toolchain — **Agent Skills**, the *
 Run this command from the root of your project:
  
 ```bash
-npx igniteui-cli ai-config
+ig ai-config
 ```
  
 This copies Agent Skills into the agent discovery path and writes MCP server entries to `.vscode/mcp.json`. After the command finishes, start the MCP servers in your AI client — they are configured but not yet running.
