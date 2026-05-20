@@ -50,7 +50,7 @@ function MyForm() {
 | `IgrDialog` | `onClosed` | Dialog has closed |
 | `IgrTabs` | `onChange` | Active tab changes |
 | `IgrCalendar` | `onChange` | Selected date changes |
-| `IgrDatepicker` | `onChange` | Selected date changes |
+| `IgrDatePicker` | `onChange` | Selected date changes |
 
 ## TypeScript Event Types
 

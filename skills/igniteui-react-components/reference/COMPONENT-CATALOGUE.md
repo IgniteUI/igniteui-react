@@ -57,7 +57,7 @@ Use the tables below to map a UI need to the right React component. All componen
 | UI Need | Component | Import | Docs |
 |---|---|---|---|
 | Full calendar view | `IgrCalendar` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/calendar) |
-| Date picker (popup calendar) | `IgrDatepicker` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/date-picker) |
+| Date picker (popup calendar) | `IgrDatePicker` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/date-picker) |
 | Date range selection | `IgrDateRangePicker` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/scheduling/date-range-picker) |
 
 ### Notifications & Feedback
@@ -109,7 +109,7 @@ Use the tables below to map a UI need to the right React component. All componen
 | Simple scrollable list | `IgrList` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/list) |
 | Hierarchical / tree data | `IgrTree` | `igniteui-react` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/tree) |
 | Tabular data (MIT, lightweight) | `IgrGridLite` | `igniteui-react/grid-lite` (requires both `igniteui-react` and `igniteui-grid-lite` packages) | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grid-lite/overview) |
-| Full-featured tabular data grid | `IgrDataGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/grid/overview) |
+| Full-featured tabular data grid | `IgrGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/grid/overview) |
 | Nested / master-detail grid | `IgrHierarchicalGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/hierarchical-grid/overview) |
 | Parent-child relational tree grid | `IgrTreeGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/tree-grid/overview) |
 | Cross-tabulation / BI pivot table | `IgrPivotGrid` | `igniteui-react-grids` | [Docs](https://www.infragistics.com/products/ignite-ui-react/react/components/grids/pivot-grid/overview) |
@@ -156,8 +156,8 @@ Use the **Component Catalogue** tables above to find matching components. When i
 | Simple static list | `IgrList` | Data Grid |
 | Basic dropdown | `IgrSelect` | `IgrCombo` |
 | Searchable or multi-select dropdown | `IgrCombo` | `IgrSelect` |
-| Tabular data with basic display | `IgrGridLite` (grid-lite) | `IgrDataGrid` (commercial) |
-| Tabular data, advanced features needed | `IgrDataGrid` | `IgrGridLite` (grid-lite) |
+| Tabular data with basic display | `IgrGridLite` (grid-lite) | `IgrGrid` (commercial) |
+| Tabular data, advanced features needed | `IgrGrid` | `IgrGridLite` (grid-lite) |
 | Single dismissible message | `IgrToast` | `IgrSnackbar` |
 | Message requiring user action | `IgrSnackbar` | `IgrToast` |
 | Collapsible single section | `IgrExpansionPanel` | `IgrAccordion` |
@@ -249,7 +249,7 @@ function Dashboard() {
 
 - `IgrInput` — search bar
 - `IgrCombo` — filter dropdowns
-- `IgrGridLite` (grid-lite) or `IgrDataGrid` — tabular data
+- `IgrGridLite` (grid-lite) or `IgrGrid` — tabular data
 - `IgrButton` / `IgrIconButton` — actions
 - `IgrDialog` — confirm delete modal
 - `IgrBadge` — status indicators
@@ -269,7 +269,7 @@ function Dashboard() {
 - `IgrNavDrawer` — side navigation
 - `IgrCard` — KPI summary cards
 - `IgrTabs` or `IgrTileManager` — section layout
-- `IgrDataGrid` or `IgrPivotGrid` — detailed data tables
+- `IgrGrid` or `IgrPivotGrid` — detailed data tables
 - `IgrCategoryChart` — charts (from `igniteui-react-charts`)
 - `IgrLinearProgress` / `IgrCircularProgress` — loading indicators
 

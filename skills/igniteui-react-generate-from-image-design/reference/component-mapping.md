@@ -39,10 +39,10 @@ Component decision matrix (by visual pattern, domain-neutral):
 | Content blocks / summary cards | `IgrCard` | Use when card chrome helps match the panel shape and structure. Use `IgrCardHeader`, `IgrCardContent`, and `IgrCardActions`, or plain `<div>` containers for flat or highly custom tiles |
 | Any text input field | `IgrInput` | Use when the input anatomy matches the screenshot, including search fields and inline editors. Apply CSS to match the screenshot's border/radius style |
 | Dropdown or select | `IgrSelect` | Use when the screenshot clearly shows select/dropdown behavior |
-| Form fields with labels and inputs | `IgrInput`, `IgrSelect`, `IgrCombo`, `IgrDatepicker`, `IgrDateTimeInput` | Cover text, select, combo, and date/time inputs |
+| Form fields with labels and inputs | `IgrInput`, `IgrSelect`, `IgrCombo`, `IgrDatePicker`, `IgrDateTimeInput` | Cover text, select, combo, and date/time inputs |
 | Multi-step form / wizard | `IgrStepper` | Use when a sequence of steps is visually present |
 | Filter chips / tag inputs | `IgrChip` | Use when chip anatomy matches status badges, filter tags, or removable labels in the screenshot |
-| Calendar or date picker as a primary view element | `IgrCalendar`, `IgrDatepicker`, `IgrDateRangePicker` | Use when scheduling or date selection is the core UI |
+| Calendar or date picker as a primary view element | `IgrCalendar`, `IgrDatePicker`, `IgrDateRangePicker` | Use when scheduling or date selection is the core UI |
 | Top icon/action bar | `IgrNavbar` with `IgrButton` / `IgrIconButton` | Use when a navbar structure matches the screenshot; use plain icon buttons or custom containers when that is a closer fit |
 
 ## Chart Components
@@ -68,7 +68,7 @@ Decision rule:
 | UI Pattern | Ignite UI Component | Key Properties |
 |---|---|---|
 | Item list | `IgrList` | slot-based row content, selection, and dense list styling |
-| User avatar | `IgrAvatar` | `initials`, `shape`, `size` |
+| User avatar | `IgrAvatar` | `initials`, `shape`, `src` |
 | Status badge | `IgrBadge` | value/children plus token-based styling |
 | Icons | `IgrIcon` | icon name, collection, styling |
 | Progress bar | `IgrLinearProgress` | `value`, `max` |
@@ -91,7 +91,7 @@ Decision rule:
 | Text input | `IgrInput` | `label`, `placeholder`, `type` |
 | Dropdown select | `IgrSelect` | option children, label, value |
 | Searchable multi-select | `IgrCombo` | `data`, `displayKey`, `valueKey` |
-| Date picker | `IgrDatepicker` | value and label props |
+| Date picker | `IgrDatePicker` | value and label props |
 | Date/time input | `IgrDateTimeInput` | value, format options |
 | Toggle switch | `IgrSwitch` | checked state, change events |
 | Checkbox | `IgrCheckbox` | checked state, `indeterminate` |

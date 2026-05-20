@@ -51,6 +51,7 @@ Ignite UI components use the web component **slot** mechanism under the hood. In
 Some components like the Data Grid support **render props** for custom cell rendering:
 
 ```tsx
+import { IgrBadge } from 'igniteui-react';
 import { IgrGrid, IgrColumn } from 'igniteui-react-grids';
 
 function UserGrid({ users }: { users: User[] }) {
@@ -152,10 +153,9 @@ function MainLayout() {
   const location = useLocation();
 
   const handleTabChange = (e: CustomEvent) => {
-    const selectedIndex = (e.target as any).selectedIndex;
-    if (selectedIndex !== undefined && tabs[selectedIndex]) {
-      navigate(tabs[selectedIndex].path);
-    }
+    const selectedLabel = (e.detail as any).label as string;
+    const tab = tabs.find(t => t.label === selectedLabel);
+    if (tab) navigate(tab.path);
   };
 
   return (
