@@ -377,7 +377,9 @@ function extractBaseType(type: any, context: Context, reflection: SignatureRefle
       if (context.scope.extendedTypes && context.scope.extendedTypes[0].type === 'intersection') {
         (context.scope.extendedTypes[0] as IntersectionType).types.push(refType);
       } else if (context.scope.extendedTypes) {
-        context.scope.extendedTypes = [new IntersectionType(context.scope.extendedTypes)];
+        const intersectionType = new IntersectionType(context.scope.extendedTypes);
+        intersectionType.types.push(refType);
+        context.scope.extendedTypes = [intersectionType];
       } else {
         context.scope.extendedTypes = [refType];
       }
