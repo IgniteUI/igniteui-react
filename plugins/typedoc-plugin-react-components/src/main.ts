@@ -6,9 +6,11 @@ import {
   type Context,
   Converter,
   DeclarationReflection,
+  IntersectionType,
   IntrinsicType,
   ParameterReflection,
   PredicateType,
+  ReferenceType,
   ReflectionFlag,
   ReflectionKind,
   ReflectionType,
@@ -35,6 +37,18 @@ export function load(app: Application) {
       if (isReactType || (reflection.name.endsWith('Module') && isDeprecated)) {
         // We just remove them since we cannot set a custom filter to not create reflections for them afaik.
         context.project.removeReflection(reflection);
+      }
+
+      if (
+        reflection.name?.startsWith('Igr') &&
+        reflection.escapedName &&
+        reflection.name !== reflection.escapedName
+      ) {
+        reflection.implementationOf = ReferenceType.createResolvedReference(
+          reflection.escapedName,
+          reflection,
+          context.project,
+        );
       }
 
       // This renders the Alias for `PopoverPlacement` a bit better but still no like. Possibly add handling for aliases?
@@ -75,6 +89,16 @@ export function load(app: Application) {
               );
               // The 3rd element is for the `renderProps` prop of the `createComponent` method, but this is only declaration of them.
               // Definition of them should be handled in the 1st part.
+
+              // Fill out "extendedTypes" section in TypeDoc with base types
+              extractBaseType(type.aliasTypeArguments[0], context, reflection);
+
+              // Save a reference to the wc component name for reference in case of deeper WC types being resolved.
+              reflection.implementationOf = ReferenceType.createResolvedReference(
+                type.aliasTypeArguments[0].symbol.name,
+                reflection,
+                context.project,
+              );
             }
 
             // Clear out component signature parameters, since they are only internal and we should already have processed them correctly.
@@ -154,7 +178,7 @@ export function load(app: Application) {
   });
 }
 
-function parseTypeProperties(type: any, context: any) {
+function parseTypeProperties(type: any, context: Context) {
   if (excludeBaseTypes.includes(type.symbol?.name)) {
     return;
   }
@@ -328,6 +352,47 @@ function createEventDeclaration(context: Context, value: ts.Symbol) {
   reflection.type = resolvedType;
   reflection.setFlag(ReflectionFlag.Static, false);
   return reflection;
+}
+
+function extractBaseType(type: any, context: Context, reflection: SignatureReflection) {
+  if (!type.baseTypesResolved) {
+    return;
+  }
+  assert(context.scope instanceof DeclarationReflection);
+  // Expected only 1 item so far?
+  const resolvedBaseTypeString = context.checker.typeToString(type.resolvedBaseTypes[0]);
+  const intersectTypes = resolvedBaseTypeString.split('&').map((t) => t.trim());
+  if (intersectTypes.length > 1) {
+    for (const [index, typeName] of intersectTypes.entries()) {
+      if (typeName.includes('EventEmitterInterface') || excludeBaseTypes.includes(typeName)) {
+        continue;
+      }
+
+      const baseType = type.resolvedBaseTypes[0].types[index];
+      const refType = ReferenceType.createResolvedReference(
+        baseType.symbol.name,
+        reflection,
+        context.project,
+      );
+      if (context.scope.extendedTypes && context.scope.extendedTypes[0].type === 'intersection') {
+        (context.scope.extendedTypes[0] as IntersectionType).types.push(refType);
+      } else if (context.scope.extendedTypes) {
+        context.scope.extendedTypes = [new IntersectionType(context.scope.extendedTypes)];
+      } else {
+        context.scope.extendedTypes = [refType];
+      }
+    }
+  } else if (!excludeBaseTypes.includes(resolvedBaseTypeString)) {
+    const baseType = type.resolvedBaseTypes[0];
+    const refType = ReferenceType.createResolvedReference(
+      baseType.symbol.name,
+      reflection,
+      context.project,
+    );
+    context.scope.extendedTypes = context.scope.extendedTypes
+      ? [...context.scope.extendedTypes, refType]
+      : [refType];
+  }
 }
 
 //#region Taken from typedoc source for creating a generic signature of a Symbol.
