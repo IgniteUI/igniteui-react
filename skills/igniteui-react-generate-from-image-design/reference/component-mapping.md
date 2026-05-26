@@ -51,7 +51,7 @@ Component decision matrix (by visual pattern, domain-neutral):
 |---|---|---|
 | Area chart | `IgrCategoryChart` | `chartType`, `markerTypes`, `areaFillOpacity` |
 | Line chart | `IgrCategoryChart` | `chartType`, `markerTypes` |
-| Column/bar chart | `IgrCategoryChart` | `chartType`, `markerTypes`, `includedProperties` |
+| Column chart | `IgrCategoryChart` | `chartType`, `markerTypes`, `includedProperties` |
 | Sparkline (mini chart) | `IgrSparkline` or `IgrDataChart` | `displayType`, `valueMemberPath`, sized container |
 | Pie/donut chart | `IgrPieChart` | `valueMemberPath`, `labelMemberPath` |
 | Financial chart | `IgrFinancialChart` | OHLC/candlestick data |
