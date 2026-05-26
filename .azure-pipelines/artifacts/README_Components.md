@@ -67,7 +67,7 @@ Ignite UI for React provides a toolchain to enhance the AI coding workflow — *
  
 | Component | What it provides |
 |:----------|:----------------|
-| **Agent Skills** | Developer-owned instruction packages: import paths, component patterns, decision flows, project conventions |
+| **Agent Skills** | Structured specialized knowledge and workflow files: import paths, component patterns, decision flows, generate from image design |
 | **CLI MCP server** (`igniteui-cli`) | Documentation queries, API reference, project scaffolding tools via MCP |
 | **Theming MCP server** (`igniteui-theming`) | Design tokens, palette tools, CSS custom property generation, WCAG AA contrast validation |
 | **MAKER MCP server** (`@igniteui/maker-mcp`) | Multi-agent orchestration: decomposes complex tasks into validated, executable step plans |
@@ -80,9 +80,8 @@ Run this command from the root of your project:
  
 ```bash
 ig ai-config
-```
  
-This copies Agent Skills into the agent discovery path and writes MCP server entries to `.vscode/mcp.json`. 
+This adds Agent Skills and instructions to agent discovery path(s) and configures MCP server entries. 
  
 ### Start a new project with AI toolchain
  
@@ -91,7 +90,7 @@ Run the Ignite UI CLI to scaffold a new React project with the AI toolchain conf
 ```bash
 ig new
 ```
- 
+> If the Ignite UI CLI is not installed globally, run `npm install -g igniteui-cli`.
  
 ### Agent Skills
  
@@ -103,7 +102,7 @@ This package ships with **Agent Skills** — instructions, developer-owned struc
 | **customize-theme** | Customize styling using CSS custom properties, Sass, and the theming system in React |
 | **optimize-bundle-size** | Reduce bundle size with granular imports, tree-shaking, and lazy loading |
  
-When a Skill is active in the AI client, the agent follows the Skill instead of relying on general training data — which may reference outdated API signatures or import paths. The Skill package is developer-owned: edit the `SKILL.md` to match your team's conventions, add project-specific patterns, and version the package alongside your codebase.
+When a Skill is active in the AI client, the agent follows the Skill instead of relying on general training data — which may reference outdated API signatures or import paths.
  
  
 For full setup instructions, see the [AI-Assisted Development documentation](https://www.infragistics.com/products/ignite-ui-react/react/components/ai-assisted-development-overview).
