@@ -48,6 +48,9 @@ Run this command from the root of your project:
  
 ```bash
 ig ai-config
+```
+
+> If the Ignite UI CLI is not installed globally, run `npm install -g igniteui-cli`.
  
 This adds Agent Skills and instructions to agent discovery path(s) and configures MCP server entries. 
  
