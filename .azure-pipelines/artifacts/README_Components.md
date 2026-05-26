@@ -94,7 +94,7 @@ ig new
  
 ### Agent Skills
  
-This package ships with **Agent Skills** — instructions, developer-owned structured knowledge files that tell AI coding assistants exactly how to use Ignite UI for React. The skill files are included in the [`igniteui-react`](https://www.npmjs.com/package/igniteui-react) package and also live in the [`skills/`](https://github.com/IgniteUI/igniteui-react/tree/master/skills) directory.
+This package ships with **Agent Skills** — structured knowledge files that tell AI coding assistants exactly how to use Ignite UI for React. The skill files are included in the [`igniteui-react`](https://www.npmjs.com/package/igniteui-react) package and also live in the [`skills/`](https://github.com/IgniteUI/igniteui-react/tree/master/skills) directory.
  
 | Skill | Description |
 |:------|:------------|
