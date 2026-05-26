@@ -80,7 +80,8 @@ Run this command from the root of your project:
  
 ```bash
 ig ai-config
- 
+```
+
 This adds Agent Skills and instructions to agent discovery path(s) and configures MCP server entries. 
  
 ### Start a new project with AI toolchain
@@ -101,6 +102,7 @@ This package ships with **Agent Skills** — structured knowledge files that tel
 | **components** | Identify the right React components (`Igr*`) for a UI pattern, then install, import, and use them — JSX patterns, events, refs, forms, Next.js setup |
 | **customize-theme** | Customize styling using CSS custom properties, Sass, and the theming system in React |
 | **optimize-bundle-size** | Reduce bundle size with granular imports, tree-shaking, and lazy loading |
+| **generate-from-image-design** | Turn a screenshot, mockup, or wireframe into a React view using Ignite UI components, MCP-guided theming, and screenshot-first layout matching |
  
 When a Skill is active in the AI client, the agent follows the Skill instead of relying on general training data — which may reference outdated API signatures or import paths.
  
