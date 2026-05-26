@@ -48,7 +48,6 @@ Run this command from the root of your project:
  
 ```bash
 ig ai-config
-```
  
 This adds Agent Skills and instructions to agent discovery path(s) and configures MCP server entries. 
  
