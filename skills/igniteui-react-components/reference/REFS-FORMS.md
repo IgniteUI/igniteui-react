@@ -57,7 +57,7 @@ import { IgrInput, IgrSelect, IgrSelectItem, IgrButton } from 'igniteui-react';
 function SimpleForm() {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     // e.preventDefault(); // optionally prevent default submit for custom handling
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget);
     console.log(formData.get('name'));       // input value
     console.log(formData.get('role'));       // selected option value
   };
@@ -84,7 +84,7 @@ Wire up Ignite UI form components with React state for controlled behavior:
 
 ```tsx
 import { useState } from 'react';
-import { IgrInput, IgrCheckbox, IgrSelect, IgrSelectItem } from 'igniteui-react';
+import { IgrInput, IgrCheckbox, IgrSelect, IgrSelectItem, IgrCheckboxChangeEventArgsDetail } from 'igniteui-react';
 
 function ProfileForm() {
   const [name, setName] = useState('');
@@ -101,7 +101,7 @@ function ProfileForm() {
 
       <IgrCheckbox
         checked={newsletter}
-        onChange={(e: CustomEvent<IgcCheckboxChangeEventArgs>) =>
+        onChange={(e: CustomEvent<IgrCheckboxChangeEventArgsDetail>) =>
           setNewsletter(e.detail.checked)
         }
       >
@@ -111,7 +111,7 @@ function ProfileForm() {
       <IgrSelect
         label="Role"
         value={role}
-        onChange={(e: CustomEvent<IgcSelectItemComponent>) =>
+        onChange={(e: CustomEvent<IgrSelectItem>) =>
           setRole(e.detail.value)
         }
       >
@@ -130,7 +130,7 @@ Ignite UI components are form-associated web components. You can integrate them 
 
 ```tsx
 import { useForm, Controller } from 'react-hook-form';
-import { IgrInput, IgrCheckbox, IgrButton } from 'igniteui-react';
+import { IgrInput, IgrCheckbox, IgrButton, IgrCheckboxChangeEventArgsDetail } from 'igniteui-react';
 
 interface FormData {
   email: string;
@@ -172,7 +172,7 @@ function SignUpForm() {
         render={({ field }) => (
           <IgrCheckbox
             checked={field.value || false}
-            onChange={(e: CustomEvent<IgcCheckboxChangeEventArgs>) =>
+            onChange={(e: CustomEvent<IgrCheckboxChangeEventArgsDetail>) =>
               field.onChange(e.detail.checked)
             }
           >

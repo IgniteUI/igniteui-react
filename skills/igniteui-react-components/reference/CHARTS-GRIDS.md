@@ -374,7 +374,7 @@ const currencyTemplate = (ctx: IgrCellContext<Order>) => (
 );
 
 const dateTemplate = (ctx: IgrCellContext<Order>) => (
-  <span>${(ctx.value as Date).toLocaleDateString()}</span>
+  <span>{(ctx.value as Date).toLocaleDateString()}</span>
 );
 
 const statusTemplate = (ctx: IgrCellContext<Order>) => {
