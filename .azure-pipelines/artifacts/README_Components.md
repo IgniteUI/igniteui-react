@@ -109,7 +109,7 @@ This package ships with **Agent Skills** — structured knowledge files that tel
 When a Skill is active in the AI client, the agent follows the Skill instead of relying on general training data — which may reference outdated API signatures or import paths.
  
  
-For full setup instructions, see the [AI-Assisted Development documentation](https://www.infragistics.com/products/ignite-ui-react/react/components/ai-assisted-development-overview).
+For full setup instructions, see the [AI-Assisted Development documentation](https://www.infragistics.com/products/ignite-ui-react/react/components/ai/ai-assisted-development-overview).
 
 ## License
 
