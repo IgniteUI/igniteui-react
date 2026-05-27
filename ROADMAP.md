@@ -2,7 +2,7 @@
 
 # Current Milestone
 
-## Milestone 12, Due by Jan, 2026
+## Milestone 14, Due by Jan, 2026
 
 1. Grids Localization
 2. Grid PDF exporter service
@@ -13,6 +13,21 @@
 1. QueryBuilder component
 
 # Previous Milestone
+
+## Milestone 13, version 19.6 (Released Mar 25th, 2026)
+
+3. **[DONE]** Agent Skills: Generate React views from design images — `igniteui-react-generate-from-image-design`
+4. **[DONE]** DockManager updated to `igniteui-dockmanager@2.1.0` — `minResizeWidth`, `minResizeHeight`, `paneFlyoutToggle` event
+5. **[DONE]** Splitter component
+6. **[DONE]** Highlight container component
+
+## Milestone 12, version 19.5 (Released Feb 25th, 2026)
+
+1. **[DONE]** Grids Localization — Intl-based i18n engine for grids, Calendar, DatePicker, DateRangePicker; `igniteui-i18n-resources` package; public localization API
+2. **[DONE]** Grid PDF exporter service — `IgrGrid`, `IgrTreeGrid`, `IgrHierarchicalGrid`, `IgrPivotGrid`
+3. **[DONE]** Grids rendering performance improvements — dynamic scroll throttle; 100–150% FPS gain at 100k rows
+4. **[DONE]** HTML Popover API — dropdown menus and dialogs use native top-layer positioning
+5. **[DONE]** Agent Skills — four skill files: `igniteui-react-components`, `igniteui-react-integrate-with-framework`, `igniteui-react-customize-theme`, `igniteui-react-optimize-bundle-size`
 
 ## Milestone 11, version [19.4]() Released Nov, 2025
 
