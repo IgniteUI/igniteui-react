@@ -31,7 +31,7 @@
     "@lit/react": "^1.0.8",
     "igniteui-dockmanager": "~2.1.2",
     "igniteui-grid-lite": "~0.8.0",
-    "igniteui-webcomponents": "~7.2.0",
+    "igniteui-webcomponents": "~7.2.1",
     "igniteui-webcomponents-grids": "~7.1.0",
     "lit": "^3.3.3"
   },
