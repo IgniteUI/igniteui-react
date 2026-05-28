@@ -8,8 +8,8 @@ We provide security fixes for supported releases according to the following guid
 
 | Version | Supported | Example
 | --- | --- | --- |
-| Latest release | ✅ | 19.5.0 |
-| Previous two feature releases | ✅ (critical fixes only) | 19.3.0, 19.4.0 |
+| Latest release | ✅ | 19.7.0 |
+| Previous two feature releases | ✅ (critical fixes only) | 19.6.0, 19.5.0 |
 | Older releases | ❌ |
 
 If you are unsure whether your version is supported, please report the issue anyway and we will advise on next steps.
