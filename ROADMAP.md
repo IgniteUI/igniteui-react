@@ -2,17 +2,30 @@
 
 # Current Milestone
 
-## Milestone 14, Due by Jan, 2026
+## Milestone 15, Due by Jul, 2026
 
-1. Grids Localization
-2. Grid PDF exporter service
-3. Grids filtering performance improvements
+1. Grid performance improvements using a new and faster virtualizalization component
+2. Color Picker Component
+3. Breadcrumbs Component
+4. Timeline Component
 
 ## Going Down the Road
 
-1. QueryBuilder component
+1. Grid Formulas feature
+2. Copy-to-clipboard Compoennt
+3. OTP/PIN input Component
 
 # Previous Milestone
+
+## Milestone 14, version 19.7 (Released May 27th, 2026)
+
+1. **[DONE]** Invoker Commands API — `IgrButton` and `IgrIconButton` support `command` and `commandFor` for declarative target control; `IgrBanner`, `IgrDialog`, `IgrNavDrawer`, `IgrSnackbar`, `IgrToast` respond to `--show`, `--hide`, `--toggle` commands
+2. **[DONE]** `IgrNavDrawer` — Popover API integration for non-relative positions; `keepOpenOnEscape` property; `onClosing` (cancelable) and `onClosed` events
+3. **[DONE]** `IgrSnackbar`, `IgrToast` — new `positioning` property (`viewport` | `container`); both render as popovers in the browser top layer
+4. **[DONE]** Date Range Picker — inline editing via single input field
+5. **[DONE]** Agent Skills — updated and enhanced skill files
+6. **[DONE]** Form controls — Enter key submits associated form across `IgrInput`, `IgrMaskInput`, `IgrDateTimeInput`, `IgrCheckbox`, `IgrRadio`, `IgrSwitch`, `IgrDatePicker`, `IgrDateRangePicker`
+7. **[DONE]** Input — theming support for `date`, `time`, `datetime-local`, `week`, `month` input types 
 
 ## Milestone 13, version 19.6 (Released Mar 25th, 2026)
 
