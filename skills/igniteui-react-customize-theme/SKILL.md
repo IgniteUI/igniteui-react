@@ -112,7 +112,8 @@ The Ignite UI theming system is built on **palette**, **typography**, **elevatio
 - **`create_theme`** — generates the complete global theme CSS; call after `create_palette`
 - **`create_typography`** — when the user wants to change fonts, type scale, or weights
 - **`create_elevations`** — when the user wants to adjust shadow depth
-- **`get_component_design_tokens`** — before writing any component-level CSS; retrieves the current token names for a specific component
+- **`get_component_design_tokens`** - before writing any component-level CSS; retrieves the current token names for a specific component
+- **`set_size`**, **`set_spacing`**, or **`set_roundness`** - adjust component size, content spacing, and roundness.
 
 ### Design Systems
 
