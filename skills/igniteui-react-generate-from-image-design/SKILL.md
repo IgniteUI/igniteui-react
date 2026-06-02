@@ -65,7 +65,7 @@ After the table, translate the image into CSS Grid rows and columns first. Prese
 
 This skill is React-only. Check package routing, theme CSS imports, or licensing only when imports, packages, or theming depend on it.
 
-Then call `list_components("react")` and relevant filters to find components matching each UI pattern. Common filters:
+Then call `list_components('react')` and relevant filters to find components matching each UI pattern. Common filters:
 
 - `chart`, `sparkline` - for data visualization
 - `list view`, `card`, `avatar`, `badge` - for data display
