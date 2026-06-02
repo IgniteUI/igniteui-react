@@ -2,17 +2,45 @@
 
 # Current Milestone
 
-## Milestone 12, Due by Jan, 2026
+## Milestone 15, Due by Jul, 2026
 
-1. Grids Localization
-2. Grid PDF exporter service
-3. Grids filtering performance improvements
+1. Grid performance improvements using a new and faster virtualizalization component
+2. Color Picker Component
+3. Breadcrumbs Component
+4. Timeline Component
 
 ## Going Down the Road
 
-1. QueryBuilder component
+1. Grid Formulas feature
+2. Copy-to-clipboard Component
+3. OTP/PIN input Component
 
 # Previous Milestone
+
+## Milestone 14, version 19.7 (Released May 27th, 2026)
+
+1. **[DONE]** Invoker Commands API — `IgrButton` and `IgrIconButton` support `command` and `commandFor` for declarative target control; `IgrBanner`, `IgrDialog`, `IgrNavDrawer`, `IgrSnackbar`, `IgrToast` respond to `--show`, `--hide`, `--toggle` commands
+2. **[DONE]** `IgrNavDrawer` — Popover API integration for non-relative positions; `keepOpenOnEscape` property; `onClosing` (cancelable) and `onClosed` events
+3. **[DONE]** `IgrSnackbar`, `IgrToast` — new `positioning` property (`viewport` | `container`); both render as popovers in the browser top layer
+4. **[DONE]** Date Range Picker — inline editing via single input field
+5. **[DONE]** Agent Skills — updated and enhanced skill files
+6. **[DONE]** Form controls — Enter key submits associated form across `IgrInput`, `IgrMaskInput`, `IgrDateTimeInput`, `IgrCheckbox`, `IgrRadio`, `IgrSwitch`, `IgrDatePicker`, `IgrDateRangePicker`
+7. **[DONE]** Input — theming support for `date`, `time`, `datetime-local`, `week`, `month` input types 
+
+## Milestone 13, version 19.6 (Released Mar 25th, 2026)
+
+3. **[DONE]** Agent Skills: Generate React views from design images — `igniteui-react-generate-from-image-design`
+4. **[DONE]** DockManager updated to `igniteui-dockmanager@2.1.0` — `minResizeWidth`, `minResizeHeight`, `paneFlyoutToggle` event
+5. **[DONE]** Splitter component
+6. **[DONE]** Highlight container component
+
+## Milestone 12, version 19.5 (Released Feb 25th, 2026)
+
+1. **[DONE]** Grids Localization — Intl-based i18n engine for grids, Calendar, DatePicker, DateRangePicker; `igniteui-i18n-resources` package; public localization API
+2. **[DONE]** Grid PDF exporter service — `IgrGrid`, `IgrTreeGrid`, `IgrHierarchicalGrid`, `IgrPivotGrid`
+3. **[DONE]** Grids rendering performance improvements — dynamic scroll throttle; 100–150% FPS gain at 100k rows
+4. **[DONE]** HTML Popover API — dropdown menus and dialogs use native top-layer positioning
+5. **[DONE]** Agent Skills — four skill files: `igniteui-react-components`, `igniteui-react-integrate-with-framework`, `igniteui-react-customize-theme`, `igniteui-react-optimize-bundle-size`
 
 ## Milestone 11, version [19.4]() Released Nov, 2025
 
