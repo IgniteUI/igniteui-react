@@ -25,17 +25,6 @@ user-invocable: true
 
 > **Full setup instructions for VS Code, Cursor, Claude Desktop, and JetBrains IDEs are in [`reference/MCP-SERVER.md`](./reference/MCP-SERVER.md).** Read that file for editor-specific configuration steps and verification.
 
-### Package Routing
-
-| Component family | Install packages | Import from |
-|---|---|---|
-| Core UI components | `igniteui-react` | `igniteui-react` |
-| Advanced grids | `igniteui-react-grids` (trial) `@infragistics/igniteui-react-grids` (licensed) | `igniteui-react-grids` |
-| Grid Lite | `igniteui-react`, `igniteui-grid-lite` | `igniteui-react`, `igniteui-grid-lite` |
-| Charts | `igniteui-react-charts` (trial) `@infragistics/igniteui-react-charts` (licensed) | `igniteui-react-charts` |
-| Gauges | `igniteui-react-gauges` (trial) `@infragistics/igniteui-react-gauges` (licensed) | `igniteui-react-gauges` |
-| Maps | `igniteui-react-maps` (trial) `@infragistics/igniteui-react-maps` (licensed) | `igniteui-react-maps` |
-
 ## Example Usage
 
 - "What component should I use to display a list of items with actions?"
@@ -179,10 +168,3 @@ Use [COMPONENT-CATALOGUE.md](./reference/COMPONENT-CATALOGUE.md) to map any UI n
 6. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
 7. **Use refs sparingly** — prefer declarative props
 8. **Check slot names** in the docs
-
-## Additional Resources
-
-- [Ignite UI for React — Getting Started](https://www.infragistics.com/products/ignite-ui-react/react/components/general-getting-started)
-- [React Examples Repository](https://github.com/IgniteUI/igniteui-react-examples)
-- [npm: igniteui-react](https://www.npmjs.com/package/igniteui-react)
-- [@lit/react Documentation](https://lit.dev/docs/frameworks/react/)

@@ -106,14 +106,13 @@ import './index.css'; // Overrides second
 
 ## Theming Architecture
 
-The Ignite UI theming system is built on four pillars:
+The Ignite UI theming system is built on **palette**, **typography**, **elevations**, and per-component **schemas**. Use the MCP theming tools at the right stage:
 
-| Concept | Purpose |
-|---|---|
-| **Palette** | Color system with primary, secondary, surface, gray, info, success, warn, error families |
-| **Typography** | Font family, type scale (h1–h6, subtitle, body, button, caption, overline) |
-| **Elevations** | Box-shadow levels 0–24 for visual depth |
-| **Schema** | Per-component recipes mapping palette colors to component tokens |
+- **`create_palette`** — when the user provides brand colors; generates luminance-safe shades for all palette roles
+- **`create_theme`** — generates the complete global theme CSS; call after `create_palette`
+- **`create_typography`** — when the user wants to change fonts, type scale, or weights
+- **`create_elevations`** — when the user wants to adjust shadow depth
+- **`get_component_design_tokens`** — before writing any component-level CSS; retrieves the current token names for a specific component
 
 ### Design Systems
 
@@ -182,10 +181,3 @@ See [CSS-THEMING.md](./reference/CSS-THEMING.md) for approaches: class toggle, m
 4. **Palette shades**: 50 = lightest, 900 = darkest
 5. **Surface color must match variant** — light color for `light`, dark for `dark`
 6. **Never hardcode colors after palette generation**
-
-## Additional Resources
-
-- [Ignite UI for React — Themes Overview](https://www.infragistics.com/products/ignite-ui-react/react/components/themes/overview)
-- [igniteui-theming npm package](https://www.npmjs.com/package/igniteui-theming)
-- [CSS Custom Properties on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
-- [CSS ::part() on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/::part)

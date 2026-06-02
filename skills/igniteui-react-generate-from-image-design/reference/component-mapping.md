@@ -11,17 +11,19 @@
 - [Package Requirements](#package-requirements)
 - [Import Patterns](#import-patterns)
 
+> **For component API details** (props, events, slots, examples), call `get_doc` with the doc name from `list_components` results and `framework: 'react'`. Use `search_api` for specific property lookup.
+
 ## Dashboard & Layout Components
 
-| UI Pattern | Ignite UI Component | Key Properties |
-|---|---|---|
-| Top navigation bar | `IgrNavbar` | children plus named action/content slots |
-| Side navigation | `IgrNavDrawer` | `open`, drawer items, `icon` and `content` slots |
-| Content cards/panels | `IgrCard` | `IgrCardHeader`, `IgrCardContent`, `IgrCardActions` |
-| Tabbed content | `IgrTabs` + `IgrTab` | `label`, `slot="label"` |
-| Accordion sections | `IgrAccordion` | `IgrExpansionPanel` children |
-| Split layouts | `IgrSplitter` | resizable panes when splitter chrome is visible |
-| Tile dashboard | `IgrTileManager` | drag/resize tiles |
+| UI Pattern | Ignite UI Component |
+|---|---|
+| Top navigation bar | `IgrNavbar` |
+| Side navigation | `IgrNavDrawer` |
+| Content cards/panels | `IgrCard` |
+| Tabbed content | `IgrTabs` + `IgrTab` |
+| Accordion sections | `IgrAccordion` |
+| Split layouts | `IgrSplitter` |
+| Tile dashboard | `IgrTileManager` |
 
 Decision rule:
 
@@ -29,33 +31,17 @@ Decision rule:
 - Use `IgrNavDrawer` for a sidebar or side-navigation panel when drawer structure and behavior match the screenshot. Configure open and mini behavior according to whether the design shows fixed, collapsible, or icon-only navigation. Use a plain `<aside>` when a static custom sidebar matches the screenshot better.
 - Use `IgrTabs` for a horizontal tab strip when the screenshot clearly shows tabbed state switching. Use label-only tabs for routed navigation and inline tab content for local view switching.
 
-Component decision matrix (by visual pattern, domain-neutral):
-
-| Visual Pattern | Recommended Component | Notes |
-|---|---|---|
-| Repeated rows with icon/text/action | `IgrList` | Use when the row anatomy and interaction model match. Compose the row content with React children and the documented slots. Use native `<ul>/<li>` or custom containers when that is a closer visual fit |
-| Spreadsheet-like editable or sortable table | `IgrGridLite` or `IgrGrid` | Use only when content is truly tabular. Prefer `IgrGridLite` for lightweight MIT cases and `IgrGrid` when advanced grid features are required |
-| Hierarchical or tree-structured table | `IgrTreeGrid` or `IgrTree` | Use `IgrTreeGrid` for hierarchical tables and `IgrTree` for tree-style navigation or nested lists |
-| Content blocks / summary cards | `IgrCard` | Use when card chrome helps match the panel shape and structure. Use `IgrCardHeader`, `IgrCardContent`, and `IgrCardActions`, or plain `<div>` containers for flat or highly custom tiles |
-| Any text input field | `IgrInput` | Use when the input anatomy matches the screenshot, including search fields and inline editors. Apply CSS to match the screenshot's border/radius style |
-| Dropdown or select | `IgrSelect` | Use when the screenshot clearly shows select/dropdown behavior |
-| Form fields with labels and inputs | `IgrInput`, `IgrSelect`, `IgrCombo`, `IgrDatePicker`, `IgrDateTimeInput` | Cover text, select, combo, and date/time inputs |
-| Multi-step form / wizard | `IgrStepper` | Use when a sequence of steps is visually present |
-| Filter chips / tag inputs | `IgrChip` | Use when chip anatomy matches status badges, filter tags, or removable labels in the screenshot |
-| Calendar or date picker as a primary view element | `IgrCalendar`, `IgrDatePicker`, `IgrDateRangePicker` | Use when scheduling or date selection is the core UI |
-| Top icon/action bar | `IgrNavbar` with `IgrButton` / `IgrIconButton` | Use when a navbar structure matches the screenshot; use plain icon buttons or custom containers when that is a closer fit |
-
 ## Chart Components
 
-| UI Pattern | Ignite UI Component | Key Properties |
-|---|---|---|
-| Area chart | `IgrCategoryChart` | `chartType`, `markerTypes`, `areaFillOpacity` |
-| Line chart | `IgrCategoryChart` | `chartType`, `markerTypes` |
-| Column chart | `IgrCategoryChart` | `chartType`, `markerTypes`, `includedProperties` |
-| Sparkline (mini chart) | `IgrSparkline` or `IgrDataChart` | `displayType`, `valueMemberPath`, sized container |
-| Pie/donut chart | `IgrPieChart` | `valueMemberPath`, `labelMemberPath` |
-| Financial chart | `IgrFinancialChart` | OHLC/candlestick data |
-| Complex multi-series | `IgrDataChart` | multiple series + axes plus module registration |
+| UI Pattern | Ignite UI Component |
+|---|---|
+| Area chart | `IgrCategoryChart` |
+| Line chart | `IgrCategoryChart` |
+| Column chart | `IgrCategoryChart` |
+| Sparkline (mini chart) | `IgrSparkline` or `IgrDataChart` |
+| Pie/donut chart | `IgrPieChart` |
+| Financial chart | `IgrFinancialChart` |
+| Complex multi-series | `IgrDataChart` |
 
 Decision rule:
 
@@ -65,17 +51,17 @@ Decision rule:
 
 ## Data Display Components
 
-| UI Pattern | Ignite UI Component | Key Properties |
-|---|---|---|
-| Item list | `IgrList` | slot-based row content, selection, and dense list styling |
-| User avatar | `IgrAvatar` | `initials`, `shape`, `src` |
-| Status badge | `IgrBadge` | value/children plus token-based styling |
-| Icons | `IgrIcon` | icon name, collection, styling |
-| Progress bar | `IgrLinearProgress` | `value`, `max` |
-| Circular progress | `IgrCircularProgress` | `value`, `max` |
-| Flat data grid | `IgrGridLite` or `IgrGrid` | choose by feature level and package availability |
-| Hierarchical/tree data grid | `IgrTreeGrid` | parent-child data |
-| Filter/tag chips | `IgrChip` | selected state, removable UI, token-based styling |
+| UI Pattern | Ignite UI Component |
+|---|---|
+| Item list | `IgrList` |
+| User avatar | `IgrAvatar` |
+| Status badge | `IgrBadge` |
+| Icons | `IgrIcon` |
+| Progress bar | `IgrLinearProgress` |
+| Circular progress | `IgrCircularProgress` |
+| Flat data grid | `IgrGridLite` or `IgrGrid` |
+| Hierarchical/tree data grid | `IgrTreeGrid` |
+| Filter/tag chips | `IgrChip` |
 
 Decision rule:
 
@@ -86,44 +72,44 @@ Decision rule:
 
 ## Form & Input Components
 
-| UI Pattern | Ignite UI Component | Key Properties |
-|---|---|---|
-| Text input | `IgrInput` | `label`, `placeholder`, `type` |
-| Dropdown select | `IgrSelect` | option children, label, value |
-| Searchable multi-select | `IgrCombo` | `data`, `displayKey`, `valueKey` |
-| Date picker | `IgrDatePicker` | value and label props |
-| Date/time input | `IgrDateTimeInput` | value, format options |
-| Toggle switch | `IgrSwitch` | checked state, change events |
-| Checkbox | `IgrCheckbox` | checked state, `indeterminate` |
-| Radio button group | `IgrRadioGroup` + `IgrRadio` | `name`, selected value |
-| Slider | `IgrSlider` | `min`, `max`, `value` |
-| Multi-step wizard | `IgrStepper` | orientation, step composition |
-| Chip filter bar | `IgrChip` collection in a flex wrapper | compose removable/filter chips manually |
+| UI Pattern | Ignite UI Component |
+|---|---|
+| Text input | `IgrInput` |
+| Dropdown select | `IgrSelect` |
+| Searchable multi-select | `IgrCombo` |
+| Date picker | `IgrDatePicker` |
+| Date/time input | `IgrDateTimeInput` |
+| Toggle switch | `IgrSwitch` |
+| Checkbox | `IgrCheckbox` |
+| Radio button group | `IgrRadioGroup` + `IgrRadio` |
+| Slider | `IgrSlider` |
+| Multi-step wizard | `IgrStepper` |
+| Chip filter bar | `IgrChip` collection in a flex wrapper |
 
 ## Calendar & Scheduling Components
 
-| UI Pattern | Ignite UI Component | Key Properties |
-|---|---|---|
-| Calendar view | `IgrCalendar` | selection mode, `value`, change events |
-| Date range picker | `IgrDateRangePicker` | range value, change events |
-| Month/year picker | `IgrCalendar` | month/year view settings per docs |
+| UI Pattern | Ignite UI Component |
+|---|---|
+| Calendar view | `IgrCalendar` |
+| Date range picker | `IgrDateRangePicker` |
+| Month/year picker | `IgrCalendar` |
 
 ## Map Components
 
-| UI Pattern | Ignite UI Component | Key Properties |
-|---|---|---|
-| World map | `IgrGeographicMap` | `zoomable`, `backgroundContent` |
-| Map markers | `IgrGeographicSymbolSeries` | `latitudeMemberPath`, `longitudeMemberPath`, `markerType`, `markerBrush` |
-| Bubble overlay | `IgrGeographicProportionalSymbolSeries` | sized markers |
-| Shape regions | `IgrGeographicShapeSeries` | polygon rendering |
+| UI Pattern | Ignite UI Component |
+|---|---|
+| World map | `IgrGeographicMap` |
+| Map markers | `IgrGeographicSymbolSeries` |
+| Bubble overlay | `IgrGeographicProportionalSymbolSeries` |
+| Shape regions | `IgrGeographicShapeSeries` |
 
 ## Gauge Components
 
-| UI Pattern | Ignite UI Component | Key Properties |
-|---|---|---|
-| Linear gauge | `IgrLinearGauge` | `value`, `minimumValue`, `maximumValue`, `needleBrush` |
-| Radial gauge | `IgrRadialGauge` | `value`, `minimumValue`, `maximumValue` |
-| Bullet graph | `IgrBulletGraph` | performance vs target |
+| UI Pattern | Ignite UI Component |
+|---|---|
+| Linear gauge | `IgrLinearGauge` |
+| Radial gauge | `IgrRadialGauge` |
+| Bullet graph | `IgrBulletGraph` |
 
 ## Package Requirements
 
