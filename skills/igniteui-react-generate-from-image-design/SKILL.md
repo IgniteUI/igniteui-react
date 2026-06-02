@@ -65,7 +65,7 @@ After the table, translate the image into CSS Grid rows and columns first. Prese
 
 This skill is React-only. Check package routing, theme CSS imports, or licensing only when imports, packages, or theming depend on it.
 
-Then call `list_components` with `framework: "react"` and relevant filters to find components matching each UI pattern. Common filters:
+Then call `list_components("react")` and relevant filters to find components matching each UI pattern. Common filters:
 
 - `chart`, `sparkline` - for data visualization
 - `list view`, `card`, `avatar`, `badge` - for data display
@@ -80,7 +80,7 @@ For component-to-Ignite-UI mapping, see [reference/component-mapping.md](referen
 
 ## Step 4: Look Up Component API
 
-For every chosen component category, call `get_doc` with the doc name from `list_components` results (e.g., `name: "card"`, `framework: "react"`). Use the doc `name` field from the MCP results, not the result title shown in the list. This is mandatory before coding and gives exact React usage patterns, prop names, slot structure, event signatures, and any required module registration.
+For every chosen component category, call `get_doc` with `"react"` and the doc name from `list_components` results (e.g., `get_doc('react', 'card')`). Use the doc `name` field from the MCP results, not the result title shown in the list. This is mandatory before coding and gives exact React usage patterns, prop names, slot structure, event signatures, and any required module registration.
 
 Call `search_docs` for feature-based questions (e.g., "how to configure [component] for [specific behavior or styling need]").
 

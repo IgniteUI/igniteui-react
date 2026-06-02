@@ -155,7 +155,7 @@ function Dashboard() {
 
 Use MCP tools for up-to-date component discovery and API lookup:
 
-- `list_components(framework: 'react')` — browse the full component catalogue, optionally narrowed with a filter keyword
-- `get_doc(framework: 'react', name)` — full documentation, prop tables, and code examples for a component
-- `search_docs(query, framework: 'react')` — full-text search for features or behaviors (e.g., `"date picker range selection"`)
-- `search_api(query, platform: 'react')` — look up specific classes, properties, or methods
+- `list_components('react')` — browse the full component catalogue, optionally narrowed with a filter keyword
+- `get_doc('react', '<name>')` — full documentation, prop tables, and code examples for a component
+- `search_docs('<query>', 'react')` — full-text search for features or behaviors (e.g., `"date picker range selection"`)
+- `search_api('<query>', 'react')` — look up specific classes, properties, or methods
