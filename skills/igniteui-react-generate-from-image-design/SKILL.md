@@ -80,7 +80,7 @@ For component-to-Ignite-UI mapping, see [reference/component-mapping.md](referen
 
 ## Step 4: Look Up Component API
 
-For every chosen component category, call `get_doc` with `"react"` and the doc name from `list_components` results (e.g., `get_doc('react', 'card')`). Use the doc `name` field from the MCP results, not the result title shown in the list. This is mandatory before coding and gives exact React usage patterns, prop names, slot structure, event signatures, and any required module registration.
+For every chosen component category, call `get_doc('react', '<name>')` using the doc `name` field from `list_components` results (e.g., `get_doc('react', 'card')`), not the result title shown in the list. This is mandatory before coding and gives exact React usage patterns, prop names, slot structure, event signatures, and any required module registration.
 
 Call `search_docs` for feature-based questions (e.g., "how to configure [component] for [specific behavior or styling need]").
 

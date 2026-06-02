@@ -49,7 +49,7 @@ Confirm which package provides the component:
 
 ### Step 4 — Look up component documentation
 
-Call `get_doc` with `framework: 'react'` and the doc name from `list_components` results to get full usage documentation, import paths, prop tables, event signatures, and code examples. Use `search_docs` for feature-based questions (e.g., `"date picker range selection"`).
+Call `get_doc('react', '<name>')` with the doc name from `list_components` results to get full usage documentation, import paths, prop tables, event signatures, and code examples. Use `search_docs('<query>', 'react')` for feature-based questions (e.g., `"date picker range selection"`).
 
 ### Step 5 — Provide a starter code snippet
 
