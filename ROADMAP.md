@@ -12,7 +12,7 @@
 ## Going Down the Road
 
 1. Grid Formulas feature
-2. Copy-to-clipboard Compoennt
+2. Copy-to-clipboard Component
 3. OTP/PIN input Component
 
 # Previous Milestone
