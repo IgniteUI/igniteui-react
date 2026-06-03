@@ -62,14 +62,6 @@ Edit the Claude Desktop config file:
 3. Set Command to `npx` and Arguments to `igniteui-theming igniteui-theming-mcp`
 4. Click OK and restart the AI Assistant
 
-## MCP Server Workflow
-
-1. **Detect platform**: Call `detect_platform` — it will detect `webcomponents` from `package.json`
-2. **Generate a theme**: Call `create_theme` with your desired colors and design system
-3. **Customize components**: Call `get_component_design_tokens` first, then `create_component_theme` with palette token values
-4. **Get color references**: Call `get_color` to get the correct CSS custom property for any palette shade
-5. **Adjust layout**: Call `set_size`, `set_spacing`, or `set_roundness`
-
 ## File Safety Rule
 
 > **IMPORTANT — File Safety Rule**: When generating theme code, **never overwrite existing style files directly**. Always propose changes as an update and let the user review before writing to disk.

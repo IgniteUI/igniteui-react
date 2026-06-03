@@ -148,6 +148,8 @@ For truly dynamic one-off overrides:
 
 Override individual component appearance using CSS custom properties.
 
+> **AGENT INSTRUCTION**: Before writing component-level token overrides, call `get_component_design_tokens` with the component name (e.g., `"avatar"`, `"button"`, `"grid"`) to retrieve the current, correct token names. Token names vary by component and can change between versions. Use only tokens returned by that call — do not guess or reuse tokens from other components.
+
 ```css
 /* Target the Ignite UI web component tag name */
 igc-avatar {

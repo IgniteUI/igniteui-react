@@ -35,6 +35,8 @@ function MyForm() {
 
 ## Common Event Props
 
+> For component-specific event signatures and detail types, call `get_api_reference('react', '<Component>', 'events')` — e.g. `get_api_reference('react', 'IgrCombo', 'events')`.
+
 | Component | Event Prop | Fires When |
 |---|---|---|
 | `IgrButton` | `onClick` | Button is clicked |

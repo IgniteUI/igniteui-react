@@ -53,6 +53,10 @@ IgrCategoryChartModule.register();
 
 ## Complete Chart Example
 
+> Call `get_doc('react', 'column-chart')` for full `IgrCategoryChart` and `IgrDataChart` usage, prop tables, and code examples. Call `get_doc('react', 'chart-features')` for axes, annotations, animations, markers, and tooltips.
+
+The minimum pattern — register the module at file scope, then wrap the component in a sized container:
+
 ```tsx
 import { IgrCategoryChart, IgrCategoryChartModule } from 'igniteui-react-charts';
 import styles from './dashboard-view.module.css';
@@ -77,20 +81,6 @@ export default function DashboardView() {
       />
     </div>
   );
-}
-```
-
-```css
-/* dashboard-view.module.css */
-.chart-container {
-  min-width: 400px;
-  min-height: 300px;
-  flex-grow: 1;
-  flex-basis: 0;
-}
-.chart-container > * {
-  height: 100%;
-  width: 100%;
 }
 ```
 
@@ -139,6 +129,8 @@ IgrDataChartAnnotationModule.register();
 | Column (vertical) | `IgrCategoryXAxis` | `IgrNumericYAxis` |
 
 > **Bar charts are horizontal** — categories go on the Y-axis and numeric values on the X-axis. This is the opposite of column charts.
+
+> For the full `IgrDataChart` API (all series types, axis options, layers), call `get_doc('react', 'bar-chart')` or `get_doc('react', 'column-chart')`.
 
 ### Complete Bar Chart Component (Multiple Series)
 
@@ -287,28 +279,6 @@ export default function BarChartView() {
   width: 100%;
 }
 ```
-
-### Key Props Reference for `IgrBarSeries`
-
-| Prop | Type | Description |
-|---|---|---|
-| `name` | `string` | Unique identifier — **required** when referencing the series from other elements |
-| `xAxisName` | `string` | Must match the `name` of an `IgrNumericXAxis` declared in the same chart |
-| `yAxisName` | `string` | Must match the `name` of an `IgrCategoryYAxis` declared in the same chart |
-| `valueMemberPath` | `string` | Field name in the data object that holds the bar length value |
-| `dataSource` | `any[]` | The data array — can differ per series for independent datasets |
-| `title` | `string` | Series label shown in the legend |
-| `isTransitionInEnabled` | `boolean` | Animates bars on initial render |
-| `isHighlightingEnabled` | `boolean` | Dims other series when one is hovered |
-| `showDefaultTooltip` | `boolean` | Shows a simple built-in tooltip (use `IgrDataToolTipLayer` for richer output) |
-
-### Available Bar Chart Variants
-
-| Variant | Component | Module |
-|---|---|---|
-| Bar (horizontal) | `IgrBarSeries` | `IgrDataChartVerticalCategoryModule` |
-| Stacked Bar | `IgrStackedBarSeries` + `IgrStackedFragmentSeries` | `IgrDataChartStackedModule` |
-| Stacked 100% Bar | `IgrStacked100BarSeries` + `IgrStackedFragmentSeries` | `IgrDataChartStackedModule` |
 
 ## Complete Grid Lite Example
 
