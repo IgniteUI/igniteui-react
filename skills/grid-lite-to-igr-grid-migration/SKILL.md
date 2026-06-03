@@ -267,8 +267,8 @@ const handleExporting = (e: IgrGridToolbarExportEventArgs) => {
 
 ## Related Skills
 
-- **[igniteui-react-components](./igniteui-react-components/SKILL.md)** — Identify the right `Igr*` components, install, import, and use them; covers JSX patterns, events, refs, and forms. Use this after migrating to explore the full premium grid feature set.
-- **[igniteui-react-customize-theme](./igniteui-react-customize-theme/SKILL.md)** — Customize `IgrGrid` styling using CSS custom properties and the Ignite UI theming system.
-- **[igniteui-react-optimize-bundle-size](./igniteui-react-optimize-bundle-size/SKILL.md)** — Reduce bundle size after migrating to `igniteui-react-grids` with granular imports, tree-shaking, and lazy loading.
-- **[igniteui-react-generate-from-image-design](./igniteui-react-generate-from-image-design/SKILL.md)** — Build a full React view from a screenshot or mockup using Ignite UI components and MCP-driven theming.
+- [igniteui-react-components](../igniteui-react-components/SKILL.md) — Identify the right `Igr*` components, install, import, and use them; covers JSX patterns, events, refs, and forms. Use this after migrating to explore the full premium grid feature set.
+- [igniteui-react-customize-theme](../igniteui-react-customize-theme/SKILL.md) — Customize `IgrGrid` styling using CSS custom properties and the Ignite UI theming system.
+- [igniteui-react-optimize-bundle-size](../igniteui-react-optimize-bundle-size/SKILL.md) — Reduce bundle size after migrating to `igniteui-react-grids` with granular imports, tree-shaking, and lazy loading.
+- [igniteui-react-generate-from-image-design](../igniteui-react-generate-from-image-design/SKILL.md) — Build a full React view from a screenshot or mockup using Ignite UI components and MCP-driven theming.
 
