@@ -139,8 +139,8 @@ For core UI component theming, prefer `create_component_theme` and apply the ret
 Override the drawer width using the nav drawer CSS custom properties measured from the design image:
 ```css
 igc-nav-drawer {
-  --ig-nav-drawer-size: <extracted-sidebar-width>;
-  --ig-nav-drawer-size--mini: <extracted-mini-drawer-width>;
+  --menu-full-width: <extracted-sidebar-width>;
+  --menu-mini-width: <extracted-mini-drawer-width>;
 }
 ```
 
