@@ -60,7 +60,7 @@ export function load(app: Application) {
 
   app.converter.on(
     Converter.EVENT_CREATE_SIGNATURE,
-    (context: Context, reflection: SignatureReflection, sig: any, test: any) => {
+    (context: Context, reflection: SignatureReflection, _: any, __: any) => {
       // Each component generates a signature due to the nature for the react nodes. We use it to further process it correctly so members appear where we need them.
       // A signature is a definition of a more complex type like a function that can have arguments/return type and etc. The other reflection type is a simple type.
       if (
@@ -83,7 +83,7 @@ export function load(app: Application) {
               parseTypeProperties(type.aliasTypeArguments[0], context);
               // The 2nd element is the `events` prop of the `createComponent` method.
               type.aliasTypeArguments[1].symbol?.members?.forEach(
-                (value: ts.Symbol, key: ts.__String) => {
+                (value: ts.Symbol, _: ts.__String) => {
                   createEventDeclaration(context, value);
                 },
               );
@@ -153,7 +153,7 @@ export function load(app: Application) {
     }
   });
 
-  app.converter.on(Converter.EVENT_END, (context: Context) => {
+  app.converter.on(Converter.EVENT_END, (_: Context) => {
     console.log('Converter finished!');
   });
 
