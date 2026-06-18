@@ -6,7 +6,6 @@ import {
   type Context,
   Converter,
   DeclarationReflection,
-  IntersectionType,
   IntrinsicType,
   ParameterReflection,
   PredicateType,
@@ -21,7 +20,15 @@ import {
 } from 'typedoc';
 import ts, { ModifierFlags, SymbolFlags } from 'typescript';
 
-const excludeBaseTypes = ['LitElement', 'HTMLElement'];
+const excludeBaseTypes = [
+  'LitElement',
+  'HTMLElement',
+  'FormRequiredInterface',
+  'FormAssociatedCheckboxElementInterface',
+  'FormAssociatedElementInterface',
+  'MaskBehaviorElementInterface',
+];
+const excludeProperties = ['emitEvent'];
 
 export function load(app: Application) {
   app.converter.on(
@@ -89,9 +96,6 @@ export function load(app: Application) {
               );
               // The 3rd element is for the `renderProps` prop of the `createComponent` method, but this is only declaration of them.
               // Definition of them should be handled in the 1st part.
-
-              // Fill out "extendedTypes" section in TypeDoc with base types
-              extractBaseType(type.aliasTypeArguments[0], context, reflection);
 
               // Save a reference to the wc component name for reference in case of deeper WC types being resolved.
               reflection.implementationOf = ReferenceType.createResolvedReference(
@@ -179,55 +183,80 @@ export function load(app: Application) {
 }
 
 function parseTypeProperties(type: any, context: Context) {
-  if (excludeBaseTypes.includes(type.symbol?.name)) {
+  if (
+    type.symbol?.name.includes('EventEmitterInterface') ||
+    excludeBaseTypes.includes(type.symbol?.name)
+  ) {
     return;
   }
   const props = type.declaredProperties || type.symbol?.members;
-  props?.forEach((value: ts.Symbol, key: ts.__String) => {
+  props?.forEach((value: ts.Symbol) => {
     const memberDeclaration = value?.declarations?.length
       ? (value.declarations[0] as any)
       : ((value.valueDeclaration as any) ?? null);
     const modifiers = memberDeclaration
       ? ts.getCombinedModifierFlags(memberDeclaration)
       : ModifierFlags.None;
+    const memberName = value.name;
     if (
-      !key.toString().startsWith('_') &&
-      (modifiers === ModifierFlags.None ||
+      memberName.toString().startsWith('_') ||
+      excludeProperties.includes(memberName) ||
+      !(
+        modifiers === ModifierFlags.None ||
         modifiers === ModifierFlags.Public ||
-        modifiers === ModifierFlags.Static)
+        modifiers === ModifierFlags.Static
+      )
     ) {
-      let reflectionKind = ReflectionKind.Property;
-      let category = 'Other';
-      switch (value.flags) {
-        case SymbolFlags.GetAccessor:
-          category = 'Accessors';
-          reflectionKind = ReflectionKind.Accessor;
-          break;
-        case SymbolFlags.Method:
-          category = 'Methods';
-          reflectionKind = ReflectionKind.Method;
-          break;
-        case SymbolFlags.Accessor:
-        case SymbolFlags.Property:
-          category = 'Properties';
-      }
-      if (value.flags.toString() === '16777220') {
-        // For some reason optional properties get flagged to this number, even though the optional is 16777216
-        category = 'Properties';
-      }
-      if (category === 'Other') {
-        // Other types we just ignore creating.
-        return;
-      }
-
-      createMemberDeclaration(context, value, reflectionKind, category);
+      return;
     }
+
+    let reflectionKind = ReflectionKind.Property;
+    let category = 'Other';
+    switch (value.flags) {
+      case SymbolFlags.GetAccessor:
+        category = 'Accessors';
+        reflectionKind = ReflectionKind.Accessor;
+        break;
+      case SymbolFlags.Method:
+        category = 'Methods';
+        reflectionKind = ReflectionKind.Method;
+        break;
+      case SymbolFlags.Accessor:
+      case SymbolFlags.Property:
+        category = 'Properties';
+    }
+    if (value.flags.toString() === '16777220') {
+      // For some reason optional properties get flagged to this number, even though the optional is 16777216
+      category = 'Properties';
+    }
+    if (category === 'Other') {
+      // Other types we just ignore creating.
+      return;
+    }
+
+    createMemberDeclaration(context, value, reflectionKind, category);
   });
 
-  if (type.resolvedBaseTypes) {
-    for (const baseType of type.resolvedBaseTypes) {
-      parseTypeProperties(baseType, context);
-    }
+  resolveBaseTypeProps(type, context);
+}
+
+function resolveBaseTypeProps(type: any, context: Context) {
+  if (!type.baseTypesResolved || type.resolvedBaseTypes?.length === 0) {
+    return;
+  }
+
+  let baseTypes = [];
+  if (type.resolvedBaseTypes[0].symbol) {
+    baseTypes = type.resolvedBaseTypes;
+  } else {
+    baseTypes = type.resolvedBaseTypes[0].types;
+  }
+  if (!baseTypes) {
+    return;
+  }
+
+  for (const baseType of baseTypes) {
+    parseTypeProperties(baseType, context);
   }
 }
 
@@ -352,49 +381,6 @@ function createEventDeclaration(context: Context, value: ts.Symbol) {
   reflection.type = resolvedType;
   reflection.setFlag(ReflectionFlag.Static, false);
   return reflection;
-}
-
-function extractBaseType(type: any, context: Context, reflection: SignatureReflection) {
-  if (!type.baseTypesResolved) {
-    return;
-  }
-  assert(context.scope instanceof DeclarationReflection);
-  // Expected only 1 item so far?
-  const resolvedBaseTypeString = context.checker.typeToString(type.resolvedBaseTypes[0]);
-  const intersectTypes = resolvedBaseTypeString.split('&').map((t) => t.trim());
-  if (intersectTypes.length > 1) {
-    for (const [index, typeName] of intersectTypes.entries()) {
-      if (typeName.includes('EventEmitterInterface') || excludeBaseTypes.includes(typeName)) {
-        continue;
-      }
-
-      const baseType = type.resolvedBaseTypes[0].types[index];
-      const refType = ReferenceType.createResolvedReference(
-        baseType.symbol.name,
-        reflection,
-        context.project,
-      );
-      if (context.scope.extendedTypes && context.scope.extendedTypes[0].type === 'intersection') {
-        (context.scope.extendedTypes[0] as IntersectionType).types.push(refType);
-      } else if (context.scope.extendedTypes) {
-        const intersectionType = new IntersectionType(context.scope.extendedTypes);
-        intersectionType.types.push(refType);
-        context.scope.extendedTypes = [intersectionType];
-      } else {
-        context.scope.extendedTypes = [refType];
-      }
-    }
-  } else if (!excludeBaseTypes.includes(resolvedBaseTypeString)) {
-    const baseType = type.resolvedBaseTypes[0];
-    const refType = ReferenceType.createResolvedReference(
-      baseType.symbol.name,
-      reflection,
-      context.project,
-    );
-    context.scope.extendedTypes = context.scope.extendedTypes
-      ? [...context.scope.extendedTypes, refType]
-      : [refType];
-  }
 }
 
 //#region Taken from typedoc source for creating a generic signature of a Symbol.
