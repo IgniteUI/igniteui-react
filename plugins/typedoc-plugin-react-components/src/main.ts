@@ -24,7 +24,9 @@ const excludeBaseTypes = [
   'LitElement',
   'HTMLElement',
   'FormRequiredInterface',
+  'FormAssociatedCheckboxElementInterface',
   'FormAssociatedElementInterface',
+  'MaskBehaviorElementInterface',
 ];
 const excludeProperties = ['emitEvent'];
 
