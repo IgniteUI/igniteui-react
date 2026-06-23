@@ -101,12 +101,7 @@ Use the supported `shape` input alone. Do not add `roundShape`.
 
 ### Omit column `width` — both grid types are fluid by default
 
-When a design shows a grid with columns at specific visual widths, do not translate those pixel proportions into `width` props on `IgrGridLiteColumn` or `IgrColumn`.
-
-- `IgrGridLiteColumn` defaults to `minmax(136px, 1fr)` — responsive, fills all available space.
-- `IgrColumn` in advanced grids (`IgrGrid`, `IgrTreeGrid`, `IgrHierarchicalGrid`) also distributes space automatically.
-
-Adding explicit pixel widths causes a fixed layout that leaves empty space on the right side of the grid. Only set `width` if the user explicitly asks for fixed column widths.
+Do not add `width` to `IgrGridLiteColumn` or `IgrColumn` — columns are responsive by default. Fixed pixel widths leave empty space on the right side of the grid. Only set `width` if the user explicitly asks for it. If some columns need explicit widths, leave at least one column without a `width` to fill the remaining space.
 
 ### Tabs used for navigation should be label-only
 When a screenshot shows tabs that drive routed page content, use label-only `IgrTab` items and keep the routed content outside the `IgrTabs` component. Do not place inline tab panel content inside router-driven tabs.

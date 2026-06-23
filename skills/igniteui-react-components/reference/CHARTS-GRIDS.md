@@ -390,6 +390,7 @@ export default function OrderList() {
 > - `IgrGridLiteColumn` defaults to `minmax(136px, 1fr)` — columns are already responsive and fill all available space.
 > - `IgrColumn` (in `IgrGrid`, `IgrTreeGrid`, `IgrHierarchicalGrid`) also auto-sizes by default.
 > - Adding explicit pixel widths causes a fixed layout that leaves empty space on the right side of the grid.
+> - If widths are set on some columns, leave at least one column without a `width` so it expands to fill the remaining space.
 
 > **Column configuration notes:**
 > - `dataType` accepts `"string"` (default), `"number"`, `"boolean"` — set it explicitly so sorting and filtering work correctly for each column type.
