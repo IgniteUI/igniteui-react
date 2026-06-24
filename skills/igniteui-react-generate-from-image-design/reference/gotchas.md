@@ -99,6 +99,10 @@ In a flexible CSS Grid track, set `min-height: 0` on the grid cell and make the 
 ### `roundShape` does NOT exist on `IgrAvatar`
 Use the supported `shape` input alone. Do not add `roundShape`.
 
+### Omit column `width` — both grid types are fluid by default
+
+Do not add `width` to `IgrGridLiteColumn` or `IgrColumn` — columns are responsive by default. Fixed pixel widths leave empty space on the right side of the grid. Only set `width` if the user explicitly asks for it. If some columns need explicit widths, leave at least one column without a `width` to fill the remaining space.
+
 ### Tabs used for navigation should be label-only
 When a screenshot shows tabs that drive routed page content, use label-only `IgrTab` items and keep the routed content outside the `IgrTabs` component. Do not place inline tab panel content inside router-driven tabs.
 

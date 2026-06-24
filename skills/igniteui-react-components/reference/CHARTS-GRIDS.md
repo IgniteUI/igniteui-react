@@ -383,6 +383,15 @@ export default function OrderList() {
 }
 ```
 
+## Column Width Rule (Grid Lite and Advanced Grids)
+
+> **⚠️ Do NOT set `width` on columns unless the user explicitly asks for specific column widths.**
+>
+> - `IgrGridLiteColumn` defaults to `minmax(136px, 1fr)` — columns are already responsive and fill all available space.
+> - `IgrColumn` (in `IgrGrid`, `IgrTreeGrid`, `IgrHierarchicalGrid`) also auto-sizes by default.
+> - Adding explicit pixel widths causes a fixed layout that leaves empty space on the right side of the grid.
+> - If widths are set on some columns, leave at least one column without a `width` so it expands to fill the remaining space.
+
 > **Column configuration notes:**
 > - `dataType` accepts `"string"` (default), `"number"`, `"boolean"` — set it explicitly so sorting and filtering work correctly for each column type.
 > - `cellTemplate` receives an `IgrCellContext<T>` where `ctx.value` is the cell value and `ctx.row.data` is the full row object.

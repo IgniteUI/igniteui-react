@@ -178,3 +178,4 @@ Use [COMPONENT-CATALOGUE.md](./reference/COMPONENT-CATALOGUE.md) to map any UI n
 6. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
 7. **Use refs sparingly** — prefer declarative props
 8. **Check slot names** in the docs
+9. **Never add `width` to grid columns by default** — `IgrGridLiteColumn` defaults to `minmax(136px, 1fr)` (responsive) and `IgrColumn` auto-sizes. Adding explicit pixel widths leaves empty space and breaks responsiveness. Only set `width` when the user explicitly requests it. If some columns have explicit widths, leave at least one column without a `width` to fill remaining space.
