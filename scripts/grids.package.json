@@ -23,6 +23,13 @@
   "typings": "grids.d.ts",
   "main": "grids.js",
   "module": "grids.js",
+  "exports": {
+    ".": {
+      "types": "./grids.d.ts",
+      "default": "./grids.js"
+    },
+    "./grids/*": "./grids/*"
+  },
   "maintainers": [
     {
       "name": "igniteui",
