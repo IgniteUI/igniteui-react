@@ -1,5 +1,14 @@
 ## Unreleased
 
+## 19.8.1 - 2026-07-13
+
+### Changed
+- Updated published grids dependency:
+  - igniteui-webcomponents-grids: ~7.2.0 -> ~7.2.1
+
+### Fixed
+- Restored package distribution structure for correct npm package type declarations.
+
 ## 19.8.0 - 2026-07-09
 
 ### Added
