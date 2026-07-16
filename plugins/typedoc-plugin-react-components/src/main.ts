@@ -184,7 +184,7 @@ export function load(app: Application) {
 
 function parseTypeProperties(type: any, context: Context) {
   if (
-    type.symbol?.name.includes('EventEmitterInterface') ||
+    type.symbol?.name?.includes('EventEmitterInterface') ||
     excludeBaseTypes.includes(type.symbol?.name)
   ) {
     return;
@@ -225,7 +225,7 @@ function parseTypeProperties(type: any, context: Context) {
       case SymbolFlags.Property:
         category = 'Properties';
     }
-    if (value.flags.toString() === '16777220') {
+    if (value.flags & ts.SymbolFlags.Optional) {
       // For some reason optional properties get flagged to this number, even though the optional is 16777216
       category = 'Properties';
     }
@@ -241,7 +241,7 @@ function parseTypeProperties(type: any, context: Context) {
 }
 
 function resolveBaseTypeProps(type: any, context: Context) {
-  if (!type.baseTypesResolved || type.resolvedBaseTypes?.length === 0) {
+  if (!type.baseTypesResolved || !type.resolvedBaseTypes?.length) {
     return;
   }
 
