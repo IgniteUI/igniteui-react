@@ -247,10 +247,6 @@ function resolveBaseTypeProps(type: ts.Type, context: Context) {
   const baseTypes = context.checker
     .getBaseTypes(type)
     .flatMap((base) => (base.isUnionOrIntersection() ? base.types : base));
-  if (!baseTypes?.length) {
-    return;
-  }
-
   for (const baseType of baseTypes) {
     parseTypeProperties(baseType, context);
   }
