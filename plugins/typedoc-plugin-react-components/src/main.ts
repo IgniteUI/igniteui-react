@@ -182,14 +182,15 @@ export function load(app: Application) {
   });
 }
 
-function parseTypeProperties(type: any, context: Context) {
+function parseTypeProperties(type: ts.Type, context: Context) {
   if (
     type.symbol?.name?.includes('EventEmitterInterface') ||
     excludeBaseTypes.includes(type.symbol?.name)
   ) {
     return;
   }
-  const props = type.declaredProperties || type.symbol?.members;
+  const props =
+    (type as ts.InterfaceTypeWithDeclaredMembers)?.declaredProperties ?? type.symbol?.members;
   props?.forEach((value: ts.Symbol) => {
     const memberDeclaration = value?.declarations?.length
       ? (value.declarations[0] as any)
@@ -240,18 +241,13 @@ function parseTypeProperties(type: any, context: Context) {
   resolveBaseTypeProps(type, context);
 }
 
-function resolveBaseTypeProps(type: any, context: Context) {
-  if (!type.baseTypesResolved || !type.resolvedBaseTypes?.length) {
-    return;
-  }
+function resolveBaseTypeProps(type: ts.Type, context: Context) {
+  if (!type.isClassOrInterface()) return;
 
-  let baseTypes = [];
-  if (type.resolvedBaseTypes[0].symbol) {
-    baseTypes = type.resolvedBaseTypes;
-  } else {
-    baseTypes = type.resolvedBaseTypes[0].types;
-  }
-  if (!baseTypes) {
+  const baseTypes = context.checker
+    .getBaseTypes(type)
+    .flatMap((base) => (base.isUnionOrIntersection() ? base.types : base));
+  if (!baseTypes?.length) {
     return;
   }
 
