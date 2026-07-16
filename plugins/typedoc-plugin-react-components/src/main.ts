@@ -227,7 +227,6 @@ function parseTypeProperties(type: ts.Type, context: Context) {
         category = 'Properties';
     }
     if (value.flags & ts.SymbolFlags.Optional) {
-      // For some reason optional properties get flagged to this number, even though the optional is 16777216
       category = 'Properties';
     }
     if (category === 'Other') {
