@@ -299,7 +299,7 @@ function createMemberDeclaration(
 
   // To Do: Better handling of default values?
   reflection.defaultValue = declaration?.initializer
-    ? (declaration as any).initializer.getText()
+    ? (declaration.initializer as ts.Expression)?.getText()
     : undefined;
 
   const categoryTag = new CommentTag('@category', [{ kind: 'text', text: category }]);
