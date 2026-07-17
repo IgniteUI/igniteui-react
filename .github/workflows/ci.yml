@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      verbose:
+        description: 'Get verbose output from steps - where configurable'
+        type: boolean
+        default: false
+
+# Cancel superseded PR runs; let master pushes each run to completion for history.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+  # Required by actions/upload-code-coverage to post coverage on the PR.
+  code-quality: write
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup, build & test
+        uses: ./.github/actions/setup-build-test
+        with:
+          verbose: ${{ inputs.verbose || 'false' }}
+
+      - name: Upload code coverage
+        # Skip on PRs from forks, where the token can't post coverage.
+        if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+        uses: actions/upload-code-coverage@v1
+        with:
+          file: coverage/cobertura-coverage.xml
+          language: typescript
+          label: React Wrappers
+
+      - name: Upload test results artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: test-report
+          path: test-report/junit-report.xml
+          if-no-files-found: warn
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: coverage
+          path: coverage/
+          if-no-files-found: warn

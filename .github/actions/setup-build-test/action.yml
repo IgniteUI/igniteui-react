@@ -1,0 +1,50 @@
+name: 'Setup, build & test'
+description: 'Install Node.js and dependencies, build, validate dist packages, lint and test. Shared by CI and release workflows.'
+
+inputs:
+  licensed:
+    description: 'Produce a licensed (@infragistics scoped) build'
+    required: false
+    default: 'false'
+  verbose:
+    description: 'Get verbose npm output where configurable'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24.x'
+        cache: 'npm'
+
+    - name: npm ci
+      shell: bash
+      run: npm ci ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+
+    - name: Build
+      shell: bash
+      run: npm run build ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+      env:
+        # Only truthy when licensed; empty string keeps unlicensed builds unscoped.
+        IG_LICENSED_BUILD: ${{ inputs.licensed == 'true' && 'true' || '' }}
+
+    - name: Validate dist packages
+      shell: bash
+      run: npm run validate:dist ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+
+    - name: Lint
+      shell: bash
+      run: npm run lint ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+
+    - name: Install Playwright browsers
+      shell: bash
+      run: npx playwright install chromium-headless-shell
+
+    - name: Test
+      shell: bash
+      run: npm run test:ci ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+      env:
+        CI: 'true'
