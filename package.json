@@ -22,6 +22,7 @@
     "build-dm": "tsx ./scripts/build-dm.ts",
     "build-grids": "tsx ./scripts/build-grids.ts",
     "build-grid-lite": "tsx ./scripts/build-grid-lite.ts",
+    "validate:dist": "tsx ./scripts/validate-dist.ts",
     "test:browser": "vitest",
     "test:ci": "vitest --run --coverage",
     "lint": "biome lint --files-ignore-unknown=true",
@@ -36,6 +37,7 @@
     "lit": "^3.3.3"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@biomejs/biome": "~2.5.6",
     "@types/node": "^26.1.2",
     "@types/react": "^19.2.18",
@@ -50,6 +52,7 @@
     "lefthook": "^2.1.10",
     "marked": "^17.0.3",
     "marked-shiki": "^1.2.1",
+    "npm-packlist": "^11.3.0",
     "playwright": "^1.62.1",
     "prettier": "^3.9.6",
     "react": "^19.2.8",
