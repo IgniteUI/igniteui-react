@@ -11,7 +11,7 @@
 - [Package Requirements](#package-requirements)
 - [Import Patterns](#import-patterns)
 
-> **For component API details** (props, events, slots, examples), call `get_doc` with `'react'` and the doc name from `list_components` results. Use `search_api` for specific property lookup.
+> **For working code** (props, event handlers, structure), call `get_example('react', '<name>', { language: 'tsx' })` first using the doc `name` from `list_components` results. For full API details (prop tables, event signatures, feature explanations), fall back to `get_doc` with `'react'` and the same doc name. Use `search_api` for specific property lookup.
 
 ## Dashboard & Layout Components
 

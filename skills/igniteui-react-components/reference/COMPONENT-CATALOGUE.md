@@ -49,7 +49,7 @@ Confirm which package provides the component:
 
 ### Step 4 — Look up component documentation
 
-Call `get_doc('react', '<name>')` with the doc name from `list_components` results to get full usage documentation, import paths, prop tables, event signatures, and code examples. Use `search_docs('<query>', 'react')` for feature-based questions (e.g., `"date picker range selection"`).
+For **working code** (props, event handlers, component structure), call `get_example('react', '<name>', { language: 'tsx' })` first — it returns a runnable snippet and is faster than full docs. Only call `get_doc('react', '<name>')` when you need import paths, prop tables, event signatures, or feature explanations that go beyond a code example. Use `search_docs('<query>', 'react')` for feature-based questions (e.g., `"date picker range selection"`).
 
 ### Step 5 — Provide a starter code snippet
 
@@ -156,6 +156,7 @@ function Dashboard() {
 Use MCP tools for up-to-date component discovery and API lookup:
 
 - `list_components('react')` — browse the full component catalogue, optionally narrowed with a filter keyword
-- `get_doc('react', '<name>')` — full documentation, prop tables, and code examples for a component
+- `get_example('react', '<name>', { language: 'tsx' })` — **preferred for working code** (props, event handlers, structure); pass `language` to cut response size
+- `get_doc('react', '<name>')` — full documentation, prop tables, and API details; use when `get_example` isn't sufficient
 - `search_docs('<query>', 'react')` — full-text search for features or behaviors (e.g., `"date picker range selection"`)
 - `search_api('<query>', 'react')` — look up specific classes, properties, or methods
