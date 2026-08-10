@@ -80,7 +80,7 @@ For component-to-Ignite-UI mapping, see [reference/component-mapping.md](referen
 
 ## Step 4: Look Up Component API
 
-For every chosen component category, first call `get_example('react', '<name>', { language: 'tsx' })` using the doc `name` field from `list_components` results (e.g., `get_example('react', 'card', { language: 'tsx' })`). This returns a runnable snippet with exact props, slot structure, and event signatures faster than full docs. Only call `get_doc('react', '<name>')` when you need prop tables, feature explanations, or details not covered by the example. This is mandatory before coding and gives exact React usage patterns, prop names, slot structure, event signatures, and any required module registration.
+For every chosen component category, first call `get_example({ framework: "react", component: "<name>", language: "tsx" })` using the doc `name` field from `list_components` results as the `component` parameter (e.g., `get_example({ framework: "react", component: "card", language: "tsx" })`). This returns a runnable snippet with exact props, slot structure, and event signatures faster than full docs. Only call `get_doc('react', '<name>')` when you need prop tables, feature explanations, or details not covered by the example. This is mandatory before coding and gives exact React usage patterns, prop names, slot structure, event signatures, and any required module registration.
 
 Call `search_docs` for feature-based questions (e.g., "how to configure [component] for [specific behavior or styling need]").
 

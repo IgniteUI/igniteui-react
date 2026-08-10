@@ -1,7 +1,7 @@
 # Charts, Gauges, Maps & Grid Lite
 
 ## Overview
-This reference gives high-level guidance on charts and grids, their key features, and common API members. For working code examples (props, event handlers, component structure), prefer `get_example('react', '<name>')` — pass `language: 'tsx'` to reduce response size. For full documentation (prop tables, API details, feature explanations), call `get_doc` and `get_api_reference` from `igniteui-cli`.
+This reference gives high-level guidance on charts and grids, their key features, and common API members. For working code examples (props, event handlers, component structure), prefer `get_example({ framework: "react", component: "<name>", language: "tsx" })` to reduce response size. For full documentation (prop tables, API details, feature explanations), call `get_doc` and `get_api_reference` from `igniteui-cli`.
 
 ## Module Registration
 
@@ -53,7 +53,7 @@ IgrCategoryChartModule.register();
 
 ## Complete Chart Example
 
-> For working code (props, event handlers, series configuration), prefer `get_example('react', 'column-chart', { language: 'tsx' })` — it returns a runnable snippet faster than full docs. Fall back to `get_doc('react', 'column-chart')` when you need prop tables or feature explanations. Call `get_doc('react', 'chart-features')` for axes, annotations, animations, markers, and tooltips.
+> For working code (props, event handlers, series configuration), prefer `get_example` — it returns a runnable snippet faster than full docs. Fall back to `get_doc('react', 'column-chart')` when you need prop tables or feature explanations. Call `get_doc('react', 'chart-features')` for axes, annotations, animations, markers, and tooltips.
 
 The minimum pattern — register the module at file scope, then wrap the component in a sized container:
 
@@ -130,7 +130,7 @@ IgrDataChartAnnotationModule.register();
 
 > **Bar charts are horizontal** — categories go on the Y-axis and numeric values on the X-axis. This is the opposite of column charts.
 
-> For a working multi-series bar chart snippet, call `get_example('react', 'bar-chart', { language: 'tsx' })` first. For the full `IgrDataChart` API (all series types, axis options, layers), call `get_doc('react', 'bar-chart')` or `get_doc('react', 'column-chart')`.
+> For a working multi-series bar chart snippet, call `get_example` first. For the full `IgrDataChart` API (all series types, axis options, layers), call `get_doc('react', 'bar-chart')` or `get_doc('react', 'column-chart')`.
 
 ### Complete Bar Chart Component (Multiple Series)
 
