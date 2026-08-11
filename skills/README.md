@@ -1,98 +1,45 @@
-# LLM Agent Skills for Ignite UI for React
+# Agent Skills for Ignite UI for React
 
-This directory contains skills for GitHub Copilot and other LLM agents to help developers use **Ignite UI for React** effectively in their applications.
+Task-focused instructions that help AI coding agents use **Ignite UI for React** correctly — component selection, setup, theming, performance, and migration. Each skill is self-contained and framework-specific.
 
-## What are Skills?
+## Available skills
 
-Skills are structured instructions that help AI agents understand and execute common tasks consistently. Each skill is a self-contained guide that provides step-by-step instructions, code examples, and best practices — all specific to React and the `igniteui-react` family of packages.
+| Skill | Use when |
+| --- | --- |
+| [igniteui-react-components](./igniteui-react-components/SKILL.md) | Choosing an `Igr*` component, setting up `igniteui-react`, writing JSX, wiring events/refs/forms, or debugging components that render unstyled or invisible |
+| [igniteui-react-customize-theme](./igniteui-react-customize-theme/SKILL.md) | Applying brand colors, switching light/dark, overriding component appearance |
+| [igniteui-react-optimize-bundle-size](./igniteui-react-optimize-bundle-size/SKILL.md) | The bundle is too large, or grids/charts are in the initial chunk |
+| [igniteui-react-generate-from-image-design](./igniteui-react-generate-from-image-design/SKILL.md) | Building a view from a screenshot, mockup, or wireframe |
+| [grid-lite-to-igr-grid-migration](./grid-lite-to-igr-grid-migration/SKILL.md) | Grid Lite lacks a needed feature — editing, selection, paging, grouping, export |
 
-## Available Skills
+Agents pick a skill from the request, so ordinary questions are enough: *"add a data grid to my React app"*, *"build this dashboard screenshot"*, *"match our brand colors"*, *"my bundle is too large"*. Naming a skill directly also works: *"use the igniteui-react-customize-theme skill"*.
 
-| Skill | Description | Use When |
-| --- | --- | --- |
-| [igniteui-react-components](./igniteui-react-components/SKILL.md) | Identify the right React components (`Igr*`) for a UI pattern, then install, import, and use them - JSX patterns, events, refs, forms | Choosing components or setting up and using them in React |
-| [igniteui-react-customize-theme](./igniteui-react-customize-theme/SKILL.md) | Customize styling using CSS custom properties, Sass, and the theming system in a React context | Applying custom brand colors/styles |
-| [igniteui-react-optimize-bundle-size](./igniteui-react-optimize-bundle-size/SKILL.md) | Reduce bundle size with granular imports, tree-shaking, and lazy loading | Optimizing production performance |
-| [igniteui-react-generate-from-image-design](./igniteui-react-generate-from-image-design/SKILL.md) | Build a React view from a screenshot or mockup using Ignite UI components plus MCP-first theming and token mapping | Converting a design image into a working Ignite UI React page or dashboard |
+## MCP servers
 
-## How to Use
+Two optional MCP servers make the agent's answers authoritative rather than recalled:
 
-When working with an AI agent like GitHub Copilot, reference skills by name or ask questions naturally:
+- **`igniteui-cli`** — component docs and API reference (`list_components`, `get_doc`, `get_api_reference`, `search_docs`, `search_api`)
+- **`igniteui-theming`** — palette, typography, elevation, and per-component theme generation
 
-### Natural Questions
+Every skill works without them, falling back to the type declarations in `node_modules`. Setup instructions are in [igniteui-react-components/reference/MCP.md](./igniteui-react-components/reference/MCP.md) and the theming skill.
 
-- "How do I add a data grid to my React app?"
-- "What Ignite UI component should I use for a date picker?"
-- "Build this dashboard screenshot in Ignite UI React"
-- "Help me customize the button colors to match my brand"
-- "My bundle size is too large, how can I reduce it?"
-- "How do I handle events on IgrCombo?"
+## Installation
 
-### Direct Skill Reference
+Copy the skill folders into the directory your agent reads:
 
-- "Follow the igniteui-react-components skill for setting up my project"
-- "Use the igniteui-react-generate-from-image-design skill for this mockup"
-- "Use the igniteui-react-customize-theme skill to help me style components"
-- "Apply the igniteui-react-optimize-bundle-size skill to reduce my bundle"
+| Agent | Directory |
+| --- | --- |
+| Claude Code | `.claude/skills/` |
+| GitHub Copilot | `.agents/skills/` |
+| Cursor, Windsurf, others | see the agent's documentation |
 
-## Skill Structure
-
-Each skill contains:
-
-- **Example Usage**: Common questions or scenarios
-- **When to Use**: Situations where the skill applies
-- **Related Skills**: Other relevant skills to explore
-- **Step-by-Step Instructions**: Detailed guidance with code examples
-- **Common Issues & Solutions**: Troubleshooting guidance
-- **Best Practices**: Recommended approaches
-- **Additional Resources**: Further reading and documentation
-
-## Editor / Agent Setup
-
-Most modern AI assistants (GitHub Copilot, Cursor, Windsurf, Claude Code, etc.) should auto-discover these skills from a specified location in the workspace or global profile.
-
-For example, you can copy them into the agent-specific skills folder for your editor:
-
-### GitHub Copilot
-
-Copy the skill files into your project's `.agents/skills/` directory:
+Keep each skill's `SKILL.md` alongside its `reference/` folder — the reference files are loaded on demand and the relative links between skills assume the layout is preserved.
 
 ```
-.agents/
-  skills/
-    igniteui-react-components/
-      SKILL.md
-      reference/
-    igniteui-react-customize-theme/
-      SKILL.md
-      reference/
-    igniteui-react-optimize-bundle-size/
-      SKILL.md
-    igniteui-react-generate-from-image-design/
-      SKILL.md
-      references/
+.claude/skills/
+  igniteui-react-components/{SKILL.md,reference/}
+  igniteui-react-customize-theme/{SKILL.md,reference/}
+  igniteui-react-optimize-bundle-size/SKILL.md
+  igniteui-react-generate-from-image-design/{SKILL.md,reference/}
+  grid-lite-to-igr-grid-migration/SKILL.md
 ```
-
-### Claude Code
-
-Copy the skill files into your project's `.claude/skills/` directory:
-
-```
-.claude/
-  skills/
-    igniteui-react-components/
-      SKILL.md
-      reference/
-    igniteui-react-customize-theme/
-      SKILL.md
-      reference/
-    igniteui-react-optimize-bundle-size/
-      SKILL.md
-    igniteui-react-generate-from-image-design/
-      SKILL.md
-      references/
-```
-
-### Other Agents (Cursor, Windsurf, etc.)
-
-Consult your agent's documentation for the correct skills directory path and copy the skill files there. The skill structure is agent-agnostic — any assistant that supports skill files can use them directly.

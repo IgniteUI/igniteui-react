@@ -1,439 +1,86 @@
 ---
 name: igniteui-react-optimize-bundle-size
-description: This skill optimizes application bundle size when using Ignite UI for React and should be used when the bundle is too large, when setting up tree-shaking, or when lazy loading heavy components like grids and charts
+description: Reduce bundle size in apps using Ignite UI for React — package selection, tree-shaking, and route-level code splitting of grids, charts, maps, and gauges. Use when the bundle or initial load is too large, when tree-shaking is not eliminating unused Ignite UI code, or when deciding what to lazy load.
 user-invocable: true
 ---
 
-# Optimize Bundle Size
+# Optimizing Ignite UI for React Bundle Size
 
-This skill helps users minimize their React application's bundle size when using Ignite UI for React by importing only the components they need, leveraging tree-shaking, and applying lazy loading strategies.
+Standard React techniques (`React.lazy` + `Suspense`, route splitting, minification, compression, bundle analyzers) apply unchanged. This skill covers only what is specific to Ignite UI.
 
-## Example Usage
+## Where the weight is
 
-- "My bundle size is too large"
-- "How do I reduce the size of igniteui-react?"
-- "Import only the components I need"
-- "Tree-shake unused components"
-- "Optimize imports for production"
-- "How do I lazy load the data grid?"
+`igniteui-react` is published with `"sideEffects": false` and per-component modules, so named imports tree-shake well — a handful of core components costs little. The heavy families are separate packages:
 
-## Related Skills
-
-- [igniteui-react-components](../igniteui-react-components/SKILL.md) — Choose only the components you need and set up your React project
-- [igniteui-react-customize-theme](../igniteui-react-customize-theme/SKILL.md) — Theming after optimization
-
-## When to Use
-
-- Application bundle size is too large
-- User wants to optimize for production
-- User is importing more components than needed
-- User asks about tree-shaking or optimization
-- User wants to improve load times
-- User wants to code-split heavy components like grids or charts
-
----
-
-## Key Principles
-
-1. **Install only the packages you need** — don't install `igniteui-react-grids` if you only use core UI components
-2. **Use named imports** — enable tree-shaking by importing specific components
-3. **Lazy load heavy components** — use `React.lazy` + `Suspense` for grids, charts, and other large components
-4. **Analyze your bundle** — use tools to identify what's being included
-
----
-
-## Granular Package Imports
-
-Only install the packages you actually use:
-
-| Package | Contains | Install only if you need… |
+| Package | Weight | Notes |
 |---|---|---|
-| `igniteui-react` | Buttons, inputs, dialogs, calendars, lists, etc. | Core UI components |
-| `igniteui-react` + `igniteui-grid-lite` | Lightweight grid (`IgrGridLite` from `igniteui-react/grid-lite`) | Simple tabular data (MIT, requires both packages) |
-| `igniteui-react-grids` | DataGrid, TreeGrid, PivotGrid, HierarchicalGrid | Advanced data grids (commercial) |
-| `igniteui-react-charts` | Category, Pie, Financial, Scatter charts | Charts and data visualization (commercial) |
-| `igniteui-react-maps` | Geographic maps | Map visualizations (commercial) |
-| `igniteui-react-gauges` | Radial and linear gauges | Gauge indicators (commercial) |
+| `igniteui-react` | light per component | core UI; tree-shakes cleanly |
+| `igniteui-grid-lite` | small | MIT grid; far lighter than the premium grids |
+| `igniteui-react-grids` | heavy | Data/Tree/Pivot/Hierarchical grid |
+| `igniteui-react-charts` / `-maps` / `-gauges` | heavy | legacy DV packages, weaker tree-shaking |
 
-```bash
-# Only install what you need:
-npm install igniteui-react                # Core UI only
-npm install igniteui-react-grids          # Only if you need advanced grids
-npm install igniteui-react-charts         # Only if you need charts
-```
+Two conclusions: **install only the families you use**, and **split the heavy families out of the initial chunk**. Downgrading `IgrGrid` to `IgrGridLite` is often the single largest win when the app only displays flat, read-only data — check the feature list in [DATAVIZ.md](../igniteui-react-components/reference/DATAVIZ.md) first.
 
----
-
-## Import Strategies
-
-### ❌ Bad: Wildcard / Barrel Imports
+## Import rules
 
 ```tsx
-// DON'T DO THIS — imports everything from the package
-import * as IgniteUI from 'igniteui-react';
-
-function App() {
-  return <IgniteUI.IgrButton>Click</IgniteUI.IgrButton>;
-}
+import { IgrButton, IgrCard } from 'igniteui-react';        // ✅ tree-shakes
+import * as IgniteUI from 'igniteui-react';                 // ❌ defeats tree-shaking
+import { IgcButtonComponent } from 'igniteui-webcomponents'; // ❌ bypasses the wrapper
 ```
 
-**Impact:** Tree-shaking cannot eliminate unused components.
+Never import from `igniteui-webcomponents` (or `igniteui-webcomponents-grids`) directly. It pulls a second copy of the element definitions alongside the wrappers and skips the auto-registration the wrapper performs.
 
-### ✅ Good: Named Imports
+## Splitting the heavy families
+
+Lazy-load at the **route or panel** boundary, not the component. `IgrGrid` and the DV charts are only worth splitting when the whole view that uses them is deferred.
 
 ```tsx
-// DO THIS — import only what you use
-import { IgrButton, IgrInput, IgrCard } from 'igniteui-react';
-
-function App() {
-  return (
-    <div>
-      <IgrInput label="Name" />
-      <IgrButton><span>Submit</span></IgrButton>
-      <IgrCard>Content</IgrCard>
-    </div>
-  );
-}
+const Dashboard = lazy(() => import('./pages/Dashboard')); // grid + its theme CSS
+const Analytics = lazy(() => import('./pages/Analytics')); // charts + registration
 ```
 
-**Impact:** Bundle includes only the three components and their dependencies. Tree-shaking removes everything else.
+Two Ignite-UI-specific details:
 
----
+- **Keep the grid theme CSS import inside the lazy chunk** (`import 'igniteui-react-grids/grids/themes/light/bootstrap.css'` in `Dashboard.tsx`), so the grid stylesheet is not in the initial payload. The base theme CSS stays in the entry point — every page needs it.
+- **Keep `.register()` calls inside the lazy chunk too.** Chart, gauge, and map modules must register at module scope of the file that uses them; hoisting the registration to the entry point pulls the whole DV package back into the initial bundle.
 
-## Lazy Loading with `React.lazy` + `Suspense`
+For manual chunking, give each family its own chunk so a page needing charts does not download grids:
 
-Code-split heavy components behind lazy imports to reduce initial bundle size.
-
-### Lazy Loading a Single Component
-
-```tsx
-import { lazy, Suspense, useState } from 'react';
-
-// Lazy load the dialog component
-const IgrDialog = lazy(() =>
-  import('igniteui-react').then(module => ({ default: module.IgrDialog }))
-);
-
-function App() {
-  const [showDialog, setShowDialog] = useState(false);
-
-  return (
-    <>
-      <button onClick={() => setShowDialog(true)}>Open Dialog</button>
-      {showDialog && (
-        <Suspense fallback={<div>Loading...</div>}>
-          <IgrDialog open title="Hello">
-            <p>Lazy loaded dialog content</p>
-          </IgrDialog>
-        </Suspense>
-      )}
-    </>
-  );
-}
-```
-
-### Lazy Loading a Heavy Page Component
-
-This is the recommended approach for code-splitting: wrap entire page components that use heavy Ignite UI components.
-
-```tsx
-// App.tsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
-
-const HomePage = lazy(() => import('./pages/Home'));
-const DashboardPage = lazy(() => import('./pages/Dashboard'));
-const AnalyticsPage = lazy(() => import('./pages/Analytics'));
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
-  );
-}
-```
-
-```tsx
-// pages/Dashboard.tsx — only loaded when navigating to /dashboard
-import { IgrGrid, IgrColumn } from 'igniteui-react-grids';
-import 'igniteui-react-grids/grids/themes/light/bootstrap.css';
-
-export default function Dashboard() {
-  return (
-    <IgrGrid data={data} autoGenerate={false}>
-      <IgrColumn field="name" header="Name" />
-      <IgrColumn field="value" header="Value" />
-    </IgrGrid>
-  );
-}
-```
-
-```tsx
-// pages/Analytics.tsx — only loaded when navigating to /analytics
-import { IgrCategoryChart, IgrCategoryChartModule } from 'igniteui-react-charts';
-
-IgrCategoryChartModule.register();
-
-export default function Analytics() {
-  return <IgrCategoryChart dataSource={data} width="100%" height="500px" />;
-}
-```
-
-**Result:** The grid and chart bundles are only downloaded when the user navigates to those routes.
-
----
-
-## Analyzing Your Bundle
-
-### Using Vite's Rollup Visualizer
-
-```bash
-npm install --save-dev rollup-plugin-visualizer
-```
-
-```typescript
+```ts
 // vite.config.ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { visualizer } from 'rollup-plugin-visualizer';
-
-export default defineConfig({
-  plugins: [
-    react(),
-    visualizer({
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-    })
-  ]
-});
-```
-
-```bash
-npm run build
-# Opens stats.html automatically — inspect which igniteui-react modules are included
-```
-
-### Using Webpack Bundle Analyzer
-
-```bash
-npm install --save-dev webpack-bundle-analyzer
-```
-
-```javascript
-// webpack.config.js (or CRA with react-app-rewired)
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-
-module.exports = {
-  plugins: [
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      openAnalyzer: false,
-      reportFilename: 'bundle-report.html'
-    })
-  ]
-};
-```
-
-### Using source-map-explorer
-
-```bash
-npm install --save-dev source-map-explorer
-```
-
-```json
-{
-  "scripts": {
-    "analyze": "source-map-explorer 'dist/**/*.js'"
-  }
-}
-```
-
-```bash
-npm run build
-npm run analyze
-```
-
-**What to look for:** Check if `igniteui-react-grids` or `igniteui-react-charts` appear in the initial bundle even though they're only used on specific routes.
-
----
-
-## Audit Your Component Usage
-
-### 1. Find What Components You're Actually Using
-
-```bash
-# Search for Igr component usage in your source files
-grep -roh "Igr[A-Z][a-zA-Z]*" src/ --include="*.tsx" --include="*.ts" | sort | uniq
-
-# Example output:
-# IgrButton
-# IgrCard
-# IgrInput
-```
-
-### 2. Compare with Your Imports
-
-```bash
-# Find all import statements from igniteui-react packages
-grep -r "from 'igniteui-react" src/ --include="*.tsx" --include="*.ts"
-```
-
-### 3. Remove Unused Imports
-
-```tsx
-// Before: 5 components imported
-import { IgrButton, IgrInput, IgrCard, IgrSelect, IgrCombo } from 'igniteui-react';
-
-// After audit: only 3 are actually used in JSX
-import { IgrButton, IgrInput, IgrCard } from 'igniteui-react';
-```
-
----
-
-## Build Configuration Optimizations
-
-### Vite Configuration
-
-```typescript
-// vite.config.ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
-export default defineConfig({
-  plugins: [react()],
-  build: {
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
+build: {
+  rollupOptions: {
+    output: {
+      manualChunks: {
+        'ig-core': ['igniteui-react'],
+        'ig-grids': ['igniteui-react-grids'],   // only if actually installed
+        'ig-charts': ['igniteui-react-charts'],
+      },
     },
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'igniteui-core': ['igniteui-react'],
-          // Only include if you use these packages:
-          // 'igniteui-grids': ['igniteui-react-grids'],
-          // 'igniteui-charts': ['igniteui-react-charts'],
-        }
-      }
-    },
-    chunkSizeWarningLimit: 600,
   },
-  optimizeDeps: {
-    include: ['igniteui-react']
-  }
-});
-```
-
-### Webpack Configuration
-
-```javascript
-// webpack.config.js
-module.exports = {
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-      cacheGroups: {
-        igniteui: {
-          test: /[\\/]node_modules[\\/]igniteui-react[\\/]/,
-          name: 'igniteui',
-          priority: 20,
-        },
-        igniteuiGrids: {
-          test: /[\\/]node_modules[\\/]igniteui-react-grids[\\/]/,
-          name: 'igniteui-grids',
-          priority: 20,
-        }
-      }
-    },
-    minimize: true,
-  },
-  mode: 'production',
-};
-```
-
----
-
-## Best Practices Checklist
-
-- [ ] **Install only the packages you need** — don't install `igniteui-react-grids` if you only use buttons and inputs
-- [ ] **Use named imports** — `import { IgrButton } from 'igniteui-react'`, not `import * as`
-- [ ] **Don't import from `igniteui-webcomponents` directly** — use the `igniteui-react` wrappers
-- [ ] **Lazy load heavy components** — use `React.lazy` + `Suspense` for grids, charts, and dialogs
-- [ ] **Split by routes** — load component-heavy pages only when navigated to
-- [ ] **Audit your imports regularly** — remove unused components
-- [ ] **Analyze your bundle** — use bundle analyzer tools to verify tree-shaking is working
-- [ ] **Minify in production** — ensure build tool minification is enabled
-- [ ] **Use compression** — enable gzip/brotli on your server
-
----
-
-## Common Issues & Solutions
-
-### Issue: Bundle still large after using named imports
-
-**Investigate:**
-1. Check if you're importing from `igniteui-webcomponents` instead of `igniteui-react`
-2. Verify tree-shaking is working (check build output with a bundle analyzer)
-3. Look for barrel imports (`import * as`)
-4. Check if large packages like `igniteui-react-grids` are in the initial bundle instead of being lazy loaded
-
-### Issue: Lazy loaded component flashes or shows fallback too long
-
-**Solution:** Preload the component on hover or route prefetch:
-
-```tsx
-const DashboardPage = lazy(() => import('./pages/Dashboard'));
-
-// Preload on hover
-function NavLink() {
-  const preload = () => { import('./pages/Dashboard'); };
-  return <a href="/dashboard" onMouseEnter={preload}>Dashboard</a>;
 }
 ```
 
-### Issue: Tree-shaking not working
+## Auditing
 
-**Cause:** Using `require()` instead of `import`, or a build tool that doesn't support ES module tree-shaking.
-
-**Solution:** Ensure your project uses ES modules:
-
-```json
-// tsconfig.json
-{
-  "compilerOptions": {
-    "module": "esnext",
-    "moduleResolution": "bundler"
-  }
-}
+```bash
+# components referenced in JSX
+grep -rhoE "<Igr[A-Za-z]+" src --include="*.tsx" | sort -u
+# what is imported
+grep -rn "from 'igniteui-react" src --include="*.tsx" --include="*.ts"
 ```
 
----
+Then run any bundle analyzer and check the initial chunk for `igniteui-react-grids` / `-charts`. If either appears there while only used on secondary routes, the split is not working — usually a shared module (a barrel `index.ts`, a types file, or a hoisted `.register()` call) re-imports it eagerly.
 
-## Expected Results
+## When tree-shaking still fails
 
-After optimization, you should see:
+1. A wildcard or barrel import somewhere in `src`.
+2. A local barrel file re-exporting Ignite UI components — it creates one module that depends on everything.
+3. CommonJS output: set `"module": "esnext"` and `"moduleResolution": "bundler"` in `tsconfig.json`.
+4. Both `igniteui-react-grids` and `@infragistics/igniteui-react-grids` resolved at once — pick one scope.
 
-- **Initial load time reduced** by 40–60%
-- **Bundle size reduced** by 50–80% (compared to importing everything)
-- **Better Core Web Vitals** scores
-- **Faster time to interactive**
-- **Lower bandwidth usage** for users
+## Related skills
 
-## Additional Resources
-
-- [Vite Build Optimizations](https://vitejs.dev/guide/build.html)
-- [React.lazy Documentation](https://react.dev/reference/react/lazy)
-- [Webpack Tree Shaking](https://webpack.js.org/guides/tree-shaking/)
-- [Web Performance Optimization](https://web.dev/fast/)
-- [Bundle Size Analysis Tools](https://bundlephobia.com/)
+- [igniteui-react-components](../igniteui-react-components/SKILL.md) — package routing and what each family provides
+- [grid-lite-to-igr-grid-migration](../grid-lite-to-igr-grid-migration/SKILL.md) — the reverse direction, when Grid Lite is not enough
