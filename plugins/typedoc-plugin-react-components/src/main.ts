@@ -2,6 +2,7 @@ import assert from 'node:assert';
 import {
   type Application,
   Comment,
+  type CommentDisplayPart,
   CommentTag,
   type Context,
   Converter,
@@ -19,7 +20,13 @@ import {
   type SomeType,
   UnionType,
 } from 'typedoc';
-import ts, { ModifierFlags, SymbolFlags } from 'typescript';
+import ts, {
+  type JSDocLink,
+  type JSDocText,
+  ModifierFlags,
+  SymbolFlags,
+  SyntaxKind,
+} from 'typescript';
 
 const excludeBaseTypes = ['LitElement', 'HTMLElement'];
 
@@ -141,6 +148,7 @@ export function load(app: Application) {
       }
       // Clear out @link references in comments when parsing to json, because it results in circular deps.
       if (reflection.comment?.summary) {
+        resolveDocLinks(reflection.comment.summary);
         clearProps(reflection.comment.summary, 'parent');
       }
     }
@@ -227,6 +235,28 @@ function parseTypeProperties(type: any, context: Context) {
   if (type.resolvedBaseTypes) {
     for (const baseType of type.resolvedBaseTypes) {
       parseTypeProperties(baseType, context);
+    }
+  }
+}
+
+function resolveDocLinks(summary: CommentDisplayPart[]) {
+  for (const summaryPart of summary) {
+    if (summaryPart.kind === 'text' && Array.isArray(summaryPart.text)) {
+      let flatSummary = '';
+      for (const textPart of summaryPart.text) {
+        if (textPart.kind === SyntaxKind.JSDocLink) {
+          const jsDocLink = textPart as JSDocLink;
+          if (jsDocLink.name?.kind === SyntaxKind.Identifier) {
+            flatSummary += jsDocLink.name.text;
+          } else if (jsDocLink.name) {
+            flatSummary += jsDocLink.name.right.text;
+          }
+        } else if (textPart.kind === SyntaxKind.JSDocText) {
+          flatSummary += (textPart as JSDocText).text;
+        }
+      }
+
+      summaryPart.text = flatSummary;
     }
   }
 }
