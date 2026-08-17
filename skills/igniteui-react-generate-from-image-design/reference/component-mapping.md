@@ -11,7 +11,7 @@
 - [Package Requirements](#package-requirements)
 - [Import Patterns](#import-patterns)
 
-> **For component API details** (props, events, slots, examples), call `get_doc` with `'react'` and the doc name from `list_components` results. Use `search_api` for specific property lookup.
+> **For working code** (props, event handlers, structure), call `get_example` first using the doc `name` field from `list_components` results as the `component` parameter. For full API details (prop tables, event signatures, feature explanations), fall back to `get_doc` with `'react'` and the same doc name. Use `search_api` for specific property lookup.
 
 ## Dashboard & Layout Components
 
@@ -129,4 +129,4 @@ Install only the packages required by the components you actually selected. Reso
 
 ## Import Patterns
 
-Treat this file as a component selection reference, not as authoritative import guidance for a specific repo. Confirm exact imports from the current workspace, the existing React skills, and `get_doc` results. For styling selectors, target the rendered `igc-*` tag names instead of the React `Igr*` component names.
+Treat this file as a component selection reference, not as authoritative import guidance for a specific repo. Confirm exact imports from the current workspace, the existing React skills, and `get_example`/`get_doc` results. For styling selectors, target the rendered `igc-*` tag names instead of the React `Igr*` component names.

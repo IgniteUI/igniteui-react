@@ -1,4 +1,4 @@
----
+﻿---
 name: grid-lite-to-igr-grid-migration
 description: Step-by-step migration guide from Grid Lite (IgrGridLite) to the premium Ignite UI for React Data Grid (IgrGrid), covering every import, registration, component name, property, event, template, sorting, filtering, and toolbar API change.
 user-invocable: true
@@ -13,7 +13,7 @@ user-invocable: true
 Before producing migration code:
 
 1. **Read the user's existing component files** to understand current Grid Lite usage (columns, templates, data binding, `dataPipelineConfiguration`).
-2. **Use the MCP server** — call `get_doc` or `search_docs` with `framework: "react"` to confirm API details when in doubt.
+2. **Use the MCP server** — for working code (props, event handlers, column config), call `get_example` first; call `get_doc` or `search_docs` with `framework: "react"` for full API details or when `get_example` isn't sufficient.
 3. **Only then produce output** — base all code on verified references, not memory.
 
 ---

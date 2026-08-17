@@ -14,7 +14,7 @@ Before writing any implementation code, you must complete these steps in order:
 2. Read [reference/component-mapping.md](reference/component-mapping.md) and [reference/gotchas.md](reference/gotchas.md).
 3. This skill is React-only. Check package routing, theme CSS imports, or licensing only when imports, packages, or theming depend on it.
 4. To apply a theme, use the theming workflow from this skill and the dedicated `igniteui-react-customize-theme` skill; use the `igniteui-theming` MCP tools instead of styling from memory. This skill is React-only, so hardcode `platform: "react"` in theme-generation calls.
-5. Call `get_doc` for every chosen component family before using it.
+5. Call `get_example` (preferred for working code) or `get_doc` for every chosen component family before using it.
 6. Only then start coding.
 
 ## Workflow
@@ -22,7 +22,7 @@ Before writing any implementation code, you must complete these steps in order:
 1. **Analyze the design image** - Read the image, identify every UI section, component, and layout structure.
 2. **Confirm package routing or theme setup if needed** - this skill is React-only; check package routing, theme CSS imports, or licensing only when imports, packages, or theming depend on it.
 3. **Discover components** - Call `list_components` with targeted filters to find matching components for each UI pattern.
-4. **Look up component docs** - Call `get_doc` for every chosen component family before coding.
+4. **Look up component docs** - For working code (props, event handlers, structure), call `get_example` first. Fall back to `get_doc` when you need prop tables or feature explanations beyond a code snippet.
 5. **Generate theme** - (a) To generate a theme, first extract colors and create a color palette using `create_palette` or `create_custom_palette` depending on the scenario. Then extract elevations and call `create_elevations`. Then extract typography and call `create_typography`. Then call `create_theme` with the palette, elevations, and typography. (b) After a theme exists, prefer design tokens, or scoped semantic CSS variables over raw literals. (c) For every Ignite UI component, call `get_component_design_tokens`, map extracted image tokens to token roles, then call `create_component_theme` with the tokens differing from the global theme for the specific component.
 6. **Implement** - Build the screenshot-first layout, data, and view components.
 7. **Refine** - Use the `set_size`, `set_spacing`, and `set_roundness` tools to refine the view's visual fidelity against the image, then iterate on implementation and theming until the view matches the design closely.
@@ -80,7 +80,7 @@ For component-to-Ignite-UI mapping, see [reference/component-mapping.md](referen
 
 ## Step 4: Look Up Component API
 
-For every chosen component category, call `get_doc('react', '<name>')` using the doc `name` field from `list_components` results (e.g., `get_doc('react', 'card')`), not the result title shown in the list. This is mandatory before coding and gives exact React usage patterns, prop names, slot structure, event signatures, and any required module registration.
+For every chosen component category, first call `get_example({ framework: "react", component: "<name>", language: "tsx" })` using the doc `name` field from `list_components` results as the `component` parameter (e.g., `get_example({ framework: "react", component: "card", language: "tsx" })`). This returns a runnable snippet with exact props, slot structure, and event signatures faster than full docs. Only call `get_doc('react', '<name>')` when you need prop tables, feature explanations, or details not covered by the example. This is mandatory before coding and gives exact React usage patterns, prop names, slot structure, event signatures, and any required module registration.
 
 Call `search_docs` for feature-based questions (e.g., "how to configure [component] for [specific behavior or styling need]").
 
