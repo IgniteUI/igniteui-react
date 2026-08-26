@@ -19,8 +19,8 @@
 
 ## Milestone 16, version 19.8.1 (Released Jul 13th, 2026)
 
-1. **[DONE]** Dependency update — `igniteui-webcomponents-grids` ~7.2.0 → ~7.2.1
-2. **[DONE]** Fixed — restored package distribution structure for correct npm package type declarations
+1. **[DONE]** Dependency update - `igniteui-webcomponents-grids` ~7.2.0 → ~7.2.1
+2. **[DONE]** Fixed - restored package distribution structure for correct npm package type declarations
 
 ## Milestone 15, version 19.8 (Released Jul 9th, 2026)
 
