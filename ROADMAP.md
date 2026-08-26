@@ -2,9 +2,9 @@
 
 # Current Milestone
 
-## Milestone 15, Due by Jul, 2026
+## Milestone 17, Due by Oct, 2026
 
-1. Grid performance improvements using a new and faster virtualizalization component
+1. Grid performance improvements using a new and faster virtualization component
 2. Color Picker Component
 3. Breadcrumbs Component
 4. Timeline Component
@@ -16,6 +16,22 @@
 3. OTP/PIN input Component
 
 # Previous Milestone
+
+## Milestone 16, version 19.8.1 (Released Jul 13th, 2026)
+
+1. **[DONE]** Dependency update — `igniteui-webcomponents-grids` ~7.2.0 → ~7.2.1
+2. **[DONE]** Fixed — restored package distribution structure for correct npm package type declarations
+
+## Milestone 15, version 19.8 (Released Jul 9th, 2026)
+
+1. **[DONE]** Grid Lite to Premium Data Grid migration skill - end-to-end mapping guidance for imports, templates, sorting, filtering, server-side patterns and toolbar/export flows [#168](https://github.com/IgniteUI/igniteui-react/pull/168)
+2. **[DONE]** Agent Skills - refactored and streamlined to rely on MCP-backed documentation and API lookups for authoritative usage patterns [#167](https://github.com/IgniteUI/igniteui-react/pull/167)
+3. **[DONE]** Agent Skills - image-to-React generation guidance moved to canonical MCP call forms, including `list_components('react')` and `get_doc('react', '<name>')` [#167](https://github.com/IgniteUI/igniteui-react/pull/167), [#170](https://github.com/IgniteUI/igniteui-react/pull/170)
+4. **[DONE]** Agent Skills - theme-customization workflow now sequences palette, theme, typography and elevations more safely, with explicit token discovery before overrides [#167](https://github.com/IgniteUI/igniteui-react/pull/167)
+5. **[DONE]** Agent Skills - fixed NavDrawer CSS custom property naming in skill guidance and gotchas references [#169](https://github.com/IgniteUI/igniteui-react/pull/169)
+6. **[DONE]** Agent Skills - explicit grid column-width guidance to avoid fixed-width layouts leaving trailing empty space unless widths are explicitly requested [#170](https://github.com/IgniteUI/igniteui-react/pull/170)
+7. **[DONE]** Agent Skills - follow-up review fixes across skills documentation to reduce ambiguity and incorrect API usage patterns [#170](https://github.com/IgniteUI/igniteui-react/pull/170)
+8. **[DONE]** Dependency updates - `igniteui-grid-lite` ~0.8.0 → ~0.9.0; `igniteui-webcomponents-grids` ~7.1.0 → ~7.2.0 [#178](https://github.com/IgniteUI/igniteui-react/pull/178)
 
 ## Milestone 14, version 19.7 (Released May 27th, 2026)
 
