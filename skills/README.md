@@ -33,7 +33,7 @@ Copy the skill folders into the directory your agent reads:
 | GitHub Copilot | `.agents/skills/` |
 | Cursor, Windsurf, others | see the agent's documentation |
 
-Keep each skill's `SKILL.md` alongside its `reference/` folder — the reference files are loaded on demand and the relative links between skills assume the layout is preserved.
+Keep each skill's `SKILL.md` alongside its `reference/` folder (when present) — the reference files are loaded on demand and the relative links between skills assume the layout is preserved.
 
 ```
 .claude/skills/
