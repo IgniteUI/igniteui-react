@@ -55,7 +55,7 @@ build: {
       manualChunks: {
         'ig-core': ['igniteui-react'],
         'ig-grids': ['igniteui-react-grids'],   // only if actually installed
-        'ig-charts': ['igniteui-react-charts'],
+        'ig-charts': ['igniteui-react-charts'], // only if actually installed
       },
     },
   },
