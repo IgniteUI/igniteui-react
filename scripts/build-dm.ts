@@ -1,24 +1,14 @@
-import { join } from 'node:path';
-import manifest from '../node_modules/igniteui-dockmanager/custom-elements.json';
-import pkg from '../node_modules/igniteui-dockmanager/package.json';
-import type { ClassField, Package } from './schema';
-import { type CustomElementWithPath, getPackageJsonTypesEntry, wrapWebComponents } from './utils';
+import { defineWrapperConfig } from './config';
 
-const pkgScope = process.env.IG_LICENSED_BUILD ? '@infragistics/' : '';
-const config = {
+export default defineWrapperConfig({
   path: '../src/dock-manager',
-  imports: {
-    default: `${pkgScope}igniteui-dockmanager`,
-    types: `${pkgScope}igniteui-dockmanager`,
-  },
+  package: 'igniteui-dockmanager',
+  scoped: true,
   types: {
-    entry: join('node_modules/igniteui-dockmanager', getPackageJsonTypesEntry(pkg)),
-    ignoreExports: new Set([
-      // Now deprecated, so keeping previous ignore for React until removed
-      'addResourceStrings',
-    ]),
+    // Now deprecated, so keeping previous ignore for React until removed
+    ignoreExports: ['addResourceStrings'],
   },
-  ignore: new Set([
+  ignore: [
     // TODO: Cleanup custom-elements.json...
     'igc-button-component',
     'igc-context-menu',
@@ -40,10 +30,6 @@ const config = {
     'igc-split-pane',
     'igc-splitter-component',
     'igc-unpinned-pane-header',
-  ]),
-  ignoreEvents: new Set<string>(),
-  templatesFilter: (_prop: ClassField, _declaration: CustomElementWithPath) => false,
+  ],
   typedocModuleName: 'igniteui-react-dockmanager',
-} as const;
-
-await wrapWebComponents(manifest as Package, config);
+});
