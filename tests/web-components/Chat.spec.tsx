@@ -43,40 +43,29 @@ test('Markdown support with default renderer', async () => {
   await userEvent.fill(input, '# Hello world');
   await userEvent.keyboard('{Enter}');
 
-  const messages = page.getByPart('message-item').all();
-  expect(messages.length).toBe(2);
+  await expect.poll(() => page.getByPart('message-item').all().length).toBe(2);
 
-  // The default renderer is async so wait for the DOM to be ready
-  await nextFrame();
-
+  // The default renderer is async - assert on the rendered result rather than waiting a
+  // fixed number of frames. Shiki in particular resolves its grammar and theme lazily, so
+  // a single animation frame is not always enough for the highlighted block to appear.
   let message = page.getByText('Hello world');
-
-  expect(message).toBeVisible();
+  await expect.element(message).toBeVisible();
   expect(message.element().tagName).toMatch(/h1/i);
 
   await userEvent.fill(input, '```ts\nconst chat = document.createElement("igc-chat");\n```');
   await userEvent.keyboard('{Enter}');
-  await nextFrame();
 
   message = page.getByText(/^const/);
-  expect(message).toBeVisible();
-
-  const shikiContainer = message.element().closest('pre');
-  expect(shikiContainer?.classList.contains('shiki')).to.be.true;
-  expect(shikiContainer?.classList.contains('shiki')).to.be.true;
+  await expect.element(message).toBeVisible();
+  await expect.poll(() => message.query()?.closest('pre')?.classList.contains('shiki')).toBe(true);
 
   await userEvent.fill(input, 'Powered by [Infragistics](https://infragistics.com/)');
   await userEvent.keyboard('{Enter}');
-  await nextFrame();
 
   message = page.getByText(/Infragistics/);
-  expect(message).toBeVisible();
+  await expect.element(message).toBeVisible();
   expect(message.element().tagName).toMatch(/a/i);
 });
-
-async function nextFrame() {
-  return new Promise((resolve) => requestAnimationFrame(resolve));
-}
 
 //#region Locator extension
 locators.extend({

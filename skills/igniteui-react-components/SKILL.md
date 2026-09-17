@@ -1,181 +1,72 @@
 ---
 name: igniteui-react-components
-description: This skill identifies the right Ignite UI for React components for any UI pattern and covers installing, importing, and using them — including JSX patterns, event handling, refs, forms, and TypeScript. Use this when choosing components, setting up a React project, writing component JSX, handling events, or integrating with React state and form libraries.
+description: Pick, install, and use Ignite UI for React (Igr*) components — package routing, theme CSS, JSX and slots, events, refs, forms, TypeScript, charts/gauges/maps, grids. Use when choosing a component for a UI pattern, setting up igniteui-react, writing Igr* JSX, wiring events or refs, or debugging components that render unstyled, invisible, or with broken icons.
 user-invocable: true
 ---
 
 # Ignite UI for React Components
 
-## Prerequisites
+`Igr*` components are React wrappers around `igc-*` web components. Everything below follows from that.
 
-- The **Ignite UI CLI MCP server** (`igniteui-cli`) available as a tool provider
+## Non-negotiables
 
-> **AGENT INSTRUCTION — MCP Server Setup (REQUIRED)**
->
-> Before using the Ignite UI CLI MCP tools, you MUST verify the MCP server is available
-> by calling `list_components`. If the tool is not available or the call fails,
-> you MUST automatically configure it by following the setup process steps described below.
->
-> After writing the file, inform the user that the MCP server has been
-> configured and they may need to reload the editor for the tools to activate.
-> Start the MCP server and wait for that MCP server to start before continuing the component-related work.
-> Do NOT skip this step or ask the user to do it manually.
+1. **Import a theme CSS file** or components render unstyled with broken icons.
+2. **No `.register()`** for `igniteui-react`, `igniteui-react-grids`, `igniteui-react/grid-lite`, or `igniteui-react-dockmanager` — the wrapper registers the element on import. Charts, gauges, and maps (separate legacy packages) **do** require `.register()`.
+3. **CSS selectors must target `igc-*`**, never `IgrButton`. Use `::part()` for shadow DOM internals.
+4. **Events are `CustomEvent`**, not React `SyntheticEvent`. Read `e.detail`.
+5. **Never set column `width`** on `IgrColumn` / `IgrGridLiteColumn` unless asked — see [DATAVIZ.md](./reference/DATAVIZ.md).
+6. **Charts, gauges, maps, and grids need an explicitly sized container** or they render at zero height.
 
-## Setting Up the Ignite UI CLI MCP Server
+## Packages
 
-> **Full setup instructions for VS Code, Cursor, Claude Desktop, and JetBrains IDEs are in [`reference/MCP-SERVER.md`](./reference/MCP-SERVER.md).** Read that file for editor-specific configuration steps and verification.
-
-### Package Routing
-
-| Component family | Install packages | Import from |
+| Need | Install | Import from |
 |---|---|---|
-| Core UI components | `igniteui-react` | `igniteui-react` |
-| Advanced grids | `igniteui-react-grids` (trial) `@infragistics/igniteui-react-grids` (licensed) | `igniteui-react-grids` |
-| Grid Lite | `igniteui-react`, `igniteui-grid-lite` | `igniteui-react`, `igniteui-grid-lite` |
-| Charts | `igniteui-react-charts` (trial) `@infragistics/igniteui-react-charts` (licensed) | `igniteui-react-charts` |
-| Gauges | `igniteui-react-gauges` (trial) `@infragistics/igniteui-react-gauges` (licensed) | `igniteui-react-gauges` |
-| Maps | `igniteui-react-maps` (trial) `@infragistics/igniteui-react-maps` (licensed) | `igniteui-react-maps` |
-## Example Usage
+| Core UI (MIT) | `igniteui-react` | `igniteui-react` |
+| Grid Lite (MIT) | `igniteui-react` **+** `igniteui-grid-lite` | `igniteui-react/grid-lite` |
+| Data/Tree/Pivot/Hierarchical Grid | `igniteui-react-grids` | `igniteui-react-grids` |
+| Dock Manager | `igniteui-react-dockmanager` | `igniteui-react-dockmanager` |
+| Charts, gauges, maps | `igniteui-react-charts` / `-gauges` / `-maps` | same |
 
-- "What component should I use to display a list of items with actions?"
-- "I need a date picker for a booking form in React"
-- "Build a dashboard layout with cards and a data grid"
-- "What's the best component for a navigation sidebar?"
-- "I need a searchable dropdown with multi-select"
-- "How do I install Ignite UI for React?"
-- "Set up igniteui-react in my project"
-- "How do I handle events on IgrCombo?"
-- "How do I use IgrInput with React Hook Form?"
-- "Show me how to use refs with IgrDialog"
-- "What TypeScript types should I use for IgrButton props?"
-- "How do I pass children vs slots to Ignite UI components?"
+Commercial packages also publish under `@infragistics/…` for licensed workspaces; use that scope and its matching CSS path when the workspace already uses it. `igniteui-grid-lite` is an optional peer of `igniteui-react` — Grid Lite needs both installed.
 
-## Related Skills
-
-- [igniteui-react-customize-theme](../igniteui-react-customize-theme/SKILL.md) — Theme and style components
-- [igniteui-react-optimize-bundle-size](../igniteui-react-optimize-bundle-size/SKILL.md) — Reduce bundle size
-
-## When to Use
-
-- Deciding which component fits a UI requirement
-- User describes a UI pattern and needs a matching component name
-- User wants to explore what components are available
-- Setting up Ignite UI for React in a new or existing project
-- Writing JSX that uses Ignite UI components
-- Handling events from Ignite UI components
-- Integrating components with React state or form libraries
-- Using refs to call imperative methods on components
-- Working with TypeScript prop types
-
----
-
-## Content Guide
-
-This skill is organized into focused reference files. Load the appropriate file for the situation:
-
-| Topic | File | When to Use |
-|---|---|---|
-| Component Catalogue | [COMPONENT-CATALOGUE.md](./reference/COMPONENT-CATALOGUE.md) | Mapping UI patterns to components, available packages, common UI scenarios |
-| Installation & Setup | [INSTALLATION.md](./reference/INSTALLATION.md) | Setting up packages, importing theme CSS, Next.js setup |
-| JSX Patterns | [JSX-PATTERNS.md](./reference/JSX-PATTERNS.md) | Props, children, slots, IgrTabs content vs navigation |
-| Event Handling | [EVENT-HANDLING.md](./reference/EVENT-HANDLING.md) | Event props, CustomEvent types, common events |
-| Refs & Forms | [REFS-FORMS.md](./reference/REFS-FORMS.md) | useRef, controlled/uncontrolled forms, React Hook Form |
-| Charts, Gauges, Maps & Grid Lite | [CHARTS-GRIDS.md](./reference/CHARTS-GRIDS.md) | Module registration, container sizing |
-| Troubleshooting | [TROUBLESHOOTING.md](./reference/TROUBLESHOOTING.md) | Common issues and solutions |
-
----
-
-## Quick Start
-
-### 1. Install
+## Quick start
 
 ```bash
 npm install igniteui-react
 ```
 
-### 2. Import Theme CSS (REQUIRED)
-
 ```tsx
-// main.tsx
+// main.tsx — theme first, your overrides after
 import 'igniteui-webcomponents/themes/light/bootstrap.css';
 ```
-
-> **CRITICAL:** Without the theme CSS, components will render without styles and icons will be broken. See [INSTALLATION.md](./reference/INSTALLATION.md) for all available themes and setup.
-
-### 3. Use Components
 
 ```tsx
 import { IgrButton, IgrInput } from 'igniteui-react';
 
-function App() {
-  return (
-    <div>
-      <IgrInput label="Name" />
-      <IgrButton><span>Submit</span></IgrButton>
-    </div>
-  );
-}
+<IgrInput label="Name" />
+<IgrButton>Submit</IgrButton>
 ```
 
-> **No `defineComponents()` needed.** React wrappers auto-register. See [CHARTS-GRIDS.md](./reference/CHARTS-GRIDS.md) for exceptions (charts, gauges, maps).
+Themes: `igniteui-webcomponents/themes/{light|dark}/{bootstrap|material|fluent|indigo}.css`.
+**Grids need a second import**: `igniteui-react-grids/grids/themes/{light|dark}/<design-system>.css`.
+Next.js has no single entry point — import the theme CSS in `app/layout.tsx` or in each `'use client'` file that uses components.
 
----
+## Reference
 
-## Key Concepts
+| File | Load when |
+|---|---|
+| [COMPONENTS.md](./reference/COMPONENTS.md) | Choosing a component for a described UI pattern |
+| [USAGE.md](./reference/USAGE.md) | Writing JSX — slots, events, refs, forms, TypeScript |
+| [DATAVIZ.md](./reference/DATAVIZ.md) | Charts, gauges, maps, Grid Lite, grid columns |
+| [MCP.md](./reference/MCP.md) | Looking up authoritative API docs; setting up the MCP server |
+| [TROUBLESHOOTING.md](./reference/TROUBLESHOOTING.md) | Something renders wrong |
 
-### Choosing the Right Component
+## Verify before you write
 
-Use [COMPONENT-CATALOGUE.md](./reference/COMPONENT-CATALOGUE.md) to map any UI need to the right `Igr*` component and package. For quick guidance:
+Component APIs change between versions. Prefer the `igniteui-cli` MCP server (`get_doc`, `get_api_reference`, `search_api`) over recall for prop names, slot names, event names, and enum values — see [MCP.md](./reference/MCP.md). Without MCP, read the installed `.d.ts` files under `node_modules/igniteui-webcomponents/components/<component>/` (or `igniteui-webcomponents-grids/grids/lib/`), which carry `@slot`, `@csspart`, `@fires`, and `@cssproperty` annotations.
 
-- **MIT package** (`igniteui-react`) — inputs, buttons, layout, navigation, notifications, scheduling, AI chat
-- **Lightweight grid** (MIT) — `IgrGridLite` from `igniteui-react/grid-lite` (requires both `igniteui-react` and `igniteui-grid-lite`)
-- **Commercial** — `igniteui-react-grids` (advanced grids), `igniteui-react-charts`, `igniteui-react-gauges`, `igniteui-react-maps`
+## Related skills
 
-### Theme CSS Import
-
-- **Always import theme CSS** before using components. **For grids**, also import `igniteui-react-grids/grids/themes/...`
-- see [INSTALLATION.md](./reference/INSTALLATION.md)
-
-### JSX Patterns
-
-- Use props just like any React component
-- Use `slot` attribute for named slots: `<span slot="icon">📊</span>`
-- See [JSX-PATTERNS.md](./reference/JSX-PATTERNS.md)
-
-### IgrTabs: Content vs Navigation
-
-- **Content panels**: Use `IgrTab` with inline content (label via `label` prop or `slot="label"`)
-- **Navigation (router)**: Use **only `IgrTab`** with label-only (no inline content)
-- See [JSX-PATTERNS.md](./reference/JSX-PATTERNS.md)
-
-### Events
-
-- Events are `CustomEvent` objects, not React `SyntheticEvent`
-- Access data via `e.target` or `e.detail`
-- See [EVENT-HANDLING.md](./reference/EVENT-HANDLING.md)
-
-### Refs
-
-- Use `useRef<IgrDialog>(null)` with the component type:
-- See [REFS-FORMS.md](./reference/REFS-FORMS.md)
-
-### Charts, Gauges, Maps & Grid Lite
-
-- **Charts/Gauges/Maps require explicit registration**: `IgrCategoryChartModule.register()`
-- **All require sized container**: `min-width`, `min-height`, or `flex-grow`
-- **Grid Lite** requires both `igniteui-react` and `igniteui-grid-lite` packages, import from `igniteui-react/grid-lite`
-- See [CHARTS-GRIDS.md](./reference/CHARTS-GRIDS.md)
-
----
-
-## Best Practices
-
-1. **Start with the MIT package** (`igniteui-react`) — it covers most common UI needs
-2. **Import theme CSS first** — components need it to render correctly
-3. **Register chart/gauge/map modules** — call `.register()` at module level
-4. **Wrap charts/gauges/maps in sized containers** — they need explicit dimensions
-5. **Use named imports** — enables tree-shaking
-6. **Handle events as `CustomEvent`** — not `React.SyntheticEvent`
-7. **Use refs sparingly** — prefer declarative props
-8. **Check slot names** in the docs
-9. **Never add `width` to grid columns by default** — `IgrGridLiteColumn` defaults to `minmax(136px, 1fr)` (responsive) and `IgrColumn` auto-sizes. Adding explicit pixel widths leaves empty space and breaks responsiveness. Only set `width` when the user explicitly requests it. If some columns have explicit widths, leave at least one column without a `width` to fill remaining space.
+- [igniteui-react-customize-theme](../igniteui-react-customize-theme/SKILL.md) — brand colors, dark mode, component tokens
+- [igniteui-react-optimize-bundle-size](../igniteui-react-optimize-bundle-size/SKILL.md) — code splitting heavy families
+- [grid-lite-to-igr-grid-migration](../grid-lite-to-igr-grid-migration/SKILL.md) — Grid Lite → premium `IgrGrid`

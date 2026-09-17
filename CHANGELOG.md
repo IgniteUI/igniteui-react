@@ -1,5 +1,22 @@
 ## Unreleased
 
+### Changed
+- Skills:
+    - Condensed all React skills to the framework-specific facts an agent cannot infer, cutting total size roughly in half. Reference files were consolidated (`COMPONENTS`, `USAGE`, `DATAVIZ`, `MCP`, `TROUBLESHOOTING`) and duplicated setup/theming guidance removed.
+    - Documented MCP tools with their real named-argument schemas, including that doc tools take `framework` while API tools take `platform`, and added `get_project_setup_guide`.
+    - Documented dark mode as a global switch driven by `--ig-theme-variant` plus `configureTheme()`, rather than a scopable set of custom properties.
+    - Added the Grid Lite to premium grid migration skill to the skills README.
+
+### Fixed
+- Skills:
+    - Corrected the palette override mechanism: shades derive from the `500` shade (e.g. `--ig-primary-500`). The previously documented `--ig-primary-h` / `-s` / `-l` tokens do not exist and silently did nothing.
+    - Removed `IgrGridModule.register()` from the grid migration guidance — module registration is deprecated and handled by the React wrapper on import.
+    - Corrected the Excel/CSV exporter import path to `igniteui-react-grids`.
+    - Replaced the non-existent `--ig-button-foreground` token example, and directed component-level theming at `get_component_design_tokens` or the `@cssproperty` annotations.
+    - Corrected the form submit handler type to `React.FormEvent`, and event handler types to the generated `Igr*EventArgs` aliases.
+    - Replaced the non-existent `get_theming_guidance` tool with `read_resource`.
+    - Fixed a broken reference link in the components skill.
+
 ## 19.8.1 - 2026-07-13
 
 ### Changed
