@@ -12,7 +12,7 @@ import { getUUID } from './random-uuid.js';
 export const REQUEST_REMOVE = Symbol('renderer-remove');
 const NOT_SET = Symbol('not-set');
 
-type NgState<T> = T & { $implicit: unknown };
+type NgState<T> = T & { implicit: unknown };
 type RendererState<T> = {
   previous: T;
   current: T;
@@ -49,8 +49,8 @@ class RequestRenderer<T> extends AsyncDirective {
   private _state = { previous: NOT_SET, current: undefined } as RendererState<T>;
   private _name!: string;
 
-  private get _renderNode(): Element {
-    return this._part?.deref()?.parentNode as Element;
+  private get _renderNode(): Element | undefined {
+    return this._part?.deref()?.parentNode as Element | undefined;
   }
 
   private _shouldUpdateNG(_data: NgState<T>): boolean {
@@ -68,7 +68,7 @@ class RequestRenderer<T> extends AsyncDirective {
   private _shouldUpdate(): boolean {
     const data = this._state.current;
 
-    if (Reflect.has(data as NgState<T>, 'implicit')) {
+    if (data !== null && typeof data === 'object' && Reflect.has(data as NgState<T>, 'implicit')) {
       return this._shouldUpdateNG(data as NgState<T>);
     }
 
@@ -80,7 +80,15 @@ class RequestRenderer<T> extends AsyncDirective {
     return true;
   }
 
-  public override render(_callback: any, _name: string, _data: T): symbol {
+  /** Dispatches a request for the current state, if there is somewhere to render it. */
+  private _request(callback: RendererCallback<T>, data: T | typeof REQUEST_REMOVE): void {
+    const node = this._renderNode;
+    if (!node) return;
+
+    callback(createRequestData(this._name, data, node, this._key));
+  }
+
+  public override render(_callback: RendererCallback<T>, _name: string, _data: T): symbol {
     return noChange;
   }
 
@@ -94,7 +102,7 @@ class RequestRenderer<T> extends AsyncDirective {
     this._part = new WeakRef(part);
 
     if (this.isConnected && callback && this._shouldUpdate()) {
-      callback(createRequestData(this._name, this._state.current, this._renderNode, this._key));
+      this._request(callback, this._state.current);
     }
 
     return noChange;
@@ -103,17 +111,17 @@ class RequestRenderer<T> extends AsyncDirective {
   protected override reconnected(): void {
     const callback = this._callback?.deref();
     if (callback && this._shouldUpdate()) {
-      callback(createRequestData(this._name, this._state.current, this._renderNode, this._key));
+      this._request(callback, this._state.current);
     }
   }
 
   protected override disconnected(): void {
     const callback = this._callback?.deref();
     if (callback) {
-      callback(createRequestData(this._name, REQUEST_REMOVE as T, this._renderNode, this._key));
-      // drop prev, so a reconnect would behave like initial
-      this._state.previous = NOT_SET as T;
+      this._request(callback, REQUEST_REMOVE);
     }
+    // drop prev, so a reconnect would behave like initial
+    this._state.previous = NOT_SET as T;
   }
 }
 
