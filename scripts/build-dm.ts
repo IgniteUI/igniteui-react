@@ -13,7 +13,6 @@ export default defineWrapperConfig({
     'igc-button-component',
     'igc-context-menu',
     'igc-icon-component',
-    'sample-component',
     'igc-tab-header',
     'igc-tab-panel',
     'igc-tabs-component',
