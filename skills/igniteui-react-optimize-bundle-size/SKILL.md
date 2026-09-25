@@ -1,6 +1,7 @@
 ---
+license: MIT
 name: igniteui-react-optimize-bundle-size
-description: Reduce bundle size in apps using Ignite UI for React — package selection, tree-shaking, and route-level code splitting of grids, charts, maps, and gauges. Use when the bundle or initial load is too large, when tree-shaking is not eliminating unused Ignite UI code, or when deciding what to lazy load.
+description: "Covers reducing bundle size in apps that use Ignite UI for React: package selection, tree-shaking, and route-level code splitting of grids, charts, maps, and gauges. WHEN TO USE: the bundle or initial load is too large, tree-shaking is not removing unused Ignite UI code, heavy packages appear in the initial chunk, or the user is deciding what to lazy load. WHEN NOT TO USE: first-time package installation or component setup (use igniteui-react-components), theming (use igniteui-react-customize-theme), upgrading from Grid Lite to the premium grid (use igniteui-react-migrate-grid-lite-to-premium), or runtime performance problems unrelated to bundle size, such as rendering or data virtualization."
 user-invocable: true
 ---
 
@@ -19,7 +20,7 @@ Standard React techniques (`React.lazy` + `Suspense`, route splitting, minificat
 | `igniteui-react-grids` | heavy | Data/Tree/Pivot/Hierarchical grid |
 | `igniteui-react-charts` / `-maps` / `-gauges` | heavy | legacy DV packages, weaker tree-shaking |
 
-Two conclusions: **install only the families you use**, and **split the heavy families out of the initial chunk**. Downgrading `IgrGrid` to `IgrGridLite` is often the single largest win when the app only displays flat, read-only data — check the feature list in [DATAVIZ.md](../igniteui-react-components/reference/DATAVIZ.md) first.
+Two conclusions: **install only the families you use**, and **split the heavy families out of the initial chunk**. Downgrading `IgrGrid` to `IgrGridLite` is often the single largest win when the app only displays flat, read-only data — check the feature list in [DATAVIZ.md](../igniteui-react-components/references/DATAVIZ.md) first.
 
 ## Import rules
 
@@ -83,4 +84,4 @@ Then run any bundle analyzer and check the initial chunk for `igniteui-react-gri
 ## Related skills
 
 - [igniteui-react-components](../igniteui-react-components/SKILL.md) — package routing and what each family provides
-- [grid-lite-to-igr-grid-migration](../grid-lite-to-igr-grid-migration/SKILL.md) — the reverse direction, when Grid Lite is not enough
+- [igniteui-react-migrate-grid-lite-to-premium](../igniteui-react-migrate-grid-lite-to-premium/SKILL.md) — the reverse direction, when Grid Lite is not enough
