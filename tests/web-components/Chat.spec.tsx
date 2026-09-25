@@ -17,7 +17,7 @@ test('Simple chat rendering and event', async () => {
 
   const mockLog = vi.spyOn(console, 'log');
 
-  const input = page.getByRole('textbox', { name: 'Type your message here...' });
+  const input = page.getByRole('textbox', { name: 'Chat text input' });
   await userEvent.fill(input, 'Text message');
   await userEvent.keyboard('{Enter}');
 
@@ -39,7 +39,7 @@ test('Simple chat rendering and event', async () => {
 test('Markdown support with default renderer', async () => {
   render(<Chat />);
 
-  const input = page.getByRole('textbox', { name: 'Type your message here...' });
+  const input = page.getByRole('textbox', { name: 'Chat text input' });
   await userEvent.fill(input, '# Hello world');
   await userEvent.keyboard('{Enter}');
 
