@@ -24,6 +24,20 @@ runs:
       shell: bash
       run: npm ci ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
 
+    # Static gates first: none of them need a build, so a lint, type or manifest error
+    # fails in seconds instead of after the full build + validate cycle.
+    - name: Lint
+      shell: bash
+      run: npm run lint ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+
+    - name: Type-check build scripts
+      shell: bash
+      run: npm run typecheck:scripts
+
+    - name: Check publish manifests
+      shell: bash
+      run: npm run check:manifests
+
     - name: Build
       shell: bash
       run: npm run build ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
@@ -35,9 +49,14 @@ runs:
       shell: bash
       run: npm run validate:dist ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
 
-    - name: Lint
-      shell: bash
-      run: npm run lint ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+    # ~100MB download per run otherwise. Keyed on the lockfile, so the cache is
+    # rebuilt whenever the resolved playwright version can have changed.
+    - name: Cache Playwright browsers
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+        restore-keys: ${{ runner.os }}-playwright-
 
     - name: Install Playwright browsers
       shell: bash
