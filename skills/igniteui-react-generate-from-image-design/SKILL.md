@@ -1,6 +1,7 @@
 ---
+license: MIT
 name: igniteui-react-generate-from-image-design
-description: Build a React view from a design image (screenshot, mockup, wireframe) using Ignite UI for React components and generated theme tokens. Use when the user supplies an image and asks to implement this design, build this UI, convert this mockup, or create a page from this screenshot in an Ignite UI React project.
+description: "Covers building a React view from a design image (screenshot, mockup, or wireframe) with Ignite UI for React components and generated theme tokens, using the igniteui-cli and igniteui-theming MCP servers when available. WHEN TO USE: the user supplies an image and asks to implement this design, build this UI, convert this mockup, or create a page from this screenshot in an Ignite UI for React project. WHEN NOT TO USE: no image is provided and the user only needs a component recommendation (use igniteui-react-components), the task is only theming or restyling existing views (use igniteui-react-customize-theme), or the task is reducing bundle size (use igniteui-react-optimize-bundle-size)."
 user-invocable: true
 ---
 
@@ -27,7 +28,7 @@ Resolve layout as CSS Grid rows and columns that preserve the observed *proporti
 
 Before coding, state briefly: chosen component per region, any region falling back to plain HTML and why, theme strategy, packages needed, and assumptions you made where the image is ambiguous.
 
-**Start every region from an Ignite UI component.** Fall back to semantic HTML only when the component's DOM structure stays incompatible after CSS overrides and `::part()` are considered, and say so in a comment. Component picks live in [COMPONENTS.md](../igniteui-react-components/reference/COMPONENTS.md); use `list_components({ framework: 'react', filter: '<narrow term>' })` to discover more. Narrow filters work better — `'list view'`, not `'list'`.
+**Start every region from an Ignite UI component.** Fall back to semantic HTML only when the component's DOM structure stays incompatible after CSS overrides and `::part()` are considered, and say so in a comment. Component picks live in [COMPONENTS.md](../igniteui-react-components/references/COMPONENTS.md); use `list_components({ framework: 'react', filter: '<narrow term>' })` to discover more. Narrow filters work better — `'list view'`, not `'list'`.
 
 Judgement calls that recur:
 
@@ -79,7 +80,7 @@ For each **core** Ignite UI component in the design, in this order:
 
 Querying tokens before reading the image matters: it stops you inventing token names, which is the most common failure here. Apply the generated block with a scoped wrapper plus `igc-*` selectors or `::part()`.
 
-Charts, maps, gauges, and sparklines are **excluded** — they are not `igc-*` elements and have no design tokens. Style them through props (see [gotchas.md](reference/gotchas.md)). Skip regions built from custom HTML too.
+Charts, maps, gauges, and sparklines are **excluded** — they are not `igc-*` elements and have no design tokens. Style them through props (see [gotchas.md](references/gotchas.md)). Skip regions built from custom HTML too.
 
 Once a palette exists, resolve colors to palette tokens (`var(--ig-primary-500)`) or your own semantic variables rather than leaving hex literals in JSX and CSS. `get_color` resolves a palette token to a concrete value when you need one.
 
@@ -89,7 +90,7 @@ Once a palette exists, resolve colors to palette tokens (`var(--ig-primary-500)`
 - **Styles** — CSS Modules or shared CSS, not inline styles.
 - **Data** — typed mock data matching the design's domain and density. Domain-appropriate content, never `Lorem ipsum` or `Item 1` when the image shows real subject matter.
 - Preserve spacing, hierarchy, and data density before adding interactivity.
-- Read [gotchas.md](reference/gotchas.md) before writing charts, maps, avatars, grids, or dark surfaces — it lists the props that do not exist and the ones that must be arrays or function references.
+- Read [gotchas.md](references/gotchas.md) before writing charts, maps, avatars, grids, or dark surfaces — it lists the props that do not exist and the ones that must be arrays or function references.
 
 ## 6. Validate
 

@@ -1,6 +1,7 @@
 ---
-name: grid-lite-to-igr-grid-migration
-description: Migrate from Grid Lite (IgrGridLite) to the premium Ignite UI for React Data Grid (IgrGrid) — imports, theme CSS, column and template API changes, sorting and filtering, remote data replacing dataPipelineConfiguration, and the toolbar/export APIs. Use when Grid Lite lacks a needed feature such as editing, selection, paging, grouping, summaries, pinning, or export.
+license: MIT
+name: igniteui-react-migrate-grid-lite-to-premium
+description: "Covers migrating from Grid Lite (IgrGridLite) to the premium Ignite UI for React Data Grid (IgrGrid): imports, theme CSS, column and template API changes, sorting and filtering, remote data replacing dataPipelineConfiguration, and the toolbar and export APIs. WHEN TO USE: the user wants to upgrade from Grid Lite to IgrGrid, or needs a feature Grid Lite lacks, such as editing, selection, paging, grouping, summaries, pinning, export, or state persistence. WHEN NOT TO USE: adding a new grid from scratch or choosing between grids (use igniteui-react-components), moving between other premium grids (Tree Grid, Hierarchical Grid, Pivot Grid) or across major versions, theming a grid (use igniteui-react-customize-theme), or replacing IgrGrid with Grid Lite to save bundle size (use igniteui-react-optimize-bundle-size)."
 user-invocable: true
 ---
 

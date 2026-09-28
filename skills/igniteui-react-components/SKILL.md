@@ -1,6 +1,7 @@
 ---
+license: MIT
 name: igniteui-react-components
-description: Pick, install, and use Ignite UI for React (Igr*) components — package routing, theme CSS, JSX and slots, events, refs, forms, TypeScript, charts/gauges/maps, grids. Use when choosing a component for a UI pattern, setting up igniteui-react, writing Igr* JSX, wiring events or refs, or debugging components that render unstyled, invisible, or with broken icons.
+description: "Covers choosing, installing, and using Ignite UI for React (Igr*) components: package routing, theme CSS, JSX and slots, events, refs, forms, TypeScript, charts, gauges, maps, and grids. WHEN TO USE: choosing a component for a UI pattern, setting up igniteui-react in a React or Next.js app, writing Igr* JSX, wiring events, refs, or forms, looking up component APIs through the igniteui-cli MCP server, or debugging components that render unstyled, invisible, or with broken icons. WHEN NOT TO USE: brand colors, dark mode, or component token overrides (use igniteui-react-customize-theme), reducing bundle size or lazy loading (use igniteui-react-optimize-bundle-size), building a view from a screenshot or mockup (use igniteui-react-generate-from-image-design), or moving from Grid Lite to the premium grid (use igniteui-react-migrate-grid-lite-to-premium)."
 user-invocable: true
 ---
 
@@ -14,7 +15,7 @@ user-invocable: true
 2. **No `.register()`** for `igniteui-react`, `igniteui-react-grids`, `igniteui-react/grid-lite`, or `igniteui-react-dockmanager` — the wrapper registers the element on import. Charts, gauges, and maps (separate legacy packages) **do** require `.register()`.
 3. **CSS selectors must target `igc-*`**, never `IgrButton`. Use `::part()` for shadow DOM internals.
 4. **Events are `CustomEvent`**, not React `SyntheticEvent`. Read `e.detail`.
-5. **Never set column `width`** on `IgrColumn` / `IgrGridLiteColumn` unless asked — see [DATAVIZ.md](./reference/DATAVIZ.md).
+5. **Never set column `width`** on `IgrColumn` / `IgrGridLiteColumn` unless asked — see [DATAVIZ.md](./references/DATAVIZ.md).
 6. **Charts, gauges, maps, and grids need an explicitly sized container** or they render at zero height.
 
 ## Packages
@@ -55,18 +56,18 @@ Next.js has no single entry point — import the theme CSS in `app/layout.tsx` o
 
 | File | Load when |
 |---|---|
-| [COMPONENTS.md](./reference/COMPONENTS.md) | Choosing a component for a described UI pattern |
-| [USAGE.md](./reference/USAGE.md) | Writing JSX — slots, events, refs, forms, TypeScript |
-| [DATAVIZ.md](./reference/DATAVIZ.md) | Charts, gauges, maps, Grid Lite, grid columns |
-| [MCP.md](./reference/MCP.md) | Looking up authoritative API docs; setting up the MCP server |
-| [TROUBLESHOOTING.md](./reference/TROUBLESHOOTING.md) | Something renders wrong |
+| [COMPONENTS.md](./references/COMPONENTS.md) | Choosing a component for a described UI pattern |
+| [USAGE.md](./references/USAGE.md) | Writing JSX — slots, events, refs, forms, TypeScript |
+| [DATAVIZ.md](./references/DATAVIZ.md) | Charts, gauges, maps, Grid Lite, grid columns |
+| [MCP.md](./references/MCP.md) | Looking up authoritative API docs; setting up the MCP server |
+| [TROUBLESHOOTING.md](./references/TROUBLESHOOTING.md) | Something renders wrong |
 
 ## Verify before you write
 
-Component APIs change between versions. Prefer the `igniteui-cli` MCP server (`get_doc`, `get_api_reference`, `search_api`) over recall for prop names, slot names, event names, and enum values — see [MCP.md](./reference/MCP.md). Without MCP, read the installed `.d.ts` files under `node_modules/igniteui-webcomponents/components/<component>/` (or `igniteui-webcomponents-grids/grids/lib/`), which carry `@slot`, `@csspart`, `@fires`, and `@cssproperty` annotations.
+Component APIs change between versions. Prefer the `igniteui-cli` MCP server (`get_doc`, `get_api_reference`, `search_api`) over recall for prop names, slot names, event names, and enum values — see [MCP.md](./references/MCP.md). Without MCP, read the installed `.d.ts` files under `node_modules/igniteui-webcomponents/components/<component>/` (or `igniteui-webcomponents-grids/grids/lib/`), which carry `@slot`, `@csspart`, `@fires`, and `@cssproperty` annotations.
 
 ## Related skills
 
 - [igniteui-react-customize-theme](../igniteui-react-customize-theme/SKILL.md) — brand colors, dark mode, component tokens
 - [igniteui-react-optimize-bundle-size](../igniteui-react-optimize-bundle-size/SKILL.md) — code splitting heavy families
-- [grid-lite-to-igr-grid-migration](../grid-lite-to-igr-grid-migration/SKILL.md) — Grid Lite → premium `IgrGrid`
+- [igniteui-react-migrate-grid-lite-to-premium](../igniteui-react-migrate-grid-lite-to-premium/SKILL.md) — Grid Lite → premium `IgrGrid`

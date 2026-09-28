@@ -1,4 +1,3 @@
-import { glob } from 'glob';
 import {
   createProgram,
   isExportSpecifier,
@@ -10,27 +9,41 @@ import {
 import type { ExportMeta } from './types';
 
 /**
- * Resolves exports meta for an entry
- * @param entry path to declaration entry point
+ * Resolves the exports of each declaration entry, keyed by entry path.
+ *
+ * @remarks
+ * One program covers every entry. The packages share most of their declaration closure
+ * (lit, `@lit/react`, and the components package itself, which the grid packages pull in),
+ * so a program per entry re-parses roughly half the graph - measurably about twice the work.
+ *
+ * Only the entry is needed to enumerate a module's exports; the wrappers under `src/` are
+ * generated *from* this data, so including them only made the program grow with every
+ * package that had already run.
  */
-export async function getExports(entry: string): Promise<ExportMeta[]> {
-  // grab any and all files under src that reference wc packages
-  const files = await glob('src/**/*{.ts,.tsx}');
-  // add entry to ensure package is resolved if no file picks it up
-  files.push(entry);
-  // default options will also load the root tsconfig
-  const program = createProgram(files, {});
+export function getExports(entries: string[]): Map<string, ExportMeta[]> {
+  const program = createProgram(entries, {});
   const checker = program.getTypeChecker();
-  const entrySource = program.getSourceFile(entry);
-  const entrySymbol = entrySource && checker.getSymbolAtLocation(entrySource);
-  if (entrySymbol) {
-    return checker.getExportsOfModule(entrySymbol).map((x) => {
-      // try to respect both package export specifiers and types that just transpile away:
-      const type = isTypeOnlyExport(x) || wouldBeElided(x, checker) ? 'type' : 'js';
-      return { name: x.name, type };
-    });
+  const resolved = new Map<string, ExportMeta[]>();
+
+  for (const entry of entries) {
+    const source = program.getSourceFile(entry);
+    const symbol = source && checker.getSymbolAtLocation(source);
+
+    if (!symbol) {
+      throw new Error(`Failed to resolve types entry "${entry}". Are dependencies installed?`);
+    }
+
+    resolved.set(
+      entry,
+      checker.getExportsOfModule(symbol).map((x) => ({
+        name: x.name,
+        // try to respect both package export specifiers and types that just transpile away:
+        type: isTypeOnlyExport(x) || wouldBeElided(x, checker) ? 'type' : 'js',
+      })),
+    );
   }
-  return [];
+
+  return resolved;
 }
 
 /**

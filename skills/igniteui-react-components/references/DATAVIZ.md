@@ -87,4 +87,4 @@ const money = (ctx: IgrCellContext<Order>) => <span>${(ctx.value as number).toFi
 - Header templates use `headerTemplate` with `IgrColumnTemplateContext` (`ctx.column.header`).
 - Filtering needs `allowFiltering` on the grid *and* `filterable` on each column.
 
-For anything beyond this, see [grid-lite-to-igr-grid-migration](../../grid-lite-to-igr-grid-migration/SKILL.md) or `get_doc({ framework: 'react', name: 'grid-editing' })`.
+For anything beyond this, see [igniteui-react-migrate-grid-lite-to-premium](../../igniteui-react-migrate-grid-lite-to-premium/SKILL.md) or `get_doc({ framework: 'react', name: 'grid-editing' })`.
