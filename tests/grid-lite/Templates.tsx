@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { Component, type ComponentProps, type ReactNode, useState } from 'react';
 import {
   type IgrCellContext,
   IgrGridLite,
@@ -17,10 +17,19 @@ const data: Person[] = [
   { id: 2, name: 'Bob' },
 ];
 
-/** A cell template closing over React state. */
+type Templates = Pick<ComponentProps<typeof IgrGridLiteColumn>, 'cellTemplate' | 'headerTemplate'>;
+
+function PeopleGrid(templates: Templates) {
+  return (
+    <IgrGridLite data={data}>
+      <IgrGridLiteColumn field="id" dataType="number" {...templates} />
+      <IgrGridLiteColumn field="name" dataType="string" />
+    </IgrGridLite>
+  );
+}
+
 export function StatefulTemplate() {
   const [count, setCount] = useState(0);
-  const records = useMemo(() => data, []);
 
   const cellTemplate = (ctx: IgrCellContext<Person>) => (
     <span>
@@ -30,10 +39,7 @@ export function StatefulTemplate() {
 
   return (
     <>
-      <IgrGridLite data={records}>
-        <IgrGridLiteColumn field="id" dataType="number" cellTemplate={cellTemplate} />
-        <IgrGridLiteColumn field="name" dataType="string" />
-      </IgrGridLite>
+      <PeopleGrid cellTemplate={cellTemplate} />
       <button type="button" onClick={() => setCount((c) => c + 1)}>
         Increment
       </button>
@@ -41,28 +47,71 @@ export function StatefulTemplate() {
   );
 }
 
-/** A render prop that is conditionally `undefined`, next to one that is always set. */
 export function OptionalTemplate() {
   const [withHeader, setWithHeader] = useState(false);
-  const records = useMemo(() => data, []);
 
   const cellTemplate = (ctx: IgrCellContext<Person>) => <span>V:{ctx.value}</span>;
   const headerTemplate = (ctx: IgrHeaderContext<Person>) => <kbd>H:{ctx.column.field}</kbd>;
 
   return (
     <>
-      <IgrGridLite data={records}>
-        <IgrGridLiteColumn
-          field="id"
-          dataType="number"
-          cellTemplate={cellTemplate}
-          headerTemplate={withHeader ? headerTemplate : undefined}
-        />
-        <IgrGridLiteColumn field="name" dataType="string" />
-      </IgrGridLite>
+      <PeopleGrid
+        cellTemplate={cellTemplate}
+        headerTemplate={withHeader ? headerTemplate : undefined}
+      />
       <button type="button" onClick={() => setWithHeader(true)}>
         Add header template
       </button>
     </>
+  );
+}
+
+export function AsyncTemplate({ wait }: { wait: () => Promise<void> }) {
+  const [count, setCount] = useState(0);
+
+  const cellTemplate = async (ctx: IgrCellContext<Person>) => {
+    await wait();
+
+    return (
+      <span>
+        A:{ctx.value}/C:{count}
+      </span>
+    );
+  };
+
+  return (
+    <>
+      <PeopleGrid cellTemplate={cellTemplate} />
+      <output>Count:{count}</output>
+      <button type="button" onClick={() => setCount((c) => c + 1)}>
+        Increment
+      </button>
+    </>
+  );
+}
+
+type BoundaryState = { error?: Error };
+
+class Boundary extends Component<{ children: ReactNode }, BoundaryState> {
+  state: BoundaryState = {};
+
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+
+  render() {
+    return this.state.error ? <p>Caught:{this.state.error.message}</p> : this.props.children;
+  }
+}
+
+export function FailingTemplate() {
+  const cellTemplate = async () => {
+    throw new Error('boom');
+  };
+
+  return (
+    <Boundary>
+      <PeopleGrid cellTemplate={cellTemplate} />
+    </Boundary>
   );
 }

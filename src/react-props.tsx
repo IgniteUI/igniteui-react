@@ -4,44 +4,40 @@ import { createComponent as _createComponent, type EventName, type Options } fro
 import { html } from 'lit';
 import type React from 'react';
 import { createPortal } from 'react-dom';
-import type { WithDataContext } from './backfills.js';
+import { type WithDataContext, withDataContext } from './backfills.js';
+import { isObject } from './is-object.js';
 import { REQUEST_REMOVE, type RendererRequest, requestRenderer } from './render-props.js';
 
 export type { EventName } from '@lit/react';
 
-type DistributiveOmit<T, K extends string | number | symbol> = T extends any
+type DistributiveOmit<T, K extends PropertyKey> = T extends any
   ? K extends keyof T
     ? Omit<T, K>
     : T
   : T;
 type PropsWithoutRef<T> = DistributiveOmit<T, 'ref'>;
 
-// A key value map matching React prop names to event names.
+// React prop → event name.
 type EventNames = Record<string, EventName | string>;
 
-// A map of expected event listener types based on EventNames.
 type EventListeners<R extends EventNames> = {
   [K in keyof R]?: R[K] extends EventName ? (e: R[K]['__eventType']) => void : (e: Event) => void;
 };
 
 type ElementProps<I> = Partial<Omit<I, keyof HTMLElement>>;
 
-// Acceptable props to the React component.
 type ComponentProps<I, E extends EventNames> = Omit<
   React.HTMLAttributes<I>,
-  // Prefer type of provided event handler props or those on element over
-  // built-in HTMLAttributes
+  // Element and event props win over HTMLAttributes.
   keyof E | keyof ElementProps<I>
 > &
   EventListeners<E> &
   ElementProps<I>;
 
-/**
- * Mapped type to update the render props callback return type.
- *
- * A renderer entry is either a name (a template directly on the component) or a nested map of
- * them (a template on a config object, as `igc-chat` declares its renderers), so it recurses.
- */
+/** Prop name → renderer name, or a nested map for config props (e.g. `igc-chat`). */
+type Renderers = Record<string, unknown>;
+
+/** Render props return `ReactNode`; nested maps recurse. */
 type WithJsxRenderProps<T, R> = {
   [K in keyof T]: K extends keyof R
     ? R[K] extends string
@@ -64,28 +60,20 @@ export type ReactWebComponent<
   PropsWithoutRef<WithJsxRenderProps<ComponentProps<I, E>, R>> & React.RefAttributes<I>
 >;
 
-/** A map of prop names to renderer names, nested to mirror the shape of the props themselves. */
-type Renderers = Record<string, unknown>;
-
-/** The React module, which is injected rather than imported so Preact can be swapped in. */
 type ReactModule = typeof React;
 
 type Props = Record<string, unknown>;
 type RenderProp = (data: unknown) => React.ReactNode;
+type Template = (ctx: unknown) => unknown;
 
-/** A patched template handed to the element, and the renderer it stands in for. */
-type PatchedTemplate = {
-  patched: (ctx: unknown) => unknown;
-  rendererName: string;
-};
+type Reparenting = 'move-back' | 'none';
+type NgElement = HTMLElement & { ngElementStrategy?: { parentElement?: WeakRef<HTMLElement> } };
 
-/** A slot the element has asked us to fill, and the portal currently filling it. */
-type PortalSlot = {
-  name: string;
-  data: unknown;
-  node: Element;
-  callback: RenderProp | undefined;
-  portal: React.ReactPortal;
+type PortalSlot = RendererRequest & {
+  callback?: RenderProp;
+  /** Boxed: `reason` may be `undefined`. */
+  failure?: { reason: unknown };
+  portal?: React.ReactPortal;
 };
 
 interface WrapperOptions<I extends HTMLElement, E extends EventNames, R extends Renderers>
@@ -94,149 +82,82 @@ interface WrapperOptions<I extends HTMLElement, E extends EventNames, R extends 
   moveBackOnDelete?: boolean;
 }
 
-/**
- * Owns the render prop machinery of a single component instance.
- *
- * All of this state has to outlive the render that created it: the element holds on to the patched
- * templates indefinitely and can invoke them whenever it likes, so what they read and write belongs
- * to the instance rather than to a render.
- */
 class TemplateBridge {
-  /** Patched templates handed to the element, keyed by their full prop path. */
-  private readonly _templates = new Map<string, PatchedTemplate>();
-
-  /** The *current* render prop callbacks, keyed by renderer name. */
-  private readonly _callbacks = new Map<string, RenderProp>();
-
-  /** Slots the element has asked us to fill, keyed by slot name. */
+  private readonly _templates = new Map<string, Template>();
   private readonly _slots = new Map<string, PortalSlot>();
 
-  /** Nested prop containers, kept around so their identity is stable while their contents are. */
+  /** Reused while shallow-equal: a new object updates the element. */
   private readonly _containers = new Map<string, Props>();
 
-  private readonly _renderers: Renderers;
-  private readonly _notify: () => void;
+  constructor(
+    private readonly _renderers: Renderers,
+    private readonly _notify: () => void,
+  ) {}
 
-  constructor(renderers: Renderers, notify: () => void) {
-    this._renderers = renderers;
-    this._notify = notify;
+  public resolve(props: Props): { props: Props; portals: React.ReactPortal[] } {
+    const callbacks = new Map<string, RenderProp>();
+    const elementProps = this._collect(props, this._renderers, callbacks);
+
+    return { props: elementProps, portals: this._portals(callbacks) };
   }
 
-  /**
-   * Turns the component props into the props handed to the element, swapping every render prop for
-   * a patched template of stable identity.
-   */
-  public resolve(props: Props): Props {
-    const elementProps: Props = {};
-
-    this._prune(props);
-    this._collect(props, this._renderers, elementProps);
-    this._refresh();
-
-    return elementProps;
-  }
-
-  /** The portals currently filling the element's slots. */
-  public *portals(): Generator<React.ReactPortal> {
-    for (const { portal } of this._slots.values()) {
-      yield portal;
-    }
-  }
-
-  /**
-   * Fills or clears a slot at the element's request. Bound once per instance, since the patched
-   * templates hold on to it for as long as the element does.
-   */
-  private readonly _request = (req: RendererRequest<unknown>): void => {
+  /** Arrow: templates call it unbound. */
+  private readonly _request = (req: RendererRequest): void => {
     if (req.data === REQUEST_REMOVE) {
       this._slots.delete(req.slotName);
     } else {
-      const callback = this._callbacks.get(req.name);
+      const previous = this._slots.get(req.slotName);
 
       this._slots.set(req.slotName, {
-        name: req.name,
-        data: req.data,
-        node: req.node,
-        callback,
-        portal: createPortal(callback?.(req.data), req.node, req.slotName),
+        ...req,
+        data: withDataContext(req.data),
+        // Keep the old content until the new one renders.
+        portal: previous?.node === req.node ? previous.portal : undefined,
       });
     }
 
     this._notify();
   };
 
-  /**
-   * Drops patched templates whose render prop is gone - either the prop was removed, or it is no
-   * longer a function. Both have to be pruned: leaving one behind hands the element a stale
-   * template, while recreating one on every render feeds it a new identity and spins the loop.
-   */
-  private _prune(props: Props): void {
-    for (const [path, { rendererName }] of this._templates) {
-      if (typeof getAtPath(props, path) === 'function') {
-        continue;
-      }
+  private _collect(
+    props: Props,
+    renderers: Renderers,
+    callbacks: Map<string, RenderProp>,
+    prefix = '',
+  ): Props {
+    const out: Props = {};
 
-      this._templates.delete(path);
-      this._callbacks.delete(rendererName);
-
-      // Drop the slots as well. The directive does emit a remove request when it disconnects, but
-      // it reaches for the callback through a `WeakRef` - once the patched template above is gone
-      // that request may never arrive, and the portal would linger for the component's lifetime.
-      for (const [slotName, slot] of this._slots) {
-        if (slot.name === rendererName) {
-          this._slots.delete(slotName);
-        }
-      }
-    }
-  }
-
-  /** Copies the props over, swapping render props for templates and recursing into config objects. */
-  private _collect(props: Props, renderers: Renderers, out: Props, prefix = ''): void {
     for (const prop in props) {
       const path = prefix ? `${prefix}.${prop}` : prop;
       const renderer = renderers[prop];
       const value = props[prop];
 
-      if (typeof renderer === 'string') {
-        out[prop] = this._template(path, renderer, value);
-      } else if (isRecord(renderer) && isRecord(value)) {
-        const nested: Props = {};
-
-        this._collect(value, renderer, nested, path);
-        out[prop] = this._container(path, nested);
+      if (typeof renderer === 'string' && typeof value === 'function') {
+        callbacks.set(renderer, value as RenderProp);
+        out[prop] = this._template(path, renderer);
+      } else if (isObject(renderer) && isObject(value)) {
+        out[prop] = this._container(path, this._collect(value, renderer, callbacks, path));
       } else {
+        // Also non-function render props, e.g. `undefined`: the element uses its default.
         out[prop] = value;
       }
     }
+
+    return out;
   }
 
-  /**
-   * The patched template standing in for a render prop, created on first sight.
-   *
-   * Only a function is a template. Anything else - most often `undefined` from a conditional prop -
-   * has to reach the element untouched so it can fall back to its own default rendering.
-   */
-  private _template(path: string, name: string, value: unknown): unknown {
-    if (typeof value !== 'function') {
-      return value;
-    }
-
-    // Refreshed on every render. The patched template is cached so the element sees a stable prop,
-    // but the callback it invokes must always be the current one, or the template renders against
-    // a stale closure.
-    this._callbacks.set(name, value as RenderProp);
-
+  /** Captures only the renderer name, so it never goes stale. */
+  private _template(path: string, name: string): Template {
     let template = this._templates.get(path);
 
     if (!template) {
-      template = { patched: createPatched(this._request, name), rendererName: name };
+      template = (ctx) => html`${requestRenderer(this._request, name, ctx)}`;
       this._templates.set(path, template);
     }
 
-    return template.patched;
+    return template;
   }
 
-  /** Reuses the previous container while its contents are unchanged, to keep its identity stable. */
   private _container(path: string, next: Props): Props {
     const previous = this._containers.get(path);
 
@@ -248,39 +169,75 @@ class TemplateBridge {
     return next;
   }
 
-  /**
-   * A portal is built when the element requests its slot and reused as-is afterwards - handing
-   * React a fresh portal on every render would re-commit the template into the element, which
-   * re-renders the element, which requests the template again.
-   *
-   * It does have to be rebuilt when the render prop itself changes, though. Templates commonly
-   * close over state, and the element has no reason to re-request one just because the React tree
-   * above it re-rendered.
-   */
-  private _refresh(): void {
-    for (const [slotName, slot] of this._slots) {
-      const callback = this._callbacks.get(slot.name);
+  private _portals(callbacks: Map<string, RenderProp>): React.ReactPortal[] {
+    const portals: React.ReactPortal[] = [];
 
-      if (slot.callback !== callback) {
-        slot.callback = callback;
-        slot.portal = createPortal(callback?.(slot.data), slot.node, slotName);
+    for (const slot of this._slots.values()) {
+      const callback = callbacks.get(slot.name);
+
+      // Prop removed: element releases the slot.
+      if (!callback) {
+        continue;
+      }
+
+      this._invoke(slot, callback);
+
+      if (slot.failure) {
+        throw slot.failure.reason;
+      }
+
+      if (slot.portal) {
+        portals.push(slot.portal);
       }
     }
+
+    return portals;
+  }
+
+  /**
+   * New render prop re-invokes: it may close over state the element can't see.
+   * Same one keeps its portal; a fresh portal would re-commit and loop.
+   */
+  private _invoke(slot: PortalSlot, callback: RenderProp): void {
+    if (slot.callback === callback) {
+      return;
+    }
+
+    const { node, slotName } = slot;
+    const content = callback(slot.data);
+
+    slot.callback = callback;
+    slot.failure = undefined;
+
+    if (!isThenable(content)) {
+      slot.portal = createPortal(content, node, slotName);
+      return;
+    }
+
+    // No Suspense: inline render props yield a new promise per render.
+    const settle = (patch: Partial<PortalSlot>) => {
+      if (this._slots.get(slotName) !== slot || slot.callback !== callback) {
+        return;
+      }
+
+      Object.assign(slot, patch);
+      this._notify();
+    };
+
+    content.then(
+      (resolved) => settle({ portal: createPortal(resolved, node, slotName) }),
+      (reason: unknown) => settle({ failure: { reason } }),
+    );
   }
 }
 
-/** Creates the render prop state of this component instance and keeps it for its lifetime. */
 function useTemplateBridge(react: ReactModule, renderers: Renderers): TemplateBridge {
-  const [, forceUpdate] = react.useReducer(increment, 0);
-  const bridge = react.useRef<TemplateBridge | null>(null);
+  const [, forceUpdate] = react.useReducer((n: number) => n + 1, 0);
+  const [bridge] = react.useState(() => new TemplateBridge(renderers, forceUpdate));
 
-  // `forceUpdate` is stable for the lifetime of the component, so capturing the first one is safe.
-  bridge.current ??= new TemplateBridge(renderers, forceUpdate);
-
-  return bridge.current;
+  return bridge;
 }
 
-/** Forwards the ref while keeping a local handle on the element for the hooks that need one. */
 function useForwardedRef<I extends HTMLElement>(
   react: ReactModule,
   ref: React.ForwardedRef<I>,
@@ -303,54 +260,42 @@ function useForwardedRef<I extends HTMLElement>(
   return [elementRef, setRef];
 }
 
-/**
- * Handles element re-parenting for the Angular integration, where Angular Elements moves a
- * projected element away from the parent React knows about.
- */
-function useReparenting<I extends HTMLElement>(
+/** Moves the element back to its Angular Elements parent before React unmounts it. */
+function useReparenting(
   react: ReactModule,
-  enabled: boolean | undefined,
-  elementRef: React.RefObject<I | null>,
+  mode: Reparenting,
+  elementRef: React.RefObject<NgElement | null>,
 ): void {
   const projectionParent = react.useRef<WeakRef<HTMLElement> | null>(null);
 
-  // https://react.dev/learn/reusing-logic-with-custom-hooks#keep-your-custom-hooks-focused-on-concrete-high-level-use-cases
-  // Runs once after first render.
   react.useLayoutEffect(() => {
-    if (!enabled) {
+    if (mode === 'none') {
       return;
     }
 
-    // already too late to save elementRef.current?.parentElement, rely on Elements
-    // secondary run (likely dev strict mode), move back to projection:
+    // Strict mode re-run: return to the projection parent.
     const prevParent = projectionParent.current?.deref();
 
     if (prevParent && elementRef.current && prevParent !== elementRef.current.parentElement) {
       prevParent.appendChild(elementRef.current);
+      projectionParent.current = null;
     }
-    projectionParent.current = null;
 
+    // Runs before DOM removal.
     return () => {
-      // cleanup **before** component is removed from the DOM
       const element = elementRef.current;
+      const creationParent = element?.ngElementStrategy?.parentElement?.deref();
 
-      if (!element) {
+      if (!element || !creationParent || creationParent === element.parentElement) {
         return;
       }
 
-      const creationParent = (
-        element as I & { ngElementStrategy?: { parentElement?: WeakRef<HTMLElement> } }
-      ).ngElementStrategy?.parentElement?.deref();
-
-      if (creationParent && creationParent !== element.parentElement) {
-        // move back to original parent
-        if (element.parentElement) {
-          projectionParent.current = new WeakRef(element.parentElement);
-        }
-        creationParent.appendChild(element);
+      if (element.parentElement) {
+        projectionParent.current = new WeakRef(element.parentElement);
       }
+      creationParent.appendChild(element);
     };
-  }, [enabled, elementRef]);
+  }, [mode, elementRef]);
 }
 
 export const createComponent = <
@@ -366,7 +311,6 @@ export const createComponent = <
   renderProps,
   moveBackOnDelete,
 }: WrapperOptions<I, E, R>): ReactWebComponent<I, E, R> => {
-  // Register our components
   if ('register' in elementClass) {
     (elementClass as { register: () => void }).register();
   }
@@ -380,24 +324,22 @@ export const createComponent = <
   });
 
   if (!renderProps && !moveBackOnDelete) {
-    // When R is empty (no renderProps), the component types are equivalent at runtime
+    // Runtime shape matches; only types differ.
     return component as unknown as ReactWebComponent<I, E, R>;
   }
 
   const renderers: Renderers = renderProps ?? {};
+  const reparenting: Reparenting = moveBackOnDelete ? 'move-back' : 'none';
 
-  type PropsWithRenderProps = WithJsxRenderProps<ComponentProps<I, E>, R>;
-
-  return React.forwardRef<I, PropsWithRenderProps>((props, ref) => {
+  return React.forwardRef<I, WithJsxRenderProps<ComponentProps<I, E>, R>>((props, ref) => {
     const bridge = useTemplateBridge(React, renderers);
-    const [elementRef, setRef] = useForwardedRef<I>(React, ref);
-    useReparenting(React, moveBackOnDelete, elementRef);
+    const [elementRef, setRef] = useForwardedRef(React, ref);
+    useReparenting(React, reparenting, elementRef);
 
-    const elementProps = bridge.resolve(props as Props);
-    const children = React.Children.toArray((props as { children?: React.ReactNode }).children);
+    const { props: elementProps, portals } = bridge.resolve(props as Props);
+    const { children } = props as { children?: React.ReactNode };
 
-    children.push(...bridge.portals());
-    elementProps.children = children;
+    elementProps.children = [...React.Children.toArray(children), ...portals];
 
     return React.createElement(component, {
       ...elementProps,
@@ -406,16 +348,8 @@ export const createComponent = <
   });
 };
 
-function createPatched(callback: (req: RendererRequest<unknown>) => void, propertyName: string) {
-  return (ctx: unknown) => html`${requestRenderer(callback, propertyName, ctx)}`;
-}
-
-function increment(count: number): number {
-  return count + 1;
-}
-
-function isRecord(value: unknown): value is Props {
-  return typeof value === 'object' && value !== null;
+function isThenable(value: unknown): value is PromiseLike<unknown> {
+  return isObject(value) && typeof value.then === 'function';
 }
 
 function shallowEqual(a: Props, b: Props): boolean {
@@ -426,18 +360,4 @@ function shallowEqual(a: Props, b: Props): boolean {
   }
 
   return keys.every((key) => Object.is(a[key], b[key]));
-}
-
-/** Resolves a dot delimited path, returning `undefined` if any segment is missing. */
-function getAtPath(object: Props, path: string): unknown {
-  let current: unknown = object;
-
-  for (const part of path.split('.')) {
-    if (!isRecord(current)) {
-      return undefined;
-    }
-    current = current[part];
-  }
-
-  return current;
 }

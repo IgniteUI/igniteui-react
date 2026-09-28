@@ -5,90 +5,63 @@ import {
   type DirectiveParameters,
   directive,
 } from 'lit/async-directive.js';
-import { withDataContext } from './backfills.js';
 import { equal } from './equal.js';
+import { isObject } from './is-object.js';
 import { getUUID } from './random-uuid.js';
 
 export const REQUEST_REMOVE = Symbol('renderer-remove');
 const NOT_SET = Symbol('not-set');
 
-type NgState<T> = T & { implicit: unknown };
-type RendererState<T> = {
-  previous: T;
-  current: T;
-};
-
-function createRequestData<T>(
-  name: string,
-  data: T | typeof REQUEST_REMOVE,
-  node: Element,
-  key?: string,
-): RendererRequest<T> {
-  return {
-    name,
-    data: data === REQUEST_REMOVE ? data : withDataContext(data),
-    slotName: key !== undefined ? `${name}${key}` : name,
-    node,
-  };
-}
-
-export type RendererRequest<T> = {
-  data: T | typeof REQUEST_REMOVE;
+export type RendererRequest = {
+  data: unknown;
   name: string;
   slotName: string;
   node: Element;
 };
 
-type RendererCallback<T> = (req: RendererRequest<T>) => unknown;
+type RendererCallback = (req: RendererRequest) => unknown;
 
-class RequestRenderer<T> extends AsyncDirective {
+class RequestRenderer extends AsyncDirective {
   private readonly _key = getUUID();
   private _part: WeakRef<ChildPart> | null = null;
-  private _callback: WeakRef<RendererCallback<T>> | null = null;
-
-  private _state = { previous: NOT_SET, current: undefined } as RendererState<T>;
+  private _callback: WeakRef<RendererCallback> | null = null;
   private _name!: string;
-
-  private get _renderNode(): Element | undefined {
-    return this._part?.deref()?.parentNode as Element | undefined;
-  }
-
-  private _shouldUpdateNG(_data: NgState<T>): boolean {
-    /* Can't compare implicit, in main use case it'd be the cell value which might repeat,
-      be undefined or otherwise unrelated to the template content. Disabled for now. Reevaluate: */
-
-    // if (equal(data.$implicit, this._state.previous)) {
-    //   return false;
-    // }
-
-    // this._state.previous = data.$implicit as T;
-    return true;
-  }
+  private _data: unknown;
+  private _previous: unknown = NOT_SET;
 
   private _shouldUpdate(): boolean {
-    const data = this._state.current;
-
-    if (data !== null && typeof data === 'object' && Reflect.has(data as NgState<T>, 'implicit')) {
-      return this._shouldUpdateNG(data as NgState<T>);
+    // Angular context: `implicit` (e.g. cell value) may repeat; always update.
+    if (isObject(this._data) && 'implicit' in this._data) {
+      return true;
     }
 
-    if (equal(this._state.previous, data)) {
+    if (equal(this._previous, this._data)) {
       return false;
     }
 
-    this._state.previous = data;
+    this._previous = this._data;
     return true;
   }
 
-  /** Dispatches a request for the current state, if there is somewhere to render it. */
-  private _request(callback: RendererCallback<T>, data: T | typeof REQUEST_REMOVE): void {
-    const node = this._renderNode;
-    if (!node) return;
+  private _request(callback: RendererCallback, data: unknown): void {
+    const node = this._part?.deref()?.parentNode as Element | undefined;
 
-    callback(createRequestData(this._name, data, node, this._key));
+    if (!node) {
+      return;
+    }
+
+    callback({ name: this._name, data, slotName: `${this._name}${this._key}`, node });
   }
 
-  public override render(_callback: RendererCallback<T>, _name: string, _data: T): symbol {
+  private _sync(): void {
+    const callback = this._callback?.deref();
+
+    if (callback && this._shouldUpdate()) {
+      this._request(callback, this._data);
+    }
+  }
+
+  public override render(_callback: RendererCallback, _name: string, _data: unknown): symbol {
     return noChange;
   }
 
@@ -96,32 +69,34 @@ class RequestRenderer<T> extends AsyncDirective {
     part: ChildPart,
     [callback, name, data]: DirectiveParameters<this>,
   ): symbol {
-    this._callback = new WeakRef(callback);
-    this._name = name;
-    this._state.current = data;
-    this._part = new WeakRef(part);
+    if (this._callback?.deref() !== callback) {
+      this._callback = new WeakRef(callback);
+    }
 
-    if (this.isConnected && callback && this._shouldUpdate()) {
-      this._request(callback, this._state.current);
+    this._part ??= new WeakRef(part);
+    this._name = name;
+    this._data = data;
+
+    if (this.isConnected) {
+      this._sync();
     }
 
     return noChange;
   }
 
   protected override reconnected(): void {
-    const callback = this._callback?.deref();
-    if (callback && this._shouldUpdate()) {
-      this._request(callback, this._state.current);
-    }
+    this._sync();
   }
 
   protected override disconnected(): void {
     const callback = this._callback?.deref();
+
     if (callback) {
       this._request(callback, REQUEST_REMOVE);
     }
-    // drop prev, so a reconnect would behave like initial
-    this._state.previous = NOT_SET as T;
+
+    // Reconnect acts like first render.
+    this._previous = NOT_SET;
   }
 }
 

@@ -2,7 +2,7 @@ import { afterAll, expect, test, vi } from 'vitest';
 import { locators, page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 
-import Chat from './Chat';
+import Chat, { ToggledHeader } from './Chat';
 
 afterAll(() => vi.restoreAllMocks());
 
@@ -65,6 +65,16 @@ test('Markdown support with default renderer', async () => {
   message = page.getByText(/Infragistics/);
   await expect.element(message).toBeVisible();
   expect(message.element().tagName).toMatch(/a/i);
+});
+
+test('a renderer restored before the chat re-renders keeps its content', async () => {
+  render(<ToggledHeader />);
+
+  await expect.element(page.getByText('HDR', { exact: true })).toBeVisible();
+
+  await page.getByRole('button', { name: 'Toggle' }).click();
+
+  await expect.element(page.getByText('HDR', { exact: true })).toBeVisible();
 });
 
 //#region Locator extension
