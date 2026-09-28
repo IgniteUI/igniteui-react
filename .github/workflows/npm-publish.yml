@@ -314,10 +314,6 @@ jobs:
           retention-days: 30
           if-no-files-found: error
 
-  # The only job that can publish to npmjs.org. It compiles nothing and never checks out the repo.
-  # TODO: flip `if: false` to `if: true` on the publish steps once npm Trusted Publishing is
-  # configured and verified end-to-end for all three packages. Every other release step still
-  # runs so the pipeline can be exercised safely in the meantime.
   publish-npmjs:
     name: Publish to npmjs.org
     needs: [build-npmjs, attest-npmjs]
@@ -355,21 +351,18 @@ jobs:
       # Publishing the packed tarball guarantees the published bytes are the attested bytes.
       # Authentication and npm provenance both come from the OIDC token - no npm token needed.
       - name: Publish igniteui-react
-        if: false
         env:
           NPM_TAG: ${{ needs.build-npmjs.outputs.npm-tag }}
           TARBALL: ${{ needs.build-npmjs.outputs.components-tarball }}
         run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
 
       - name: Publish igniteui-react-dockmanager
-        if: false
         env:
           NPM_TAG: ${{ needs.build-npmjs.outputs.npm-tag }}
           TARBALL: ${{ needs.build-npmjs.outputs.dockmanager-tarball }}
         run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
 
       - name: Publish igniteui-react-grids
-        if: false
         env:
           NPM_TAG: ${{ needs.build-npmjs.outputs.npm-tag }}
           TARBALL: ${{ needs.build-npmjs.outputs.grids-tarball }}
@@ -600,11 +593,6 @@ jobs:
           retention-days: 30
           if-no-files-found: error
 
-  # The only job that can publish to ProGet. ProGet has no npm trusted-publishing support, so
-  # this authenticates with a stored token rather than OIDC.
-  # TODO: flip `if: false` to `if: true` on the publish steps once we're ready to resume
-  # licensed releases. Every other release step still runs so the pipeline can be exercised
-  # safely in the meantime.
   publish-proget:
     name: Publish to ProGet (licensed feed)
     needs: build-proget
@@ -640,7 +628,6 @@ jobs:
           printf '%s\n' "$EXPECTED" | sha256sum --check --strict
 
       - name: Publish @infragistics/igniteui-react
-        if: false
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PROGET_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
@@ -648,7 +635,6 @@ jobs:
         run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG"
 
       - name: Publish @infragistics/igniteui-react-dockmanager
-        if: false
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PROGET_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
@@ -656,7 +642,6 @@ jobs:
         run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG"
 
       - name: Publish @infragistics/igniteui-react-grids
-        if: false
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PROGET_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
