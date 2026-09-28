@@ -1,6 +1,7 @@
 ---
+license: MIT
 name: igniteui-react-customize-theme
-description: Theme Ignite UI for React with CSS custom properties — brand palette, dark mode, size/spacing/roundness, per-component tokens, and scoped themes, optionally via the igniteui-theming MCP server. Use when applying brand colors, switching light/dark, overriding a component's appearance (grid headers, buttons, avatars), or when theme overrides are not taking effect.
+description: "Covers theming Ignite UI for React with CSS custom properties: brand palette, dark mode, size, spacing and roundness, per-component tokens, and scoped themes, optionally through the igniteui-theming MCP server. WHEN TO USE: applying brand colors, switching between light and dark, changing a component's appearance (grid headers, buttons, avatars), setting up the igniteui-theming MCP server, or fixing theme overrides that do not take effect. WHEN NOT TO USE: choosing components or adding the initial theme CSS import (use igniteui-react-components), building a whole view from a design image (use igniteui-react-generate-from-image-design, which includes theming), or styling elements that are not Ignite UI components."
 user-invocable: true
 ---
 
@@ -83,7 +84,7 @@ import { configureTheme } from 'igniteui-react';
 configureTheme('bootstrap', 'dark'); // design system, variant
 ```
 
-Prefer a real dark theme file (`themes/dark/bootstrap.css`) over hand-overriding palette tokens: it re-tunes surface, gray, elevations, and every component schema. See [CSS-THEMING.md](./reference/CSS-THEMING.md) for the switching patterns.
+Prefer a real dark theme file (`themes/dark/bootstrap.css`) over hand-overriding palette tokens: it re-tunes surface, gray, elevations, and every component schema. See [CSS-THEMING.md](./references/CSS-THEMING.md) for the switching patterns.
 
 When choosing colors for a dark palette, `surface` must be dark (luminance ≤ 0.5) and the `gray` base must be **light**. Gray shades are generated to contrast *against* the surface, so the gray base is always inverted relative to the variant — reversing it produces unreadable text.
 
@@ -125,7 +126,7 @@ VS Code — `.vscode/mcp.json` (Cursor and Claude Desktop use the same entry und
 
 ## Reference
 
-- [CSS-THEMING.md](./reference/CSS-THEMING.md) — scoping patterns, CSS Modules, light/dark switching, inline overrides
+- [CSS-THEMING.md](./references/CSS-THEMING.md) — scoping patterns, CSS Modules, light/dark switching, inline overrides
 
 ## Related skills
 
