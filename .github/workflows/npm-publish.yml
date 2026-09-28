@@ -521,8 +521,15 @@ jobs:
         run: npm version "$VERSION" --no-git-tag-version
         working-directory: dist
 
-      - name: Rename package to @infragistics/igniteui-react-dockmanager
-        run: npm pkg set name="@infragistics/igniteui-react-dockmanager"
+      # The licensed wrappers import @infragistics/igniteui-dockmanager, so its dependency moves scope too.
+      - name: Rename package and its dependency to @infragistics scope
+        run: |
+          set -euo pipefail
+          npm pkg set name="@infragistics/igniteui-react-dockmanager"
+          range=$(npm pkg get dependencies.igniteui-dockmanager | tr -d '"')
+          [[ "$range" != "{}" ]] || { echo "::error::igniteui-dockmanager is not in dependencies"; exit 1; }
+          npm pkg set "dependencies.@infragistics/igniteui-dockmanager=$range"
+          npm pkg delete dependencies.igniteui-dockmanager
         working-directory: dist
 
       - name: Pack dock-manager package
@@ -558,8 +565,15 @@ jobs:
         run: npm version "$VERSION" --no-git-tag-version
         working-directory: dist
 
-      - name: Rename package to @infragistics/igniteui-react-grids
-        run: npm pkg set name="@infragistics/igniteui-react-grids"
+      # The licensed wrappers import @infragistics/igniteui-webcomponents-grids, so its dependency moves scope too.
+      - name: Rename package and its dependency to @infragistics scope
+        run: |
+          set -euo pipefail
+          npm pkg set name="@infragistics/igniteui-react-grids"
+          range=$(npm pkg get dependencies.igniteui-webcomponents-grids | tr -d '"')
+          [[ "$range" != "{}" ]] || { echo "::error::igniteui-webcomponents-grids is not in dependencies"; exit 1; }
+          npm pkg set "dependencies.@infragistics/igniteui-webcomponents-grids=$range"
+          npm pkg delete dependencies.igniteui-webcomponents-grids
         working-directory: dist
 
       - name: Pack grids package
