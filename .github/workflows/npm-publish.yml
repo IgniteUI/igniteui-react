@@ -44,14 +44,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
+          persist-credentials: false
 
+      # No dependency cache: a release build must resolve from the registry, not from a cache entry.
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
+          package-manager-cache: false
 
       - name: npm ci
         run: npm ci ${{ inputs.verbose && '--loglevel verbose' || '' }}
@@ -197,7 +200,7 @@ jobs:
           { echo "### Packed artifacts (npmjs.org)"; echo '```'; sha256sum artifacts/*.tgz; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload release artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: npmjs-release-artifacts
           path: artifacts/*
@@ -221,7 +224,7 @@ jobs:
 
     steps:
       - name: Download release artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: npmjs-release-artifacts
           path: artifacts
@@ -240,14 +243,14 @@ jobs:
       - name: Attest build provenance
         id: attest-provenance
         if: env.ATTESTATIONS_ENABLED == 'true'
-        uses: actions/attest@v4
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: artifacts/*.tgz
 
       - name: Attest SBOM (CycloneDX)
         id: attest-sbom
         if: env.ATTESTATIONS_ENABLED == 'true'
-        uses: actions/attest@v4
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: artifacts/${{ env.COMPONENTS_TARBALL }}
           sbom-path: artifacts/${{ env.SBOM_FILE }}
@@ -268,7 +271,7 @@ jobs:
 
       - name: Upload attestation bundles
         if: env.ATTESTATIONS_ENABLED == 'true'
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: npmjs-attestations
           path: attestations/*
@@ -290,17 +293,14 @@ jobs:
 
     steps:
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
+          package-manager-cache: false
           registry-url: 'https://registry.npmjs.org'
 
-      # Trusted publishing needs an OIDC-aware npm CLI (>= 11.5.1).
-      - name: Update npm
-        run: npm install -g npm@latest
-
       - name: Download release artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: npmjs-release-artifacts
           path: artifacts
@@ -350,13 +350,13 @@ jobs:
 
     steps:
       - name: Download release artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: npmjs-release-artifacts
           path: artifacts
 
       - name: Download attestation bundles
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         continue-on-error: true
         with:
           name: npmjs-attestations
@@ -392,14 +392,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
+          persist-credentials: false
 
+      # No dependency cache: a release build must resolve from the registry, not from a cache entry.
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
+          package-manager-cache: false
 
       - name: npm ci
         run: npm ci ${{ inputs.verbose && '--loglevel verbose' || '' }}
@@ -541,7 +544,7 @@ jobs:
           { echo "### Packed artifacts (ProGet licensed feed)"; echo '```'; sha256sum artifacts/*.tgz; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload release artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: proget-release-artifacts
           path: artifacts/*
@@ -563,14 +566,15 @@ jobs:
 
     steps:
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
+          package-manager-cache: false
           registry-url: 'https://packages.infragistics.com/npm/js-licensed/'
           scope: '@infragistics'
 
       - name: Download release artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: proget-release-artifacts
           path: artifacts
