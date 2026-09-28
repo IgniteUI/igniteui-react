@@ -1,0 +1,69 @@
+name: 'Setup, build & test'
+description: 'Install Node.js and dependencies, build, validate dist packages, lint and test. Shared by CI and release workflows.'
+
+inputs:
+  licensed:
+    description: 'Produce a licensed (@infragistics scoped) build'
+    required: false
+    default: 'false'
+  verbose:
+    description: 'Get verbose npm output where configurable'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24.x'
+        cache: 'npm'
+
+    - name: npm ci
+      shell: bash
+      run: npm ci ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+
+    # Static gates first: none of them need a build, so a lint, type or manifest error
+    # fails in seconds instead of after the full build + validate cycle.
+    - name: Lint
+      shell: bash
+      run: npm run lint ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+
+    - name: Type-check build scripts
+      shell: bash
+      run: npm run typecheck:scripts
+
+    - name: Check publish manifests
+      shell: bash
+      run: npm run check:manifests
+
+    - name: Build
+      shell: bash
+      run: npm run build ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+      env:
+        # Only truthy when licensed; empty string keeps unlicensed builds unscoped.
+        IG_LICENSED_BUILD: ${{ inputs.licensed == 'true' && 'true' || '' }}
+
+    - name: Validate dist packages
+      shell: bash
+      run: npm run validate:dist ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+
+    # ~100MB download per run otherwise. Keyed on the lockfile, so the cache is
+    # rebuilt whenever the resolved playwright version can have changed.
+    - name: Cache Playwright browsers
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+        restore-keys: ${{ runner.os }}-playwright-
+
+    - name: Install Playwright browsers
+      shell: bash
+      run: npx playwright install chromium-headless-shell
+
+    - name: Test
+      shell: bash
+      run: npm run test:ci ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}
+      env:
+        CI: 'true'

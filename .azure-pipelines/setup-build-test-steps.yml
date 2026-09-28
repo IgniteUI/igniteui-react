@@ -23,6 +23,29 @@ steps:
     command: 'ci'
     verbose: ${{ parameters.verbose }}
 
+# Static gates first: none of them need a build, so a lint, type or manifest error
+# fails in seconds instead of after the full build + validate cycle.
+- task: Npm@1
+  displayName: 'Lint'
+  inputs:
+    command: 'custom'
+    verbose: ${{ parameters.verbose }}
+    customCommand: 'run lint'
+
+- task: Npm@1
+  displayName: 'Type-check build scripts'
+  inputs:
+    command: 'custom'
+    verbose: ${{ parameters.verbose }}
+    customCommand: 'run typecheck:scripts'
+
+- task: Npm@1
+  displayName: 'Check publish manifests'
+  inputs:
+    command: 'custom'
+    verbose: ${{ parameters.verbose }}
+    customCommand: 'run check:manifests'
+
 - task: Npm@1
   displayName: 'Build'
   inputs:
@@ -35,11 +58,11 @@ steps:
 
 
 - task: Npm@1
-  displayName: 'Lint'
+  displayName: 'Validate dist packages'
   inputs:
     command: 'custom'
     verbose: ${{ parameters.verbose }}
-    customCommand: 'run lint'
+    customCommand: 'run validate:dist'
 
 - script: npx playwright install chromium-headless-shell
   displayName: 'Install Playwright browsers'
