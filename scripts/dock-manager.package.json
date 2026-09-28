@@ -4,6 +4,10 @@
   "type": "module",
   "description": "Ignite UI React Dock Manager component.",
   "homepage": "https://github.com/IgniteUI/igniteui-react",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IgniteUI/igniteui-react.git"
+  },
   "keywords": ["react", "UI Components", "infragistics", "dock manager"],
   "license": "Infragistics(R) Ultimate license (http://www.infragistics.com/legal/ultimate/license/)",
   "maintainers": [
