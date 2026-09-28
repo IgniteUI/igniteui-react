@@ -354,19 +354,19 @@ jobs:
         env:
           NPM_TAG: ${{ needs.build-npmjs.outputs.npm-tag }}
           TARBALL: ${{ needs.build-npmjs.outputs.components-tarball }}
-        run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
+        run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
 
       - name: Publish igniteui-react-dockmanager
         env:
           NPM_TAG: ${{ needs.build-npmjs.outputs.npm-tag }}
           TARBALL: ${{ needs.build-npmjs.outputs.dockmanager-tarball }}
-        run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
+        run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
 
       - name: Publish igniteui-react-grids
         env:
           NPM_TAG: ${{ needs.build-npmjs.outputs.npm-tag }}
           TARBALL: ${{ needs.build-npmjs.outputs.grids-tarball }}
-        run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
+        run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
 
   attach-release-npmjs:
     name: Attach release evidence (npmjs.org)
@@ -632,18 +632,18 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
           TARBALL: ${{ needs.build-proget.outputs.components-tarball }}
-        run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG"
+        run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG"
 
       - name: Publish @infragistics/igniteui-react-dockmanager
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
           TARBALL: ${{ needs.build-proget.outputs.dockmanager-tarball }}
-        run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG"
+        run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG"
 
       - name: Publish @infragistics/igniteui-react-grids
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
           TARBALL: ${{ needs.build-proget.outputs.grids-tarball }}
-        run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG"
+        run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG"
