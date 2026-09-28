@@ -607,8 +607,19 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           package-manager-cache: false
-          registry-url: 'https://packages.infragistics.com/npm/js-licensed/'
-          scope: '@infragistics'
+
+      # ProGet expects basic auth (`_auth`, the secret is already base64), not the bearer
+      # `_authToken` that setup-node's registry-url writes. The .npmrc only references the
+      # variable, so the secret is never written to disk.
+      - name: Configure ProGet registry
+        run: |
+          set -euo pipefail
+          npmrc="$RUNNER_TEMP/proget.npmrc"
+          cat > "$npmrc" <<'EOF'
+          @infragistics:registry=https://packages.infragistics.com/npm/js-licensed/
+          //packages.infragistics.com/npm/js-licensed/:_auth=${PROGET_NPM_AUTH}
+          EOF
+          echo "NPM_CONFIG_USERCONFIG=$npmrc" >> "$GITHUB_ENV"
 
       - name: Download release artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -629,21 +640,21 @@ jobs:
 
       - name: Publish @infragistics/igniteui-react
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
+          PROGET_NPM_AUTH: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
           TARBALL: ${{ needs.build-proget.outputs.components-tarball }}
         run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG"
 
       - name: Publish @infragistics/igniteui-react-dockmanager
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
+          PROGET_NPM_AUTH: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
           TARBALL: ${{ needs.build-proget.outputs.dockmanager-tarball }}
         run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG"
 
       - name: Publish @infragistics/igniteui-react-grids
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
+          PROGET_NPM_AUTH: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
           TARBALL: ${{ needs.build-proget.outputs.grids-tarball }}
         run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG"
