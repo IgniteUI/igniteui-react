@@ -629,21 +629,21 @@ jobs:
 
       - name: Publish @infragistics/igniteui-react
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PROGET_NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
           TARBALL: ${{ needs.build-proget.outputs.components-tarball }}
         run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG"
 
       - name: Publish @infragistics/igniteui-react-dockmanager
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PROGET_NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
           TARBALL: ${{ needs.build-proget.outputs.dockmanager-tarball }}
         run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG"
 
       - name: Publish @infragistics/igniteui-react-grids
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PROGET_NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
           TARBALL: ${{ needs.build-proget.outputs.grids-tarball }}
         run: npm publish "artifacts/$TARBALL" --tag "$NPM_TAG"
