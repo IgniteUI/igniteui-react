@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import { type ChatMessageRenderContext, IgrChat } from '../../src/components';
 import '../../node_modules/igniteui-webcomponents/themes/light/bootstrap.css';
 import { createChatMarkdownRenderer } from '../../src/extras/index';
@@ -42,5 +44,27 @@ export default function BasicForm() {
       }}
       onMessageCreated={logEvent}
     ></IgrChat>
+  );
+}
+
+export function ToggledHeader() {
+  const [enabled, setEnabled] = useState(true);
+
+  const messages = [{ id: '1', text: 'Hello', sender: 'support', timestamp: '0' }];
+  const messageHeader = () => <b>HDR</b>;
+
+  // Both commits land before the element's queued update.
+  const toggle = () => {
+    flushSync(() => setEnabled(false));
+    flushSync(() => setEnabled(true));
+  };
+
+  return (
+    <>
+      <IgrChat messages={messages} options={{ renderers: enabled ? { messageHeader } : {} }} />
+      <button type="button" onClick={toggle}>
+        Toggle
+      </button>
+    </>
   );
 }
