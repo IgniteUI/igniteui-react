@@ -34,13 +34,15 @@ jobs:
       contents: read
     outputs:
       npm-tag: ${{ steps.npm-tag.outputs.npm-tag }}
-      sbom-file: ${{ steps.sbom.outputs.sbom-file }}
       components-tarball: ${{ steps.pack-components.outputs.tarball }}
       components-sha256: ${{ steps.pack-components.outputs.sha256 }}
+      components-sbom: ${{ steps.sbom.outputs.components }}
       dockmanager-tarball: ${{ steps.pack-dockmanager.outputs.tarball }}
       dockmanager-sha256: ${{ steps.pack-dockmanager.outputs.sha256 }}
+      dockmanager-sbom: ${{ steps.sbom.outputs.dockmanager }}
       grids-tarball: ${{ steps.pack-grids.outputs.tarball }}
       grids-sha256: ${{ steps.pack-grids.outputs.sha256 }}
+      grids-sbom: ${{ steps.sbom.outputs.grids }}
 
     steps:
       - name: Checkout
@@ -85,23 +87,6 @@ jobs:
           else
             echo "npm-tag=latest" >> "$GITHUB_OUTPUT"
           fi
-
-      # Inventories the workspace's full dependency graph (prod + dev) as installed for this
-      # build. @cyclonedx/cyclonedx-npm is a devDependency, so this never fetches a tool
-      # from the network at release time.
-      - name: Generate dependency SBOM (CycloneDX 1.6)
-        id: sbom
-        run: |
-          set -euo pipefail
-          mkdir -p artifacts
-          file="igniteui-react-${VERSION}.cdx.json"
-          npx cyclonedx-npm \
-            --spec-version 1.6 \
-            --output-format JSON \
-            --output-file "artifacts/${file}" \
-            --mc-type application \
-            --validate
-          echo "sbom-file=${file}" >> "$GITHUB_OUTPUT"
 
       # components release:
       - name: Copy components package.json
@@ -195,6 +180,35 @@ jobs:
           echo "tarball=${file}" >> "$GITHUB_OUTPUT"
           echo "sha256=$(sha256sum "artifacts/${file}" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
 
+      # One SBOM per package: the packed tarball plus the production dependency tree a consumer
+      # installs. Unpacked outside the workspace so the repo's lockfile and dev tooling can't leak in.
+      - name: Generate per-package SBOMs (CycloneDX 1.6)
+        id: sbom
+        env:
+          COMPONENTS: ${{ steps.pack-components.outputs.tarball }}
+          DOCKMANAGER: ${{ steps.pack-dockmanager.outputs.tarball }}
+          GRIDS: ${{ steps.pack-grids.outputs.tarball }}
+        run: |
+          set -euo pipefail
+          # The pinned devDependency, invoked by path so it is never downloaded at release time.
+          cyclonedx="$GITHUB_WORKSPACE/node_modules/.bin/cyclonedx-npm"
+          for entry in "components=$COMPONENTS" "dockmanager=$DOCKMANAGER" "grids=$GRIDS"; do
+            key=${entry%%=*}
+            tarball=${entry#*=}
+            sbom="${tarball%.tgz}.cdx.json"
+            workdir="$RUNNER_TEMP/sbom-$key"
+            mkdir -p "$workdir"
+            tar -xzf "artifacts/$tarball" -C "$workdir"
+            (
+              cd "$workdir/package"
+              npm install --omit=dev --ignore-scripts --no-audit --no-fund
+              # Not --output-reproducible: it drops serialNumber, which actions/attest requires.
+              "$cyclonedx" --spec-version 1.6 --output-format JSON --mc-type library --omit dev --validate \
+                --output-file "$GITHUB_WORKSPACE/artifacts/$sbom"
+            )
+            echo "$key=$sbom" >> "$GITHUB_OUTPUT"
+          done
+
       - name: Summarize packed artifacts
         run: |
           { echo "### Packed artifacts (npmjs.org)"; echo '```'; sha256sum artifacts/*.tgz; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
@@ -219,8 +233,9 @@ jobs:
     env:
       # Artifact attestations are unavailable in private repositories outside GitHub Enterprise Cloud.
       ATTESTATIONS_ENABLED: ${{ !github.event.repository.private }}
-      COMPONENTS_TARBALL: ${{ needs.build-npmjs.outputs.components-tarball }}
-      SBOM_FILE: ${{ needs.build-npmjs.outputs.sbom-file }}
+      COMPONENTS_SBOM: ${{ needs.build-npmjs.outputs.components-sbom }}
+      DOCKMANAGER_SBOM: ${{ needs.build-npmjs.outputs.dockmanager-sbom }}
+      GRIDS_SBOM: ${{ needs.build-npmjs.outputs.grids-sbom }}
 
     steps:
       - name: Download release artifacts
@@ -247,26 +262,47 @@ jobs:
         with:
           subject-path: artifacts/*.tgz
 
-      - name: Attest SBOM (CycloneDX)
-        id: attest-sbom
+      - name: Attest SBOM (igniteui-react)
+        id: attest-sbom-components
         if: env.ATTESTATIONS_ENABLED == 'true'
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
-          subject-path: artifacts/${{ env.COMPONENTS_TARBALL }}
-          sbom-path: artifacts/${{ env.SBOM_FILE }}
+          subject-path: artifacts/${{ needs.build-npmjs.outputs.components-tarball }}
+          sbom-path: artifacts/${{ env.COMPONENTS_SBOM }}
 
+      - name: Attest SBOM (igniteui-react-dockmanager)
+        id: attest-sbom-dockmanager
+        if: env.ATTESTATIONS_ENABLED == 'true'
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: artifacts/${{ needs.build-npmjs.outputs.dockmanager-tarball }}
+          sbom-path: artifacts/${{ env.DOCKMANAGER_SBOM }}
+
+      - name: Attest SBOM (igniteui-react-grids)
+        id: attest-sbom-grids
+        if: env.ATTESTATIONS_ENABLED == 'true'
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: artifacts/${{ needs.build-npmjs.outputs.grids-tarball }}
+          sbom-path: artifacts/${{ env.GRIDS_SBOM }}
+
+      # Each <package>.cdx.json is released next to its signed <package>.cdx.sigstore.json.
       - name: Collect attestation bundles
         if: env.ATTESTATIONS_ENABLED == 'true'
         run: |
           set -euo pipefail
           mkdir -p attestations
           cp "${{ steps.attest-provenance.outputs.bundle-path }}" attestations/provenance.sigstore.json
-          cp "${{ steps.attest-sbom.outputs.bundle-path }}" attestations/sbom-cyclonedx.sigstore.json
+          cp "${{ steps.attest-sbom-components.outputs.bundle-path }}" "attestations/${COMPONENTS_SBOM%.json}.sigstore.json"
+          cp "${{ steps.attest-sbom-dockmanager.outputs.bundle-path }}" "attestations/${DOCKMANAGER_SBOM%.json}.sigstore.json"
+          cp "${{ steps.attest-sbom-grids.outputs.bundle-path }}" "attestations/${GRIDS_SBOM%.json}.sigstore.json"
 
           {
             echo "### Attestations"
-            echo "- Provenance: ${{ steps.attest-provenance.outputs.attestation-url }}"
-            echo "- SBOM (CycloneDX): ${{ steps.attest-sbom.outputs.attestation-url }}"
+            echo "- Provenance (all packages): ${{ steps.attest-provenance.outputs.attestation-url }}"
+            echo "- SBOM igniteui-react: ${{ steps.attest-sbom-components.outputs.attestation-url }}"
+            echo "- SBOM igniteui-react-dockmanager: ${{ steps.attest-sbom-dockmanager.outputs.attestation-url }}"
+            echo "- SBOM igniteui-react-grids: ${{ steps.attest-sbom-grids.outputs.attestation-url }}"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload attestation bundles
@@ -365,12 +401,11 @@ jobs:
       - name: Attach evidence to the release
         env:
           GH_TOKEN: ${{ github.token }}
-          SBOM_FILE: ${{ needs.build-npmjs.outputs.sbom-file }}
         run: |
           set -euo pipefail
           gh release upload "$VERSION" --clobber -R "${{ github.repository }}" \
             artifacts/*.tgz \
-            "artifacts/${SBOM_FILE}" \
+            artifacts/*.cdx.json \
             $(ls attestations/*.json 2>/dev/null || true)
 
   # Builds and inventories the licensed (@infragistics-scoped) release for the ProGet feed.
