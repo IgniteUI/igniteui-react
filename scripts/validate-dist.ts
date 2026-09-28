@@ -27,18 +27,12 @@
 
 import { execSync } from 'node:child_process';
 import { copyFileSync, existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join } from 'node:path';
 import packlist from 'npm-packlist';
-import type { PackageJsonTypes } from './types';
+import { DIST, publishManifests, ROOT, readJson, SCRIPTS } from './paths';
+import type { PackageJson } from './types';
 
-const ROOT = resolve(import.meta.dirname, '..');
-const DIST = join(ROOT, 'dist');
 const DIST_PKG = join(DIST, 'package.json');
-
-/** Manifests published from `dist/`, in the same order as the release pipeline. */
-const MANIFESTS = ['components.package.json', 'dock-manager.package.json', 'grids.package.json'];
-
-let failed = false;
 
 /** Collect every string leaf from a nested `exports` value. */
 function collectStrings(value: unknown, out: string[]): void {
@@ -56,17 +50,16 @@ async function packedFiles(manifest: object): Promise<Set<string>> {
   // npm-packlist reads the allowlist from an in-memory tree; these packages
   // have no bundled deps, so a minimal tree (empty edgesOut) is all it needs.
   const tree = { package: manifest, path: DIST, isProjectRoot: true, edgesOut: new Map() };
-  const files = (await packlist(tree)) as string[];
+  const files = await packlist(tree);
   return new Set(files.map((file) => file.replace(/\\/g, '/')));
 }
 
-async function validate(manifest: string): Promise<void> {
-  copyFileSync(join(ROOT, 'scripts', manifest), DIST_PKG);
-  const pkg = JSON.parse(readFileSync(DIST_PKG, 'utf8')) as PackageJsonTypes & {
-    main?: string;
-    module?: string;
-  };
+/** Returns whether the package described by `manifest` is publishable as built. */
+async function validate(manifest: string): Promise<boolean> {
+  copyFileSync(join(SCRIPTS, manifest), DIST_PKG);
+  const pkg = readJson<PackageJson>(DIST_PKG);
   console.log(`\n=== ${pkg.name} ===`);
+  let ok = true;
 
   // 1. attw: types + their JS must resolve for every entrypoint.
   try {
@@ -75,7 +68,7 @@ async function validate(manifest: string): Promise<void> {
       stdio: 'inherit',
     });
   } catch {
-    failed = true;
+    ok = false;
   }
 
   // 2. Backstop: every JS entrypoint must be in the published file set.
@@ -88,9 +81,11 @@ async function validate(manifest: string): Promise<void> {
     }
     if (!packed.has(target.replace(/^\.\//, ''))) {
       console.error(`  ✗ JS entry "${target}" is not in the published files.`);
-      failed = true;
+      ok = false;
     }
   }
+
+  return ok;
 }
 
 async function main(): Promise<void> {
@@ -100,9 +95,10 @@ async function main(): Promise<void> {
   }
 
   const backup = existsSync(DIST_PKG) ? readFileSync(DIST_PKG) : null;
+  let failed = false;
   try {
-    for (const manifest of MANIFESTS) {
-      await validate(manifest);
+    for (const manifest of publishManifests()) {
+      failed = !(await validate(manifest)) || failed;
     }
   } finally {
     if (backup) {

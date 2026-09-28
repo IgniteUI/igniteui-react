@@ -26,8 +26,11 @@ This repository ships with **LLM Agent Skills** — structured knowledge files t
 | **[customize-theme](skills/igniteui-react-customize-theme/SKILL.md)** | Customize styling using CSS custom properties, Sass, and the theming system in React |
 | **[optimize-bundle-size](skills/igniteui-react-optimize-bundle-size/SKILL.md)** | Reduce bundle size with granular imports, tree-shaking, and lazy loading |
 | **[generate-from-image-design](skills/igniteui-react-generate-from-image-design/SKILL.md)** | Turn a screenshot, mockup, or wireframe into a React view using Ignite UI components, MCP-guided theming, and screenshot-first layout matching |
+| **[migrate-grid-lite-to-premium](skills/igniteui-react-migrate-grid-lite-to-premium/SKILL.md)** | Move from Grid Lite (`IgrGridLite`) to the premium Data Grid (`IgrGrid`) when you need editing, selection, paging, grouping, summaries, or export |
 
-These skills are automatically discovered when placed in the agent's skills path (e.g. `.agents/skills` or `.claude/skills`). For detailed setup instructions and usage examples, see the **[skills/README.md](skills/README.md#editor--agent-setup)** file.
+These skills are automatically discovered when placed in the agent's skills path (e.g. `.agents/skills` or `.claude/skills`). For detailed setup instructions and usage examples, see the **[skills/README.md](skills/README.md#installation)** file.
+
+Skills for contributors to this repository, such as authoring new skills, live separately in [`.agents/skills/`](.agents/skills/README.md) and are not published.
 
 ### Theming MCP Server
 
