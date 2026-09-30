@@ -1,12 +1,26 @@
-trigger:
-  tags:
-    include:
-    - '*'
+# ONE-OFF BRANCH VERSION - do not merge into master.
+#
+# Publishes igniteui-react-grids ONLY, from a manually queued run. Differences
+# from the master copy of this file:
+#   * no tag trigger - the run is queued by hand against this branch,
+#   * the version is typed into the `releaseVersion` parameter instead of being
+#     read from the tag name,
+#   * components and dock-manager are not published at all.
+#
+# Delete this branch once the one-off release is out; master keeps the real,
+# tag-driven release pipeline.
+
+trigger: none
+pr: none
 
 pool:
   vmImage: ubuntu-latest
 
 parameters:
+- name: releaseVersion
+  displayName: 'Version to publish - exact semver, e.g. 21.0.1 or 21.1.0-beta.0'
+  type: string
+
 - name: publishToNpm
   displayName: 'Publish to npm registry?'
   type: boolean
@@ -14,7 +28,7 @@ parameters:
 
 - name: publishToProdLicensed
   displayName: 'Publish to Production/External Licensed Feed (ProGet)?'
-  type: boolean 
+  type: boolean
   default: true
 
 - name: verbose
@@ -23,18 +37,35 @@ parameters:
   default: false
 
 variables:
+  # Same rule the tag-driven pipeline applies to the tag name, applied here to
+  # the typed version.
   - name: npmPublishTag
-    ${{ if or(contains(variables['Build.SourceBranchName'], 'rc'), contains(variables['Build.SourceBranchName'], 'alpha'),contains(variables['Build.SourceBranchName'], 'beta')) }}:
+    ${{ if or(contains(parameters.releaseVersion, 'rc'), contains(parameters.releaseVersion, 'alpha'), contains(parameters.releaseVersion, 'beta')) }}:
         value: 'next'
     ${{ else }}:
         value: 'latest'
 
-name: $(BuildDefinitionName)_$(Build.SourceBranchName)_$(Date:yyyy-MM-dd).$(Rev:r)
+name: $(BuildDefinitionName)_grids_${{ parameters.releaseVersion }}_$(Date:yyyy-MM-dd).$(Rev:r)
 
 jobs:
 - job: Trial
   condition: ${{ parameters.publishToNpm }}
   steps:
+    # Fail in seconds on a bad version rather than after the full build: `npm
+    # version` also accepts keywords like `patch`/`minor`, which would silently
+    # bump off the manifest's placeholder 0.0.0 and publish nonsense.
+    - task: PowerShell@2
+      displayName: 'Validate releaseVersion'
+      inputs:
+        targetType: inline
+        script: |
+          $version = '${{ parameters.releaseVersion }}'
+          if ($version -notmatch '^\d+\.\d+\.\d+(-[0-9A-Za-z-.]+)?$') {
+            Write-Host "##vso[task.logissue type=error]'$version' is not an exact semver version (e.g. 21.0.1 or 21.1.0-beta.0)."
+            exit 1
+          }
+          Write-Host "Publishing igniteui-react-grids $version under npm dist-tag '$(npmPublishTag)'."
+
     # build:
     - template: setup-build-test-steps.yml
       parameters:
@@ -63,98 +94,21 @@ jobs:
         workingFile: '$(Build.SourcesDirectory)/.npmrc'
         customEndpoint: 'NPMJS.ORG PUBLIC-NetAdvantage'
 
-    # components release:
-    - task: PowerShell@2
-      displayName: 'Copy components package.json'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path "scripts/components.package.json" -Destination "dist/package.json"
-
-    - task: PowerShell@2
-      displayName: 'Copy MIT license'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_MIT" -Destination "dist/LICENSE"
-
-    - task: PowerShell@2
-      displayName: 'Copy skills folder'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path "skills" -Destination "dist/skills" -Recurse
-
-    - task: PowerShell@2
-      displayName: 'Copy components README'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/README_Components.md" -Destination "dist/README.md"
-
-    - task: Npm@1
-      displayName: 'npm version for tag $(Build.SourceBranchName)'
-      continueOnError: false
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        verbose: ${{ parameters.verbose }}
-        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
-
-    - task: Npm@1
-      displayName: '[npmjs] npm publish igniteui-react'
-      continueOnError: true
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
-        verbose: ${{ parameters.verbose }}
-
-    - task: PowerShell@2
-      displayName: 'Remove skills folder'
-      inputs:
-        targetType: inline
-        script: Remove-Item -Path "dist/skills" -Recurse -Force
-
-    # dock-manager trial release:
-    - task: PowerShell@2
-      displayName: 'Copy dock-manager package.json'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path "scripts/dock-manager.package.json" -Destination "dist/package.json"
-
-    - task: PowerShell@2
-      displayName: 'Copy IG license'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_IG" -Destination "dist/LICENSE"
-
-    - task: PowerShell@2
-      displayName: 'Copy dock-manager README'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/README_DockManager.md" -Destination "dist/README.md"
-
-    - task: Npm@1
-      displayName: 'npm version for tag $(Build.SourceBranchName)'
-      continueOnError: false
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        verbose: ${{ parameters.verbose }}
-        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
-
-    - task: Npm@1
-      displayName: '[npmjs] npm publish igniteui-react-dockmanager'
-      continueOnError: true
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
-        verbose: ${{ parameters.verbose }}
-
     # grids trial release:
     - task: PowerShell@2
       displayName: 'Copy grids package.json'
       inputs:
         targetType: inline
         script: Copy-Item -Path "scripts/grids.package.json" -Destination "dist/package.json"
+
+    # The master pipeline gets away without this because the dock-manager release
+    # right before it already left LICENSE_IG in dist/; publishing grids on its
+    # own has to copy it explicitly or the package ships with no LICENSE.
+    - task: PowerShell@2
+      displayName: 'Copy IG license'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_IG" -Destination "dist/LICENSE"
 
     - task: PowerShell@2
       displayName: 'Copy grids README'
@@ -174,17 +128,19 @@ jobs:
       displayName: "Dummy combined.js"
 
     - task: Npm@1
-      displayName: 'npm version for tag $(Build.SourceBranchName)'
+      displayName: 'npm version ${{ parameters.releaseVersion }}'
       continueOnError: false
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
         verbose: ${{ parameters.verbose }}
-        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
+        customCommand: 'version ${{ parameters.releaseVersion }} --no-git-tag-version'
 
+    # Unlike the master pipeline this does NOT continueOnError: a single package
+    # is being published here, so a failed publish should fail the build outright
+    # instead of hiding in a partially succeeded one.
     - task: Npm@1
-      displayName: '[npmjs] npm publish'
-      continueOnError: true
+      displayName: '[npmjs] npm publish igniteui-react-grids'
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
@@ -194,6 +150,19 @@ jobs:
 - job: Licensed
   condition: ${{ parameters.publishToProdLicensed }}
   steps:
+    # see the note on the same step in the Trial job
+    - task: PowerShell@2
+      displayName: 'Validate releaseVersion'
+      inputs:
+        targetType: inline
+        script: |
+          $version = '${{ parameters.releaseVersion }}'
+          if ($version -notmatch '^\d+\.\d+\.\d+(-[0-9A-Za-z-.]+)?$') {
+            Write-Host "##vso[task.logissue type=error]'$version' is not an exact semver version (e.g. 21.0.1 or 21.1.0-beta.0)."
+            exit 1
+          }
+          Write-Host "Publishing @infragistics/igniteui-react-grids $version under npm dist-tag '$(npmPublishTag)'."
+
     # build:
     - template: setup-build-test-steps.yml
       parameters:
@@ -223,108 +192,6 @@ jobs:
         workingFile: '$(Build.SourcesDirectory)/.npmrc'
         customEndpoint: 'public proget'
 
-    # components licensed feed release:
-    - task: PowerShell@2
-      displayName: 'Copy components package.json'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path "scripts/components.package.json" -Destination "dist/package.json"
-
-    - task: PowerShell@2
-      displayName: 'Copy MIT license'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_MIT" -Destination "dist/LICENSE"
-
-    - task: PowerShell@2
-      displayName: 'Copy components README'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/README_Components.md" -Destination "dist/README.md"
-
-    - task: Npm@1
-      displayName: 'npm version for tag $(Build.SourceBranchName)'
-      continueOnError: false
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        verbose: ${{ parameters.verbose }}
-        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
-
-    - task: Npm@1
-      displayName: 'update package name to @infragistics/igniteui-react'
-      continueOnError: false
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        verbose: ${{ parameters.verbose }}
-        customCommand: 'pkg set name="@infragistics/igniteui-react"'
-
-
-    - script: |
-        npm pkg set scripts.postinstall='echo "⚠️ Deprecated(@infragistics/igniteui-react): Now distributed as MIT, use igniteui-react from the npmjs.org registry instead."'
-      displayName: 'add deprecation postinstall script'
-      continueOnError: false
-      workingDirectory: '$(Build.SourcesDirectory)/dist'
-
-    - task: Npm@1
-      displayName: '[IG Packages] npm publish'
-      continueOnError: true
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
-        verbose: ${{ parameters.verbose }}
-
-    # dock-manager licensed release:
-    - task: PowerShell@2
-      displayName: 'Copy dock-manager package.json'
-      inputs:
-        targetType: inline
-        script: |
-          $content = Get-Content -Path "scripts/dock-manager.package.json"
-          $updatedContent = $content -replace 'igniteui-dockmanager', '@infragistics/igniteui-dockmanager'
-          Set-Content -Path "dist/package.json" -Value $updatedContent
-
-    - task: PowerShell@2
-      displayName: 'Copy IG license'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_IG" -Destination "dist/LICENSE"
-
-    - task: PowerShell@2
-      displayName: 'Copy components README'
-      inputs:
-        targetType: inline
-        script: Copy-Item -Path ".azure-pipelines/artifacts/README_DockManager.md" -Destination "dist/README.md"
-
-    - task: Npm@1
-      displayName: 'npm version for tag $(Build.SourceBranchName)'
-      continueOnError: false
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        verbose: ${{ parameters.verbose }}
-        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
-
-    - task: Npm@1
-      displayName: 'update package name to @infragistics/igniteui-react-dockmanager'
-      continueOnError: false
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        verbose: ${{ parameters.verbose }}
-        customCommand: 'pkg set name="@infragistics/igniteui-react-dockmanager"'
-
-    - task: Npm@1
-      displayName: '[IG Packages] npm publish'
-      continueOnError: true
-      inputs:
-        command: 'custom'
-        workingDir: '$(Build.SourcesDirectory)/dist'
-        customCommand: 'publish --tag $(npmPublishTag) -userconfig ../.npmrc'
-        verbose: ${{ parameters.verbose }}
-
     # grids licensed release:
     - task: PowerShell@2
       displayName: 'Copy grids package.json'
@@ -334,6 +201,13 @@ jobs:
           $content = Get-Content -Path "scripts/grids.package.json"
           $updatedContent = $content -replace 'igniteui-webcomponents-grids', '@infragistics/igniteui-webcomponents-grids'
           Set-Content -Path "dist/package.json" -Value $updatedContent
+
+    # see the note on the same step in the Trial job
+    - task: PowerShell@2
+      displayName: 'Copy IG license'
+      inputs:
+        targetType: inline
+        script: Copy-Item -Path ".azure-pipelines/artifacts/LICENSE_IG" -Destination "dist/LICENSE"
 
     - task: PowerShell@2
       displayName: 'Copy grids README'
@@ -353,13 +227,13 @@ jobs:
       displayName: "Dummy combined.js"
 
     - task: Npm@1
-      displayName: 'npm version for tag $(Build.SourceBranchName)'
+      displayName: 'npm version ${{ parameters.releaseVersion }}'
       continueOnError: false
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
         verbose: ${{ parameters.verbose }}
-        customCommand: 'version $(Build.SourceBranchName) --no-git-tag-version'
+        customCommand: 'version ${{ parameters.releaseVersion }} --no-git-tag-version'
 
     - task: Npm@1
       displayName: 'update package name to @infragistics/igniteui-react-grids'
@@ -370,9 +244,9 @@ jobs:
         verbose: ${{ parameters.verbose }}
         customCommand: 'pkg set name="@infragistics/igniteui-react-grids"'
 
+    # see the note on the same step in the Trial job
     - task: Npm@1
       displayName: '[IG Packages] npm publish'
-      continueOnError: true
       inputs:
         command: 'custom'
         workingDir: '$(Build.SourcesDirectory)/dist'
