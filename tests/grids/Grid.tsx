@@ -87,6 +87,8 @@ export default function Grid() {
       <IgrGrid
         data={data}
         primaryKey="id"
+        // Explicit height: default 100% in an auto-height parent leaves the body ~2 rows tall
+        height="600px"
         className="ig-typography"
         onColumnPinned={logEvent}
         rowEditable={true}
