@@ -1,13 +1,23 @@
 name: Npm.js deploy
 
-# Replaces the Azure DevOps release pipeline (.azure-pipelines/release.yml). All release logic
-# lives inline in this file on purpose - there is no steps-template equivalent to Azure's
-# setup-build-test-steps.yml here.
+# ONE-OFF BRANCH VERSION - do not merge into master.
+#
+# Publishes igniteui-react-grids ONLY, from a manually dispatched run with a typed version.
+# Differences from the master copy of this file:
+#   * no `release: published` trigger - dispatch only, so nothing fires off a tag,
+#   * the version comes from the `releaseVersion` input instead of the release tag name,
+#   * components and dock-manager are not built, attested or published,
+#   * the "attach release evidence" job is gone - there is no GitHub release to attach to.
+#
+# Delete this branch once the one-off release is out; master keeps the real,
+# release-triggered workflow.
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
+      releaseVersion:
+        description: 'Version to publish - exact semver, e.g. 21.0.1 or 21.1.0-beta.0'
+        type: string
+        required: true
       verbose:
         description: 'Get verbose output from steps - where configurable'
         type: boolean
@@ -20,9 +30,8 @@ concurrency:
 
 env:
   NODE_VERSION: '24.x'
-  # release.tag_name for a real release; falls back to the ref name so this can be exercised
-  # via workflow_dispatch against a tag while publishing is disabled.
-  VERSION: ${{ github.event.release.tag_name || github.ref_name }}
+  # Typed at dispatch time rather than read from a release tag.
+  VERSION: ${{ inputs.releaseVersion }}
 
 jobs:
   # Builds and inventories the npmjs.org release. Holds no publishing rights and no OIDC token.
@@ -34,17 +43,20 @@ jobs:
       contents: read
     outputs:
       npm-tag: ${{ steps.npm-tag.outputs.npm-tag }}
-      components-tarball: ${{ steps.pack-components.outputs.tarball }}
-      components-sha256: ${{ steps.pack-components.outputs.sha256 }}
-      components-sbom: ${{ steps.sbom.outputs.components }}
-      dockmanager-tarball: ${{ steps.pack-dockmanager.outputs.tarball }}
-      dockmanager-sha256: ${{ steps.pack-dockmanager.outputs.sha256 }}
-      dockmanager-sbom: ${{ steps.sbom.outputs.dockmanager }}
       grids-tarball: ${{ steps.pack-grids.outputs.tarball }}
       grids-sha256: ${{ steps.pack-grids.outputs.sha256 }}
       grids-sbom: ${{ steps.sbom.outputs.grids }}
 
     steps:
+      # `npm version` also accepts keywords like `patch`/`minor`, which would silently bump off
+      # the manifest's placeholder 0.0.0 and publish nonsense. Fail before anything is built.
+      - name: Validate releaseVersion
+        run: |
+          set -euo pipefail
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] \
+            || { echo "::error::'$VERSION' is not an exact semver version (e.g. 21.0.1 or 21.1.0-beta.0)."; exit 1; }
+          echo "Publishing igniteui-react-grids $VERSION."
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -88,68 +100,15 @@ jobs:
             echo "npm-tag=latest" >> "$GITHUB_OUTPUT"
           fi
 
-      # components release:
-      - name: Copy components package.json
-        run: cp scripts/components.package.json dist/package.json
-
-      - name: Copy MIT license
-        run: cp .azure-pipelines/artifacts/LICENSE_MIT dist/LICENSE
-
-      - name: Copy skills folder
-        run: cp -r skills dist/skills
-
-      - name: Copy components README
-        run: cp .azure-pipelines/artifacts/README_Components.md dist/README.md
-
-      - name: Version components package
-        run: npm version "$VERSION" --no-git-tag-version
-        working-directory: dist
-
-      - name: Pack components package
-        id: pack-components
-        run: |
-          set -euo pipefail
-          mkdir -p artifacts
-          file=$(npm pack ./dist --pack-destination artifacts --json | node -e "
-            const p = JSON.parse(require('fs').readFileSync(0, 'utf8'));
-            const e = Array.isArray(p) ? p[0] : Object.values(p)[0];
-            console.log(e.filename);
-          ")
-          echo "tarball=${file}" >> "$GITHUB_OUTPUT"
-          echo "sha256=$(sha256sum "artifacts/${file}" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
-
-      - name: Remove skills folder
-        run: rm -rf dist/skills
-
-      # dock-manager release:
-      - name: Copy dock-manager package.json
-        run: cp scripts/dock-manager.package.json dist/package.json
-
-      - name: Copy IG license
-        run: cp .azure-pipelines/artifacts/LICENSE_IG dist/LICENSE
-
-      - name: Copy dock-manager README
-        run: cp .azure-pipelines/artifacts/README_DockManager.md dist/README.md
-
-      - name: Version dock-manager package
-        run: npm version "$VERSION" --no-git-tag-version
-        working-directory: dist
-
-      - name: Pack dock-manager package
-        id: pack-dockmanager
-        run: |
-          set -euo pipefail
-          file=$(npm pack ./dist --pack-destination artifacts --json | node -e "
-            const p = JSON.parse(require('fs').readFileSync(0, 'utf8'));
-            const e = Array.isArray(p) ? p[0] : Object.values(p)[0];
-            console.log(e.filename);
-          ")
-          echo "tarball=${file}" >> "$GITHUB_OUTPUT"
-          echo "sha256=$(sha256sum "artifacts/${file}" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
-
       # grids release:
       - name: Copy grids package.json
         run: cp scripts/grids.package.json dist/package.json
+
+      # The master workflow gets away without this because the dock-manager release right before
+      # it already left LICENSE_IG in dist/; publishing grids on its own has to copy it
+      # explicitly or the package ships with no LICENSE.
+      - name: Copy IG license
+        run: cp .azure-pipelines/artifacts/LICENSE_IG dist/LICENSE
 
       - name: Copy grids README
         run: cp .azure-pipelines/artifacts/README_Grids.md dist/README.md
@@ -172,6 +131,7 @@ jobs:
         id: pack-grids
         run: |
           set -euo pipefail
+          mkdir -p artifacts
           file=$(npm pack ./dist --pack-destination artifacts --json | node -e "
             const p = JSON.parse(require('fs').readFileSync(0, 'utf8'));
             const e = Array.isArray(p) ? p[0] : Object.values(p)[0];
@@ -180,34 +140,28 @@ jobs:
           echo "tarball=${file}" >> "$GITHUB_OUTPUT"
           echo "sha256=$(sha256sum "artifacts/${file}" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
 
-      # One SBOM per package: the packed tarball plus the production dependency tree a consumer
-      # installs. Unpacked outside the workspace so the repo's lockfile and dev tooling can't leak in.
-      - name: Generate per-package SBOMs (CycloneDX 1.6)
+      # The packed tarball plus the production dependency tree a consumer installs. Unpacked
+      # outside the workspace so the repo's lockfile and dev tooling can't leak in.
+      - name: Generate SBOM (CycloneDX 1.6)
         id: sbom
         env:
-          COMPONENTS: ${{ steps.pack-components.outputs.tarball }}
-          DOCKMANAGER: ${{ steps.pack-dockmanager.outputs.tarball }}
           GRIDS: ${{ steps.pack-grids.outputs.tarball }}
         run: |
           set -euo pipefail
           # The pinned devDependency, invoked by path so it is never downloaded at release time.
           cyclonedx="$GITHUB_WORKSPACE/node_modules/.bin/cyclonedx-npm"
-          for entry in "components=$COMPONENTS" "dockmanager=$DOCKMANAGER" "grids=$GRIDS"; do
-            key=${entry%%=*}
-            tarball=${entry#*=}
-            sbom="${tarball%.tgz}.cdx.json"
-            workdir="$RUNNER_TEMP/sbom-$key"
-            mkdir -p "$workdir"
-            tar -xzf "artifacts/$tarball" -C "$workdir"
-            (
-              cd "$workdir/package"
-              npm install --omit=dev --ignore-scripts --no-audit --no-fund
-              # Not --output-reproducible: it drops serialNumber, which actions/attest requires.
-              "$cyclonedx" --spec-version 1.6 --output-format JSON --mc-type library --omit dev --validate \
-                --output-file "$GITHUB_WORKSPACE/artifacts/$sbom"
-            )
-            echo "$key=$sbom" >> "$GITHUB_OUTPUT"
-          done
+          sbom="${GRIDS%.tgz}.cdx.json"
+          workdir="$RUNNER_TEMP/sbom-grids"
+          mkdir -p "$workdir"
+          tar -xzf "artifacts/$GRIDS" -C "$workdir"
+          (
+            cd "$workdir/package"
+            npm install --omit=dev --ignore-scripts --no-audit --no-fund
+            # Not --output-reproducible: it drops serialNumber, which actions/attest requires.
+            "$cyclonedx" --spec-version 1.6 --output-format JSON --mc-type library --omit dev --validate \
+              --output-file "$GITHUB_WORKSPACE/artifacts/$sbom"
+          )
+          echo "grids=$sbom" >> "$GITHUB_OUTPUT"
 
       - name: Summarize packed artifacts
         run: |
@@ -233,8 +187,6 @@ jobs:
     env:
       # Artifact attestations are unavailable in private repositories outside GitHub Enterprise Cloud.
       ATTESTATIONS_ENABLED: ${{ !github.event.repository.private }}
-      COMPONENTS_SBOM: ${{ needs.build-npmjs.outputs.components-sbom }}
-      DOCKMANAGER_SBOM: ${{ needs.build-npmjs.outputs.dockmanager-sbom }}
       GRIDS_SBOM: ${{ needs.build-npmjs.outputs.grids-sbom }}
 
     steps:
@@ -247,8 +199,6 @@ jobs:
       - name: Verify packed artifacts match the build
         env:
           EXPECTED: |
-            ${{ needs.build-npmjs.outputs.components-sha256 }}  ${{ needs.build-npmjs.outputs.components-tarball }}
-            ${{ needs.build-npmjs.outputs.dockmanager-sha256 }}  ${{ needs.build-npmjs.outputs.dockmanager-tarball }}
             ${{ needs.build-npmjs.outputs.grids-sha256 }}  ${{ needs.build-npmjs.outputs.grids-tarball }}
         run: |
           set -euo pipefail
@@ -262,22 +212,6 @@ jobs:
         with:
           subject-path: artifacts/*.tgz
 
-      - name: Attest SBOM (igniteui-react)
-        id: attest-sbom-components
-        if: env.ATTESTATIONS_ENABLED == 'true'
-        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
-        with:
-          subject-path: artifacts/${{ needs.build-npmjs.outputs.components-tarball }}
-          sbom-path: artifacts/${{ env.COMPONENTS_SBOM }}
-
-      - name: Attest SBOM (igniteui-react-dockmanager)
-        id: attest-sbom-dockmanager
-        if: env.ATTESTATIONS_ENABLED == 'true'
-        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
-        with:
-          subject-path: artifacts/${{ needs.build-npmjs.outputs.dockmanager-tarball }}
-          sbom-path: artifacts/${{ env.DOCKMANAGER_SBOM }}
-
       - name: Attest SBOM (igniteui-react-grids)
         id: attest-sbom-grids
         if: env.ATTESTATIONS_ENABLED == 'true'
@@ -286,22 +220,18 @@ jobs:
           subject-path: artifacts/${{ needs.build-npmjs.outputs.grids-tarball }}
           sbom-path: artifacts/${{ env.GRIDS_SBOM }}
 
-      # Each <package>.cdx.json is released next to its signed <package>.cdx.sigstore.json.
+      # The .cdx.json is released next to its signed .cdx.sigstore.json.
       - name: Collect attestation bundles
         if: env.ATTESTATIONS_ENABLED == 'true'
         run: |
           set -euo pipefail
           mkdir -p attestations
           cp "${{ steps.attest-provenance.outputs.bundle-path }}" attestations/provenance.sigstore.json
-          cp "${{ steps.attest-sbom-components.outputs.bundle-path }}" "attestations/${COMPONENTS_SBOM%.json}.sigstore.json"
-          cp "${{ steps.attest-sbom-dockmanager.outputs.bundle-path }}" "attestations/${DOCKMANAGER_SBOM%.json}.sigstore.json"
           cp "${{ steps.attest-sbom-grids.outputs.bundle-path }}" "attestations/${GRIDS_SBOM%.json}.sigstore.json"
 
           {
             echo "### Attestations"
-            echo "- Provenance (all packages): ${{ steps.attest-provenance.outputs.attestation-url }}"
-            echo "- SBOM igniteui-react: ${{ steps.attest-sbom-components.outputs.attestation-url }}"
-            echo "- SBOM igniteui-react-dockmanager: ${{ steps.attest-sbom-dockmanager.outputs.attestation-url }}"
+            echo "- Provenance: ${{ steps.attest-provenance.outputs.attestation-url }}"
             echo "- SBOM igniteui-react-grids: ${{ steps.attest-sbom-grids.outputs.attestation-url }}"
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -340,8 +270,6 @@ jobs:
       - name: Verify packed artifacts match the build
         env:
           EXPECTED: |
-            ${{ needs.build-npmjs.outputs.components-sha256 }}  ${{ needs.build-npmjs.outputs.components-tarball }}
-            ${{ needs.build-npmjs.outputs.dockmanager-sha256 }}  ${{ needs.build-npmjs.outputs.dockmanager-tarball }}
             ${{ needs.build-npmjs.outputs.grids-sha256 }}  ${{ needs.build-npmjs.outputs.grids-tarball }}
         run: |
           set -euo pipefail
@@ -350,56 +278,11 @@ jobs:
 
       # Publishing the packed tarball guarantees the published bytes are the attested bytes.
       # Authentication and npm provenance both come from the OIDC token - no npm token needed.
-      - name: Publish igniteui-react
-        env:
-          NPM_TAG: ${{ needs.build-npmjs.outputs.npm-tag }}
-          TARBALL: ${{ needs.build-npmjs.outputs.components-tarball }}
-        run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
-
-      - name: Publish igniteui-react-dockmanager
-        env:
-          NPM_TAG: ${{ needs.build-npmjs.outputs.npm-tag }}
-          TARBALL: ${{ needs.build-npmjs.outputs.dockmanager-tarball }}
-        run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
-
       - name: Publish igniteui-react-grids
         env:
           NPM_TAG: ${{ needs.build-npmjs.outputs.npm-tag }}
           TARBALL: ${{ needs.build-npmjs.outputs.grids-tarball }}
         run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
-
-  attach-release-npmjs:
-    name: Attach release evidence (npmjs.org)
-    needs: [build-npmjs, attest-npmjs]
-    if: github.event_name == 'release'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-
-    steps:
-      - name: Download release artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: npmjs-release-artifacts
-          path: artifacts
-
-      - name: Download attestation bundles
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        continue-on-error: true
-        with:
-          name: npmjs-attestations
-          path: attestations
-
-      - name: Attach evidence to the release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          gh release upload "$VERSION" --clobber -R "${{ github.repository }}" \
-            artifacts/*.tgz \
-            artifacts/*.cdx.json \
-            $(ls attestations/*.json 2>/dev/null || true)
 
   # Builds and inventories the licensed (@infragistics-scoped) release for the ProGet feed.
   # Holds no publishing rights.
@@ -411,14 +294,18 @@ jobs:
       contents: read
     outputs:
       npm-tag: ${{ steps.npm-tag.outputs.npm-tag }}
-      components-tarball: ${{ steps.pack-components.outputs.tarball }}
-      components-sha256: ${{ steps.pack-components.outputs.sha256 }}
-      dockmanager-tarball: ${{ steps.pack-dockmanager.outputs.tarball }}
-      dockmanager-sha256: ${{ steps.pack-dockmanager.outputs.sha256 }}
       grids-tarball: ${{ steps.pack-grids.outputs.tarball }}
       grids-sha256: ${{ steps.pack-grids.outputs.sha256 }}
 
     steps:
+      # see the note on the same step in build-npmjs
+      - name: Validate releaseVersion
+        run: |
+          set -euo pipefail
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] \
+            || { echo "::error::'$VERSION' is not an exact semver version (e.g. 21.0.1 or 21.1.0-beta.0)."; exit 1; }
+          echo "Publishing @infragistics/igniteui-react-grids $VERSION."
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -464,82 +351,13 @@ jobs:
             echo "npm-tag=latest" >> "$GITHUB_OUTPUT"
           fi
 
-      # components licensed release:
-      - name: Copy components package.json
-        run: cp scripts/components.package.json dist/package.json
-
-      - name: Copy MIT license
-        run: cp .azure-pipelines/artifacts/LICENSE_MIT dist/LICENSE
-
-      - name: Copy components README
-        run: cp .azure-pipelines/artifacts/README_Components.md dist/README.md
-
-      - name: Version components package
-        run: npm version "$VERSION" --no-git-tag-version
-        working-directory: dist
-
-      - name: Rename package to @infragistics/igniteui-react
-        run: npm pkg set name="@infragistics/igniteui-react"
-        working-directory: dist
-
-      - name: Add deprecation postinstall script
-        run: |
-          npm pkg set scripts.postinstall='echo "⚠️ Deprecated(@infragistics/igniteui-react): Now distributed as MIT, use igniteui-react from the npmjs.org registry instead."'
-        working-directory: dist
-
-      - name: Pack components package
-        id: pack-components
-        run: |
-          set -euo pipefail
-          mkdir -p artifacts
-          file=$(npm pack ./dist --pack-destination artifacts --json | node -e "
-            const p = JSON.parse(require('fs').readFileSync(0, 'utf8'));
-            const e = Array.isArray(p) ? p[0] : Object.values(p)[0];
-            console.log(e.filename);
-          ")
-          echo "tarball=${file}" >> "$GITHUB_OUTPUT"
-          echo "sha256=$(sha256sum "artifacts/${file}" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
-
-      # dock-manager licensed release:
-      - name: Copy dock-manager package.json
-        run: cp scripts/dock-manager.package.json dist/package.json
-
-      - name: Copy IG license
-        run: cp .azure-pipelines/artifacts/LICENSE_IG dist/LICENSE
-
-      - name: Copy dock-manager README
-        run: cp .azure-pipelines/artifacts/README_DockManager.md dist/README.md
-
-      - name: Version dock-manager package
-        run: npm version "$VERSION" --no-git-tag-version
-        working-directory: dist
-
-      # The licensed wrappers import @infragistics/igniteui-dockmanager, so its dependency moves scope too.
-      - name: Rename package and its dependency to @infragistics scope
-        run: |
-          set -euo pipefail
-          npm pkg set name="@infragistics/igniteui-react-dockmanager"
-          range=$(npm pkg get dependencies.igniteui-dockmanager | tr -d '"')
-          [[ "$range" != "{}" ]] || { echo "::error::igniteui-dockmanager is not in dependencies"; exit 1; }
-          npm pkg set "dependencies.@infragistics/igniteui-dockmanager=$range"
-          npm pkg delete dependencies.igniteui-dockmanager
-        working-directory: dist
-
-      - name: Pack dock-manager package
-        id: pack-dockmanager
-        run: |
-          set -euo pipefail
-          file=$(npm pack ./dist --pack-destination artifacts --json | node -e "
-            const p = JSON.parse(require('fs').readFileSync(0, 'utf8'));
-            const e = Array.isArray(p) ? p[0] : Object.values(p)[0];
-            console.log(e.filename);
-          ")
-          echo "tarball=${file}" >> "$GITHUB_OUTPUT"
-          echo "sha256=$(sha256sum "artifacts/${file}" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
-
       # grids licensed release:
       - name: Copy grids package.json
         run: cp scripts/grids.package.json dist/package.json
+
+      # see the note on the same step in build-npmjs
+      - name: Copy IG license
+        run: cp .azure-pipelines/artifacts/LICENSE_IG dist/LICENSE
 
       - name: Copy grids README
         run: cp .azure-pipelines/artifacts/README_Grids.md dist/README.md
@@ -573,6 +391,7 @@ jobs:
         id: pack-grids
         run: |
           set -euo pipefail
+          mkdir -p artifacts
           file=$(npm pack ./dist --pack-destination artifacts --json | node -e "
             const p = JSON.parse(require('fs').readFileSync(0, 'utf8'));
             const e = Array.isArray(p) ? p[0] : Object.values(p)[0];
@@ -630,27 +449,11 @@ jobs:
       - name: Verify packed artifacts match the build
         env:
           EXPECTED: |
-            ${{ needs.build-proget.outputs.components-sha256 }}  ${{ needs.build-proget.outputs.components-tarball }}
-            ${{ needs.build-proget.outputs.dockmanager-sha256 }}  ${{ needs.build-proget.outputs.dockmanager-tarball }}
             ${{ needs.build-proget.outputs.grids-sha256 }}  ${{ needs.build-proget.outputs.grids-tarball }}
         run: |
           set -euo pipefail
           cd artifacts
           printf '%s\n' "$EXPECTED" | sha256sum --check --strict
-
-      - name: Publish @infragistics/igniteui-react
-        env:
-          PROGET_NPM_AUTH: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
-          NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
-          TARBALL: ${{ needs.build-proget.outputs.components-tarball }}
-        run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG"
-
-      - name: Publish @infragistics/igniteui-react-dockmanager
-        env:
-          PROGET_NPM_AUTH: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
-          NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
-          TARBALL: ${{ needs.build-proget.outputs.dockmanager-tarball }}
-        run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG"
 
       - name: Publish @infragistics/igniteui-react-grids
         env:
