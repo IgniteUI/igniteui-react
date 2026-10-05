@@ -1,3 +1,10 @@
+## Unreleased
+
+### Changed
+
+- Updated published runtime dependencies
+  - igniteui-webcomponents-grids: ~7.2.1 -> ~7.3.2
+
 ## 19.9.0 - 2026-09-28
 
 ### Added
