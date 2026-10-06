@@ -1,4 +1,4 @@
-## Unreleased
+## 19.10.0 - 2026-10-05 (only igniteui-react-grids)
 
 ### Changed
 
