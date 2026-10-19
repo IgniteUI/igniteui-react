@@ -4,6 +4,10 @@
   "type": "module",
   "description": "Ignite UI React Grid components.",
   "homepage": "https://github.com/IgniteUI/igniteui-react",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IgniteUI/igniteui-react.git"
+  },
   "keywords": [
     "react",
     "UI Components",
@@ -17,7 +21,7 @@
   "license": "Infragistics(R) Ultimate license (http://www.infragistics.com/legal/ultimate/license/)",
   "dependencies": {
     "@lit/react": "^1.0.7",
-    "igniteui-webcomponents-grids": "~7.2.1",
+    "igniteui-webcomponents-grids": "~7.3.2",
     "lit": "^3.3.0"
   },
   "typings": "grids.d.ts",
