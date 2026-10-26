@@ -337,14 +337,19 @@ export const createComponent = <
     useReparenting(React, reparenting, elementRef);
 
     const { props: elementProps, portals } = bridge.resolve(props as Props);
-    const { children } = props as { children?: React.ReactNode };
 
-    elementProps.children = [...React.Children.toArray(children), ...portals];
+    // A bridge update keeps `props`: reuse the element, so @lit/react does not
+    // set every property again. Portals render into their nodes from anywhere.
+    const element = React.useMemo(
+      () =>
+        React.createElement(component, {
+          ...elementProps,
+          ref: setRef,
+        } as PropsWithoutRef<ComponentProps<I, E>> & React.RefAttributes<I>),
+      [props, setRef],
+    );
 
-    return React.createElement(component, {
-      ...elementProps,
-      ref: setRef,
-    } as PropsWithoutRef<ComponentProps<I, E>> & React.RefAttributes<I>);
+    return React.createElement(React.Fragment, null, element, portals);
   });
 };
 
