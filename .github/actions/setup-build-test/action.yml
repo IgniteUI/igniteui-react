@@ -45,6 +45,11 @@ runs:
         # Only truthy when licensed; empty string keeps unlicensed builds unscoped.
         IG_LICENSED_BUILD: ${{ inputs.licensed == 'true' && 'true' || '' }}
 
+    # Needs the generated wrappers.
+    - name: Type-check tests
+      shell: bash
+      run: npm run typecheck:tests
+
     - name: Validate dist packages
       shell: bash
       run: npm run validate:dist ${{ inputs.verbose == 'true' && '--loglevel verbose' || '' }}

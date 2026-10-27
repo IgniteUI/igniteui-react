@@ -19,7 +19,7 @@ test('QueryBuilder', async () => {
   const mockLog = vi.spyOn(console, 'log');
   await entitySelect.click();
   await expect.element(page.getByRole('option')).toBeVisible();
-  await page.getByRole('option', { hasText: 'Customers' }).click();
+  await page.getByRole('option').filter({ hasText: 'Customers' }).click();
   await expect.element(entitySelect).toHaveValue('Customers');
   expect(mockLog).toHaveBeenCalledWith(
     expect.objectContaining({

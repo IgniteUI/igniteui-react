@@ -146,3 +146,37 @@ export default function Grid() {
     </>
   );
 }
+
+type TemplateState = 'set' | 'cleared';
+export type Clearing = 'undefined' | 'omitted';
+
+/** Angular Elements throw on an unset template; data updates must survive it. */
+export function ClearedTemplate({ clearing }: { clearing: Clearing }) {
+  const [template, setTemplate] = useState<TemplateState>('set');
+  const [data, setData] = useState([
+    { id: 1, age: 30 },
+    { id: 2, age: 40 },
+    { id: 3, age: 50 },
+  ]);
+
+  const bodyTemplate = (ctx: IgrCellTemplateContext) => <b>T:{ctx.cell.value}</b>;
+  const age = () => setData((rows) => rows.map((row) => ({ ...row, age: row.age + 1 })));
+
+  const cleared = clearing === 'undefined' ? { bodyTemplate: undefined } : {};
+  const templates = template === 'set' ? { bodyTemplate } : cleared;
+
+  return (
+    <>
+      <IgrGrid data={data} primaryKey="id" height="400px">
+        <IgrColumn field="id" dataType="number" {...templates} />
+        <IgrColumn field="age" dataType="number" />
+      </IgrGrid>
+      <button type="button" onClick={() => setTemplate('cleared')}>
+        Clear template
+      </button>
+      <button type="button" onClick={age}>
+        Age
+      </button>
+    </>
+  );
+}

@@ -24,6 +24,7 @@
     "generate:grids": "tsx ./scripts/generate.ts grids",
     "generate:grid-lite": "tsx ./scripts/generate.ts grid-lite",
     "typecheck:scripts": "tsc --project ./scripts/tsconfig.json",
+    "typecheck:tests": "tsc --project ./tests/tsconfig.json",
     "check:manifests": "tsx ./scripts/check-manifests.ts",
     "validate:dist": "tsx ./scripts/validate-dist.ts",
     "test:browser": "vitest",
