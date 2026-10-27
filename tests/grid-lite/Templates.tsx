@@ -1,4 +1,4 @@
-import { Component, type ComponentProps, type ReactNode, useState } from 'react';
+import { Component, type ComponentProps, type ReactNode, Suspense, use, useState } from 'react';
 import {
   type IgrCellContext,
   IgrGridLite,
@@ -66,6 +66,23 @@ export function OptionalTemplate() {
   );
 }
 
+type TemplateState = 'set' | 'cleared';
+
+export function ClearedTemplate() {
+  const [template, setTemplate] = useState<TemplateState>('set');
+
+  const cellTemplate = (ctx: IgrCellContext<Person>) => <span>V:{ctx.value}</span>;
+
+  return (
+    <>
+      <PeopleGrid cellTemplate={template === 'set' ? cellTemplate : undefined} />
+      <button type="button" onClick={() => setTemplate('cleared')}>
+        Clear template
+      </button>
+    </>
+  );
+}
+
 export function AsyncTemplate({ wait }: { wait: () => Promise<void> }) {
   const [count, setCount] = useState(0);
 
@@ -104,14 +121,45 @@ class Boundary extends Component<{ children: ReactNode }, BoundaryState> {
   }
 }
 
-export function FailingTemplate() {
-  const cellTemplate = async () => {
+/** Fails on the first row only. */
+function Cell({ value }: Pick<IgrCellContext<Person>, 'value'>) {
+  if (value === 1) {
     throw new Error('boom');
-  };
+  }
 
+  return <span>V:{value}</span>;
+}
+
+const failingTemplates = {
+  sync: (ctx: IgrCellContext<Person>) => Cell(ctx),
+  async: async (ctx: IgrCellContext<Person>) => Cell(ctx),
+  // Throws while React renders the returned tree.
+  nested: (ctx: IgrCellContext<Person>) => <Cell value={ctx.value} />,
+};
+
+export function FailingTemplate({ failure }: { failure: keyof typeof failingTemplates }) {
   return (
     <Boundary>
-      <PeopleGrid cellTemplate={cellTemplate} />
+      <PeopleGrid cellTemplate={failingTemplates[failure]} />
     </Boundary>
   );
+}
+
+/** `use()` needs `load` to cache its promises. */
+export function SuspendingTemplate({ load }: { load: (id: number) => Promise<string> }) {
+  const cellTemplate = (ctx: IgrCellContext<Person>) => <span>{use(load(Number(ctx.value)))}</span>;
+
+  return (
+    <Suspense fallback={<p>Loading grid</p>}>
+      <PeopleGrid cellTemplate={cellTemplate} />
+    </Suspense>
+  );
+}
+
+/** First row resolves to a function: not a valid child, never called. */
+export function FunctionResultTemplate() {
+  const cellTemplate = async ({ value }: IgrCellContext<Person>) =>
+    value === 1 ? ((() => <span>F</span>) as never) : <span>V:{value}</span>;
+
+  return <PeopleGrid cellTemplate={cellTemplate} />;
 }

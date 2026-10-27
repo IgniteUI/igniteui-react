@@ -37,12 +37,15 @@ type ComponentProps<I, E extends EventNames> = Omit<
 /** Prop name → renderer name, or a nested map for config props (e.g. `igc-chat`). */
 type Renderers = Record<string, unknown>;
 
-/** Render props return `ReactNode`; nested maps recurse. */
+/** React 18's `ReactNode` lacks promises. */
+type RenderResult = React.ReactNode | PromiseLike<React.ReactNode>;
+
+/** Render props return `RenderResult`; nested maps recurse. */
 type WithJsxRenderProps<T, R> = {
   [K in keyof T]: K extends keyof R
     ? R[K] extends string
       ? NonNullable<T[K]> extends (...args: infer Args) => unknown
-        ? ((...args: WithDataContext<Args>) => React.ReactNode) | Extract<T[K], undefined>
+        ? ((...args: WithDataContext<Args>) => RenderResult) | Extract<T[K], undefined>
         : T[K]
       : R[K] extends Renderers
         ? WithJsxRenderProps<NonNullable<T[K]>, R[K]> | Extract<T[K], undefined>
@@ -63,18 +66,21 @@ export type ReactWebComponent<
 type ReactModule = typeof React;
 
 type Props = Record<string, unknown>;
-type RenderProp = (data: unknown) => React.ReactNode;
+type RenderProp = (data: unknown) => RenderResult;
 type Template = (ctx: unknown) => unknown;
 
 type Reparenting = 'move-back' | 'none';
+/** Cleared render prop: keep its template, or unset it. */
+type Clearing = 'keep' | 'unset';
 type NgElement = HTMLElement & { ngElementStrategy?: { parentElement?: WeakRef<HTMLElement> } };
 
 type PortalSlot = RendererRequest & {
   callback?: RenderProp;
-  /** Boxed: `reason` may be `undefined`. */
-  failure?: { reason: unknown };
   portal?: React.ReactPortal;
 };
+
+type SlotProps = { render: RenderProp; data: unknown };
+type SlotRenderer = (props: SlotProps) => React.ReactNode;
 
 interface WrapperOptions<I extends HTMLElement, E extends EventNames, R extends Renderers>
   extends Options<I, E> {
@@ -91,6 +97,8 @@ class TemplateBridge {
 
   constructor(
     private readonly _renderers: Renderers,
+    private readonly _clearing: Clearing,
+    private readonly _slot: SlotRenderer,
     private readonly _notify: () => void,
   ) {}
 
@@ -106,14 +114,7 @@ class TemplateBridge {
     if (req.data === REQUEST_REMOVE) {
       this._slots.delete(req.slotName);
     } else {
-      const previous = this._slots.get(req.slotName);
-
-      this._slots.set(req.slotName, {
-        ...req,
-        data: withDataContext(req.data),
-        // Keep the old content until the new one renders.
-        portal: previous?.node === req.node ? previous.portal : undefined,
-      });
+      this._slots.set(req.slotName, { ...req, data: withDataContext(req.data) });
     }
 
     this._notify();
@@ -128,7 +129,7 @@ class TemplateBridge {
     const out: Props = {};
 
     for (const prop in props) {
-      const path = prefix ? `${prefix}.${prop}` : prop;
+      const path = toPath(prefix, prop);
       const renderer = renderers[prop];
       const value = props[prop];
 
@@ -140,6 +141,19 @@ class TemplateBridge {
       } else {
         // Also non-function render props, e.g. `undefined`: the element uses its default.
         out[prop] = value;
+      }
+    }
+
+    if (this._clearing === 'unset') {
+      return out;
+    }
+
+    // Cleared or dropped: keep; Angular Elements throw on an unset template.
+    for (const prop in renderers) {
+      const template = this._templates.get(toPath(prefix, prop));
+
+      if (template) {
+        out[prop] ??= template;
       }
     }
 
@@ -180,60 +194,134 @@ class TemplateBridge {
         continue;
       }
 
-      this._invoke(slot, callback);
-
-      if (slot.failure) {
-        throw slot.failure.reason;
-      }
-
-      if (slot.portal) {
-        portals.push(slot.portal);
-      }
+      portals.push(this._portal(slot, callback));
     }
 
     return portals;
   }
 
   /**
-   * New render prop re-invokes: it may close over state the element can't see.
+   * New render prop re-renders its slot: it may close over state the element can't see.
    * Same one keeps its portal; a fresh portal would re-commit and loop.
    */
-  private _invoke(slot: PortalSlot, callback: RenderProp): void {
-    if (slot.callback === callback) {
-      return;
+  private _portal(slot: PortalSlot, callback: RenderProp): React.ReactPortal {
+    if (slot.portal && slot.callback === callback) {
+      return slot.portal;
     }
 
-    const { node, slotName } = slot;
-    const content = callback(slot.data);
+    const content = this._slot({ render: callback, data: slot.data });
 
     slot.callback = callback;
-    slot.failure = undefined;
-
-    if (!isThenable(content)) {
-      slot.portal = createPortal(content, node, slotName);
-      return;
-    }
-
-    // No Suspense: inline render props yield a new promise per render.
-    const settle = (patch: Partial<PortalSlot>) => {
-      if (this._slots.get(slotName) !== slot || slot.callback !== callback) {
-        return;
-      }
-
-      Object.assign(slot, patch);
-      this._notify();
-    };
-
-    content.then(
-      (resolved) => settle({ portal: createPortal(resolved, node, slotName) }),
-      (reason: unknown) => settle({ failure: { reason } }),
-    );
+    slot.portal = createPortal(content, slot.node, slot.slotName);
+    return slot.portal;
   }
 }
 
-function useTemplateBridge(react: ReactModule, renderers: Renderers): TemplateBridge {
+/**
+ * Each slot is its own React tree, isolated from its neighbors:
+ *
+ *   Boundary       throws or rejects → empty slot; React logs it
+ *   └ Suspense     `use()` → empty slot until resolved
+ *     └ Content    calls the render prop
+ *       └ Pending  async result; keeps the previous one until it settles
+ */
+function createSlot(react: ReactModule): SlotRenderer {
+  type BoundaryState = Partial<SlotProps> & { failed: boolean };
+
+  class Boundary extends react.Component<SlotProps, BoundaryState> {
+    public state: BoundaryState = { failed: false };
+
+    /** New render prop or data: retry. */
+    public static getDerivedStateFromProps(
+      { render, data }: SlotProps,
+      state: BoundaryState,
+    ): BoundaryState | null {
+      if (render === state.render && data === state.data) {
+        return null;
+      }
+
+      return { failed: false, render, data };
+    }
+
+    public static getDerivedStateFromError(): Partial<BoundaryState> {
+      return { failed: true };
+    }
+
+    public render(): React.ReactNode {
+      if (this.state.failed) {
+        return null;
+      }
+
+      return react.createElement(
+        react.Suspense,
+        { fallback: null },
+        react.createElement(Content, this.props),
+      );
+    }
+  }
+
+  // Not `use()`: a new promise per render never settles.
+  function Pending({ promise }: { promise: PromiseLike<React.ReactNode> }): React.ReactNode {
+    const [content, setContent] = react.useState<React.ReactNode>(null);
+    const [, setFailure] = react.useState();
+
+    react.useEffect(() => {
+      let current = true;
+
+      // Drops superseded results and failures.
+      promise.then(
+        (resolved) => {
+          if (!current) {
+            return;
+          }
+
+          // Boxed: a function would run as an updater.
+          setContent(() => resolved);
+        },
+        (reason: unknown) => {
+          if (!current) {
+            return;
+          }
+
+          // Throws on render, into the boundary.
+          setFailure(() => {
+            throw reason;
+          });
+        },
+      );
+
+      return () => {
+        current = false;
+      };
+    }, [promise]);
+
+    return content ?? null;
+  }
+
+  function Content({ render, data }: SlotProps): React.ReactNode {
+    const content = render(data);
+
+    // React 17 throws on `undefined`.
+    if (!isThenable(content)) {
+      return content ?? null;
+    }
+
+    // Handled now: a render that never commits never mounts `Pending`.
+    content.then(undefined, () => {});
+    return react.createElement(Pending, { promise: content });
+  }
+
+  return (props) => react.createElement(Boundary, props);
+}
+
+function useTemplateBridge(
+  react: ReactModule,
+  renderers: Renderers,
+  clearing: Clearing,
+  slot: SlotRenderer,
+): TemplateBridge {
   const [, forceUpdate] = react.useReducer((n: number) => n + 1, 0);
-  const [bridge] = react.useState(() => new TemplateBridge(renderers, forceUpdate));
+  const [bridge] = react.useState(() => new TemplateBridge(renderers, clearing, slot, forceUpdate));
 
   return bridge;
 }
@@ -330,9 +418,12 @@ export const createComponent = <
 
   const renderers: Renderers = renderProps ?? {};
   const reparenting: Reparenting = moveBackOnDelete ? 'move-back' : 'none';
+  // `moveBackOnDelete` marks Angular Elements.
+  const clearing: Clearing = moveBackOnDelete ? 'keep' : 'unset';
+  const slot = createSlot(React);
 
   return React.forwardRef<I, WithJsxRenderProps<ComponentProps<I, E>, R>>((props, ref) => {
-    const bridge = useTemplateBridge(React, renderers);
+    const bridge = useTemplateBridge(React, renderers, clearing, slot);
     const [elementRef, setRef] = useForwardedRef(React, ref);
     useReparenting(React, reparenting, elementRef);
 
@@ -352,6 +443,10 @@ export const createComponent = <
     return React.createElement(React.Fragment, null, element, portals);
   });
 };
+
+function toPath(prefix: string, prop: string): string {
+  return prefix ? `${prefix}.${prop}` : prop;
+}
 
 function isThenable(value: unknown): value is PromiseLike<unknown> {
   return isObject(value) && typeof value.then === 'function';

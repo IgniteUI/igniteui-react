@@ -3,7 +3,7 @@ import { type Locator, page } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 import { configure } from 'vitest-browser-react/pure';
 import type { IgrGrid } from '../../src/grids';
-import Grid from './Grid';
+import Grid, { ClearedTemplate, type Clearing } from './Grid';
 
 afterAll(() => vi.restoreAllMocks());
 
@@ -92,3 +92,19 @@ test('should render correct template values on repeating cell values between row
 
   await checkRowTemplatedButtonId(rows);
 });
+
+test.each<Clearing>(['undefined', 'omitted'])(
+  'a render prop cleared as %s keeps data updates flowing',
+  async (clearing) => {
+    render(<ClearedTemplate clearing={clearing} />);
+
+    await expect.element(page.getByRole('gridcell', { name: 'T:1' })).toBeVisible();
+
+    await page.getByRole('button', { name: 'Clear template' }).click();
+    await page.getByRole('button', { name: 'Age' }).click();
+
+    for (const age of ['31', '41', '51']) {
+      await expect.element(page.getByRole('gridcell', { name: age, exact: true })).toBeVisible();
+    }
+  },
+);

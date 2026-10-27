@@ -4,7 +4,7 @@ import { type ChatMessageRenderContext, IgrChat } from '../../src/components';
 import '../../node_modules/igniteui-webcomponents/themes/light/bootstrap.css';
 import { createChatMarkdownRenderer } from '../../src/extras/index';
 
-const markdownRenderer = await createChatMarkdownRenderer();
+const markdownRenderer = await createChatMarkdownRenderer({});
 
 export default function BasicForm() {
   const logEvent = (e: any) => console.log(e);
