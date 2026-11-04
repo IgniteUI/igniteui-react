@@ -337,4 +337,68 @@ describe('equal', () => {
     const set2 = new Set([]);
     expect(equal(set1, set2)).toBe(false);
   });
+
+  it('should not let failed Set candidate pairs poison later comparisons', () => {
+    const a = new Set([{ x: 1 }, { x: 2 }]);
+    const b = new Set([{ x: 2 }, { x: 1 }]);
+    expect(equal(a, b)).toBe(true);
+
+    // `{ k: 'b' }` has no counterpart.
+    const left = new Set([{ k: 'z' }, { k: 'b' }, { k: 'x' }]);
+    const right = new Set([{ k: 'x' }, { k: 'y' }, { k: 'z' }]);
+    expect(equal(left, right)).toBe(false);
+  });
+
+  it('should not let failed Map candidate pairs poison later comparisons', () => {
+    // `{ k: 'b' }` has no counterpart.
+    const left = new Map([
+      [{ k: 'z' }, 1],
+      [{ k: 'b' }, 1],
+      [{ k: 'x' }, 1],
+    ]);
+    const right = new Map([
+      [{ k: 'x' }, 1],
+      [{ k: 'y' }, 1],
+      [{ k: 'z' }, 1],
+    ]);
+    expect(equal(left, right)).toBe(false);
+  });
+
+  it('should match Set elements one to one', () => {
+    expect(equal(new Set([{ x: 1 }, { x: 1 }]), new Set([{ x: 1 }, { x: 2 }]))).toBe(false);
+    expect(equal(new Set([{ x: 1 }, { x: 1 }]), new Set([{ x: 1 }, { x: 1 }]))).toBe(true);
+  });
+
+  it('should match Map entries one to one', () => {
+    const left = new Map([
+      [{ k: 1 }, 'v'],
+      [{ k: 1 }, 'v'],
+    ]);
+    const right = new Map([
+      [{ k: 1 }, 'v'],
+      [{ k: 2 }, 'v'],
+    ]);
+    expect(equal(left, right)).toBe(false);
+  });
+
+  it('should compare null-prototype objects', () => {
+    const create = (value: number) => Object.assign(Object.create(null), { a: value });
+
+    expect(equal(create(1), create(1))).toBe(true);
+    expect(equal(create(1), create(2))).toBe(false);
+  });
+
+  it('should still terminate on circular references', () => {
+    const a: Record<string, unknown> = { name: 'a' };
+    const b: Record<string, unknown> = { name: 'a' };
+    a.self = a;
+    b.self = b;
+    expect(equal(a, b)).toBe(true);
+
+    const c: Record<string, unknown> = { name: 'c' };
+    const d: Record<string, unknown> = { name: 'different' };
+    c.self = c;
+    d.self = d;
+    expect(equal(c, d)).toBe(false);
+  });
 });

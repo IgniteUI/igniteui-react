@@ -1,0 +1,10 @@
+// vitest transpiles tests unchecked.
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "noEmit": true,
+    "emitDeclarationOnly": false
+  },
+  "include": [".", "../src/vite-env.d.ts"]
+}

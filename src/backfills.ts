@@ -1,3 +1,5 @@
+import { isObject } from './is-object.js';
+
 const DATA_CONTEXT_PROP = 'dataContext';
 let once = false;
 
@@ -6,6 +8,11 @@ let once = false;
  * the `dataContext` prop returning the original data
  */
 export function withDataContext(data: unknown) {
+  // Proxy throws on primitives.
+  if (!isObject(data)) {
+    return data;
+  }
+
   return new Proxy(data as any, {
     get(target, prop, receiver) {
       if (prop === DATA_CONTEXT_PROP) {
