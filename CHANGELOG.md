@@ -1,3 +1,17 @@
+## 19.9.1 - 2026-10-27
+
+### Fixed
+- Render props ([#193](https://github.com/IgniteUI/igniteui-react/pull/193)):
+    - Templates read current React state instead of the first render's closure.
+    - Setting a render prop to `undefined` restores the element's default content. Grid components render nothing instead.
+    - Adding a render prop later no longer clears the others.
+    - Nested config objects, such as `IgrChat` `options`, keep their identity across renders and no longer re-render the element.
+    - Template updates no longer re-set every element property, e.g. `singleSelect` on each `IgrCombo` filter keystroke.
+    - React events raised in a template no longer fire the wrapper's handlers twice.
+    - Errors and suspensions stay in their slot, e.g. one grid cell, instead of reaching the app's error boundary.
+    - Async render props keep the previous content until the new one settles, and may return `PromiseLike<ReactNode>`.
+    - Templates invoked without a data context no longer throw.
+
 ## 19.10.0 - 2026-10-05 (only igniteui-react-grids)
 
 ### Changed
