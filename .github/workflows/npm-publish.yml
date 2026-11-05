@@ -12,6 +12,12 @@ on:
         description: 'Get verbose output from steps - where configurable'
         type: boolean
         default: false
+      # no-grids: patch releases that must not move igniteui-react-grids' dist-tags.
+      packages:
+        description: 'Packages to publish'
+        type: choice
+        options: [all, no-grids]
+        default: all
 
 permissions: {}
 
@@ -363,6 +369,7 @@ jobs:
         run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG" --provenance
 
       - name: Publish igniteui-react-grids
+        if: inputs.packages != 'no-grids'
         env:
           NPM_TAG: ${{ needs.build-npmjs.outputs.npm-tag }}
           TARBALL: ${{ needs.build-npmjs.outputs.grids-tarball }}
@@ -653,6 +660,7 @@ jobs:
         run: npm publish "./artifacts/$TARBALL" --tag "$NPM_TAG"
 
       - name: Publish @infragistics/igniteui-react-grids
+        if: inputs.packages != 'no-grids'
         env:
           PROGET_NPM_AUTH: ${{ secrets.PACKAGES_INFRAGISTICS_COM_NPM_TOKEN }}
           NPM_TAG: ${{ needs.build-proget.outputs.npm-tag }}
