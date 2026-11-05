@@ -1,4 +1,4 @@
-## 19.9.1 - 2026-10-27
+## 19.9.1 - 2026-11-05
 
 ### Fixed
 - Render props ([#193](https://github.com/IgniteUI/igniteui-react/pull/193)):
