@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@lit/react": "^1.0.7",
-    "igniteui-dockmanager": "~2.2.1",
+    "igniteui-dockmanager": "~2.3.0",
     "lit": "^3.3.0"
   },
   "files": [
