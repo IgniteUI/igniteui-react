@@ -44,5 +44,8 @@
       "optional": true
     }
   },
-  "files": ["**/*", "!grids/**/*", "!grids.*", "!dock-manager/**/*", "!dock-manager.*"]
+  "files": ["**/*", "!grids/**/*", "!grids.*", "!dock-manager/**/*", "!dock-manager.*"],
+  "ig-update": {
+    "migrations": "./migrations/collection.json"
+  }
 }
