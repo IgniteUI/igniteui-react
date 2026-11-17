@@ -9,6 +9,7 @@ Ask the MCP server for the authoritative list: `list_components({ framework: 're
 | Static list of rows | `IgrList` | a grid |
 | Plain dropdown | `IgrSelect` | `IgrCombo` |
 | Searchable or multi-select dropdown | `IgrCombo` | `IgrSelect` |
+| Combo searching and paging on a server | `IgrCombo` + `useComboDataSource` from `igniteui-react/extras/combo-data-source` | manual `onSearchInput`/`onDataRequest` handlers |
 | Flat tabular data, display only | `IgrGridLite` | `IgrGrid` |
 | Editing, selection, paging, grouping, summaries, export | `IgrGrid` | `IgrGridLite` |
 | Parent/child rows | `IgrTreeGrid` | `IgrGrid` |
