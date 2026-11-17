@@ -1,3 +1,8 @@
+## Unreleased
+
+### Added
+- `useComboDataSource` from `igniteui-react/extras/combo-data-source` binds an `IgrCombo` to a server that searches and pages, through `bindComboDataSource` of igniteui-webcomponents. Pass its `ref` to the combo. A new `load` on each render does not abort the request in flight. `refresh()` loads the first page again, e.g. when a parent combo changes. The binding sets `data`, `loading` and `totalItemCount`, so do not pass them as props.
+
 ## 19.9.1 - 2026-11-05
 
 ### Fixed

@@ -29,7 +29,8 @@ file, they win.
 - `src/react-props.tsx`, `src/render-props.ts`: the `createComponent` wrapper and the render
   props bridge that turns React templates into Lit templates
 - `src/backfills.ts`, `src/backfill-types-*.ts`: hand-written types the generated code relies on
-- `src/extras/`: hand-written add-ons, published as `igniteui-react/extras`
+- `src/extras/`: hand-written add-ons, published as `igniteui-react/extras` and
+  `igniteui-react/extras/combo-data-source`
 - `tests/`: browser tests per package (`web-components`, `grids`, `grid-lite`, `dock-manager`)
 - `.azure-pipelines/artifacts/`: the READMEs and licenses copied into each published package
 - `skills/`: public, user-facing skills that ship with the `igniteui-react` package

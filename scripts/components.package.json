@@ -26,6 +26,10 @@
       "types": "./extras/index.d.ts",
       "default": "./extras.js"
     },
+    "./extras/combo-data-source": {
+      "types": "./extras/combo-data-source.d.ts",
+      "default": "./extras/combo-data-source.js"
+    },
     "./grid-lite": {
       "types": "./grid-lite.d.ts",
       "default": "./grid-lite.js"
