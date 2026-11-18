@@ -21,6 +21,8 @@
       "attributePosition": "auto"
     }
   },
+  "markdown": { "formatter": { "enabled": false } },
+  "yaml": { "formatter": { "enabled": false } },
   "overrides": [
     {
       "includes": ["**/*.json"],

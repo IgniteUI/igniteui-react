@@ -228,6 +228,7 @@ class TemplateBridge {
 function createSlot(react: ReactModule): SlotRenderer {
   type BoundaryState = Partial<SlotProps> & { failed: boolean };
 
+  // biome-ignore-start lint/correctness/noComponentHookFactories: runs once per wrapper, not per render
   class Boundary extends react.Component<SlotProps, BoundaryState> {
     public state: BoundaryState = { failed: false };
 
@@ -310,6 +311,7 @@ function createSlot(react: ReactModule): SlotRenderer {
     content.then(undefined, () => {});
     return react.createElement(Pending, { promise: content });
   }
+  // biome-ignore-end lint/correctness/noComponentHookFactories: see above
 
   return (props) => react.createElement(Boundary, props);
 }
