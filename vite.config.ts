@@ -15,6 +15,7 @@ export default defineConfig({
       entry: {
         components: './src/components.ts',
         extras: './src/extras/index.tsx',
+        'extras/combo-data-source': './src/extras/combo-data-source.ts',
         grids: './src/grids.ts',
         'grid-lite': './src/grid-lite.ts',
         'dock-manager': './src/dock-manager.ts',
