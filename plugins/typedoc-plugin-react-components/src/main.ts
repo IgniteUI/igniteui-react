@@ -210,6 +210,7 @@ function parseTypeProperties(type: ts.Type, context: Context) {
     if (
       memberName.toString().startsWith('_') ||
       excludeProperties.includes(memberName) ||
+      (context.scope as DeclarationReflection).getChildByName?.(memberName) ||
       !(
         modifiers === ModifierFlags.None ||
         modifiers === ModifierFlags.Public ||
@@ -249,10 +250,15 @@ function parseTypeProperties(type: ts.Type, context: Context) {
 }
 
 function resolveBaseTypeProps(type: ts.Type, context: Context) {
-  if (!type.isClassOrInterface()) return;
+  const target =
+    type.flags & ts.TypeFlags.Object &&
+    (type as ts.ObjectType).objectFlags & ts.ObjectFlags.Reference
+      ? (type as ts.TypeReference).target
+      : type;
+  if (!target.isClassOrInterface()) return;
 
   const baseTypes = context.checker
-    .getBaseTypes(type)
+    .getBaseTypes(target)
     .flatMap((base) => (base.isUnionOrIntersection() ? base.types : base));
   for (const baseType of baseTypes) {
     parseTypeProperties(baseType, context);
