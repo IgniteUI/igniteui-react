@@ -29,6 +29,7 @@
     "validate:dist": "tsx ./scripts/validate-dist.ts",
     "test:browser": "vitest",
     "test:ci": "vitest --run --coverage",
+    "test:migrations": "node --test tests/migrations/*.mjs",
     "lint": "biome lint --files-ignore-unknown=true",
     "prepare": "lefthook install"
   },

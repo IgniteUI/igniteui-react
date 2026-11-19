@@ -1,0 +1,29 @@
+{
+  "schematics": {
+    "badge-outline": {
+      "version": "19.11.0-poc.0",
+      "description": "PoC only, synthetic: renames the outline prop of IgrBadge to outlined",
+      "factory": "./19.11.0-poc.0/badge-outline.js"
+    },
+    "badge-import-alias": {
+      "version": "19.11.0-poc.1",
+      "description": "PoC only, synthetic: replaces an alias of IgrBadge by its name",
+      "factory": "./19.11.0-poc.1/badge-import-alias.js"
+    },
+    "badge-namespace-import": {
+      "version": "19.11.0-poc.2",
+      "description": "PoC only, synthetic: imports IgrBadge by name instead of through a namespace import",
+      "factory": "./19.11.0-poc.2/badge-namespace-import.js"
+    },
+    "combo-event-rename": {
+      "version": "19.11.0-poc.3",
+      "description": "PoC only, synthetic: renames the onOpening prop of IgrCombo to onOpened",
+      "factory": "./19.11.0-poc.3/combo-event-rename.js"
+    },
+    "combo-method-rename": {
+      "version": "19.11.0-poc.4",
+      "description": "PoC only, synthetic: renames show() calls on IgrCombo refs to toggle()",
+      "factory": "./19.11.0-poc.4/combo-method-rename.js"
+    }
+  }
+}

@@ -104,6 +104,9 @@ jobs:
       - name: Copy skills folder
         run: cp -r skills dist/skills
 
+      - name: Copy migrations folder
+        run: cp -r migrations dist/migrations
+
       - name: Copy components README
         run: cp .azure-pipelines/artifacts/README_Components.md dist/README.md
 
@@ -126,6 +129,9 @@ jobs:
 
       - name: Remove skills folder
         run: rm -rf dist/skills
+
+      - name: Remove migrations folder
+        run: rm -rf dist/migrations
 
       # dock-manager release:
       - name: Copy dock-manager package.json
@@ -478,6 +484,9 @@ jobs:
       - name: Copy MIT license
         run: cp .azure-pipelines/artifacts/LICENSE_MIT dist/LICENSE
 
+      - name: Copy migrations folder
+        run: cp -r migrations dist/migrations
+
       - name: Copy components README
         run: cp .azure-pipelines/artifacts/README_Components.md dist/README.md
 
@@ -506,6 +515,9 @@ jobs:
           ")
           echo "tarball=${file}" >> "$GITHUB_OUTPUT"
           echo "sha256=$(sha256sum "artifacts/${file}" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
+      - name: Remove migrations folder
+        run: rm -rf dist/migrations
 
       # dock-manager licensed release:
       - name: Copy dock-manager package.json
