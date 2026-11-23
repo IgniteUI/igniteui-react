@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { flushSync } from 'react-dom';
-import { type ChatMessageRenderContext, IgrChat } from '../../src/components';
+import {
+  type ChatMessageRenderContext,
+  type ChatRenderers,
+  type ChatTemplateRenderer,
+  IgrChat,
+  type IgrChatOptions,
+} from '../../src/components';
 import '../../node_modules/igniteui-webcomponents/themes/light/bootstrap.css';
 import { createChatMarkdownRenderer } from '../../src/extras/index';
 
@@ -67,4 +73,14 @@ export function ToggledHeader() {
       </button>
     </>
   );
+}
+
+// Options and renderers typed with the public chat types.
+export function TypedOptions() {
+  const messages = [{ id: '1', text: 'Hello', sender: 'support', timestamp: '0' }];
+  const messageHeader: ChatTemplateRenderer<ChatMessageRenderContext> = () => <b>Typed header</b>;
+  const renderers: ChatRenderers = { messageHeader };
+  const [options] = useState<IgrChatOptions>({ headerText: 'Support', renderers });
+
+  return <IgrChat messages={messages} options={options} />;
 }
