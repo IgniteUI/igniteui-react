@@ -2,7 +2,7 @@ import { afterAll, expect, test, vi } from 'vitest';
 import { locators, page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
 
-import Chat, { ToggledHeader } from './Chat';
+import Chat, { ToggledHeader, TypedOptions } from './Chat';
 
 afterAll(() => vi.restoreAllMocks());
 
@@ -75,6 +75,14 @@ test('a renderer restored before the chat re-renders keeps its content', async (
   await page.getByRole('button', { name: 'Toggle' }).click();
 
   await expect.element(page.getByText('HDR', { exact: true })).toBeVisible();
+});
+
+// #234: type-checked by `typecheck:tests`.
+test('options typed as IgrChatOptions render', async () => {
+  render(<TypedOptions />);
+
+  await expect.element(page.getByText('Support')).toBeVisible();
+  await expect.element(page.getByText('Typed header')).toBeVisible();
 });
 
 //#region Locator extension

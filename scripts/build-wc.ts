@@ -4,7 +4,15 @@ export default defineWrapperConfig({
   path: '../src/components',
   package: 'igniteui-webcomponents',
   types: {
-    ignoreExports: ['defineComponents', 'defineAllComponents', 'IgcSplitterResizeEventDetail'],
+    ignoreExports: [
+      'defineComponents',
+      'defineAllComponents',
+      'IgcSplitterResizeEventDetail',
+      // React flavors in `backfill-types-components.ts`.
+      'IgcChatOptions',
+      'ChatRenderers',
+      'ChatTemplateRenderer',
+    ],
   },
   ignoreEvents: ['igc-step'],
   extraEvents: {

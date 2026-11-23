@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import type {
   AbsolutePosition,
   CalendarHeaderOrientation,
@@ -8,6 +9,7 @@ import type {
   IgrActiveStepChangedEventArgs,
   IgrActiveStepChangingEventArgs,
   IgrButton,
+  IgrChat,
   IgrChatMessage,
   IgrChatMessageAttachment,
   IgrChatMessageReaction,
@@ -28,6 +30,7 @@ import type {
   SliderTickOrientation,
   ToggleLabelPosition,
 } from './components/index.js';
+import type { RenderResult } from './react-props.js';
 
 //#region manual event args not picked up as args
 
@@ -55,6 +58,19 @@ export type IgrVoidEventArgs = CustomEvent<void>;
 
 //#region backfills
 export type IgrCalendarFormatOptions = Pick<Intl.DateTimeFormatOptions, 'month' | 'weekday'>;
+
+/**
+ * `IgrChat` options; renderers return React nodes.
+ * Derived from the prop so `useState<IgrChatOptions>` stays assignable to `options`.
+ */
+export type IgrChatOptions = NonNullable<ComponentProps<typeof IgrChat>['options']>;
+
+/** `IgrChatOptions` renderers; return React nodes. */
+export type ChatRenderers = NonNullable<IgrChatOptions['renderers']>;
+
+/** A single chat renderer; returns React nodes. */
+export type ChatTemplateRenderer<T> = (ctx: T) => RenderResult;
+
 export type NumberFormatOptions = Intl.NumberFormatOptions;
 
 /** @deprecated use PopoverPlacement */

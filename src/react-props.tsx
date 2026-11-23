@@ -38,7 +38,7 @@ type ComponentProps<I, E extends EventNames> = Omit<
 type Renderers = Record<string, unknown>;
 
 /** React 18's `ReactNode` lacks promises. */
-type RenderResult = React.ReactNode | PromiseLike<React.ReactNode>;
+export type RenderResult = React.ReactNode | PromiseLike<React.ReactNode>;
 
 /** Render props return `RenderResult`; nested maps recurse. */
 type WithJsxRenderProps<T, R> = {

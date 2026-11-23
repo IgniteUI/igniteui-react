@@ -1,3 +1,10 @@
+## [Unreleased]
+
+### Fixed
+- `IgrChat` types ([#234](https://github.com/IgniteUI/igniteui-react/issues/234)):
+    - A value typed `IgrChatOptions` is assignable to `options` again.
+    - `IgrChatOptions`, `ChatRenderers` and `ChatTemplateRenderer` renderers return React nodes, not `unknown`. They no longer accept renderers that return lit templates.
+
 ## 19.11.0 - 2026-11-17
 
 This release updates the packages that the React wrappers use ([#230](https://github.com/IgniteUI/igniteui-react/pull/230), [#231](https://github.com/IgniteUI/igniteui-react/pull/231)):
