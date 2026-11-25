@@ -4,6 +4,8 @@
 - `IgrChat` types ([#234](https://github.com/IgniteUI/igniteui-react/issues/234)):
     - A value typed `IgrChatOptions` is assignable to `options` again.
     - `IgrChatOptions`, `ChatRenderers` and `ChatTemplateRenderer` renderers return React nodes, not `unknown`. They no longer accept renderers that return lit templates.
+- Skills:
+    - Documented that boolean values for `aria-*` and `data-*` attributes on `Igr*` components must be passed as the strings `'true'` / `'false'`, not as booleans. React 19 writes a boolean `true` on a custom element as an empty attribute ([#221](https://github.com/IgniteUI/igniteui-react/issues/221)).
 
 ## 19.11.0 - 2026-11-17
 

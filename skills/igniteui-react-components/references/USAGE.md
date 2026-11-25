@@ -4,6 +4,8 @@
 
 Props behave like any React component — pass expressions, not strings, for numbers and booleans (`<IgrSlider value={50} />`, not `value="50"`).
 
+Exception: boolean values for `aria-*` and `data-*` attributes are passed as the strings `'true'` / `'false'`. These attributes are not element properties, so React sets them as attributes, and React 19 writes `true` on a custom element as an empty attribute: `aria-checked=""` loses the state, and `[data-active="true"]` never matches. Write `aria-checked={on ? 'true' : 'false'}`, not `aria-checked={on}`.
+
 Children go to the default slot; named slots use the `slot` attribute on the child:
 
 ```tsx
