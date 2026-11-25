@@ -12,6 +12,7 @@
 | Grid Lite fails to resolve | `igniteui-grid-lite` not installed (optional peer) | `npm install igniteui-grid-lite`; import from `igniteui-react/grid-lite` |
 | Grid renders no rows | No `height` on the grid | Set `height` — row virtualization needs it |
 | Dead space right of the last column | Explicit `width` on every column | Remove widths, or leave one column without one |
+| `aria-*` / `data-*` renders as `=""` on an `Igr*` element | Boolean `true` passed; React 19 writes it as an empty attribute on custom elements | Pass strings: `aria-checked={on ? 'true' : 'false'}` |
 | Event handler gets `undefined` | Reading React `SyntheticEvent` fields | It is a `CustomEvent`; read `e.detail` (or `e.target`) |
 | Navigation tabs push routed content off screen | Inline content inside router-driven `IgrTab` | Label-only tabs; render the route outlet outside `IgrTabs` |
 | Filter UI never appears | Only `filterable` set | `allowFiltering` on the grid *and* `filterable` on the column |
